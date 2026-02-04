@@ -1,9 +1,9 @@
-‏<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>تحدي الأساطير - </title>
+    <title>تحدي الأساطير - و الـ 54</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -84,6 +84,19 @@
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
+        /* شاشة طريقة اللعب */
+        .how-to-play-box {
+            text-align: right;
+            background: rgba(255,255,255,0.05);
+            padding: 20px;
+            border-radius: 20px;
+            margin: 20px 0;
+            width: 100%;
+            max-width: 600px;
+        }
+        .how-to-play-box li { margin-bottom: 10px; list-style: none; display: flex; align-items: center; gap: 10px;}
+        .how-to-play-box b { color: var(--primary); }
+
         .cat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 25px; width: 100%; }
         @media (min-width: 768px) { .cat-grid { grid-template-columns: repeat(3, 1fr); } }
 
@@ -136,28 +149,40 @@
             <div id="n1" class="team-name">الفريق 1</div>
             <div id="s1" class="score-val">0</div>
             <div class="powers">
-                <button id="p1_50" class="p-btn" style="background:var(--accent)" onclick="use5050()">½</button>
-                <button id="p1_x2" class="p-btn" style="background:var(--secondary)" onclick="useX2()">x2</button>
-                <button id="p1_hint" class="p-btn" style="background:#a855f7" onclick="useHint()">تلميحه</button>
+                <button id="p1_50" class="p-btn" title="حذف إجابتين" style="background:var(--accent)" onclick="use5050()">½</button>
+                <button id="p1_x2" class="p-btn" title="مضاعفة النقاط" style="background:var(--secondary)" onclick="useX2()">x2</button>
+                <button id="p1_hint" class="p-btn" title="طلب تلميحة" style="background:#a855f7" onclick="useHint()">تلميحه</button>
             </div>
         </div>
         <div id="box2" class="score-box">
             <div id="n2" class="team-name">الفريق 2</div>
             <div id="s2" class="score-val">0</div>
             <div class="powers">
-                <button id="p2_50" class="p-btn" style="background:var(--accent)" onclick="use5050()">½</button>
-                <button id="p2_x2" class="p-btn" style="background:var(--secondary)" onclick="useX2()">x2</button>
-                <button id="p2_hint" class="p-btn" style="background:#a855f7" onclick="useHint()">تلميحه</button>
+                <button id="p2_50" class="p-btn" title="حذف إجابتين" style="background:var(--accent)" onclick="use5050()">½</button>
+                <button id="p2_x2" class="p-btn" title="مضاعفة النقاط" style="background:var(--secondary)" onclick="useX2()">x2</button>
+                <button id="p2_hint" class="p-btn" title="طلب تلميحة" style="background:#a855f7" onclick="useHint()">تلميحه</button>
             </div>
         </div>
     </div>
 
     <div id="sc-start" class="screen active">
         <h1 style="font-size: 3rem; font-weight: 900; margin-bottom: 10px; color: var(--primary);">تحدي الـ 54</h1>
-        <p style="color: #94a3b8; margin-bottom: 30px; font-size: 1.2rem;"> • • </p>
+        <p style="color: #94a3b8; margin-bottom: 30px; font-size: 1.2rem;"> • • • </p>
         <input type="text" id="in1" placeholder="اسم الفريق الأول">
         <input type="text" id="in2" placeholder="اسم الفريق الثاني">
-        <button class="btn-main" onclick="startGame()">ابدأ الجولة</button>
+        <button class="btn-main" onclick="showHowToPlay()">ابدأ الآن</button>
+    </div>
+
+    <div id="sc-how" class="screen">
+        <h1 style="color: var(--primary); margin-bottom: 10px;">🎮 طريقة اللعب</h1>
+        <div class="how-to-play-box">
+            <li><span>1️⃣</span> <span><b>الأدوار:</b> اللعبة مقسمة بين الفريقين بالتناوب.</span></li>
+            <li><span>2️⃣</span> <span><b>النقاط:</b> الإجابة الصحيحة = 10 نقاط.</span></li>
+            <li><span>3️⃣</span> <span><b>الوسائل:</b> لك استخدام (½، x2، التلميحة) <b>مرة واحدة</b> فقط.</span></li>
+            <li><span>4️⃣</span> <span><b>الوقت:</b> أمامك 25 ثانية فقط لكل سؤال.</span></li>
+            <li><span>5️⃣</span> <span><b>الفوز:</b> الفريق صاحب أعلى نقاط في النهاية هو البطل.</span></li>
+        </div>
+        <button class="btn-main" onclick="startGame()">فهمت، ابدأ المعركة!</button>
     </div>
 
     <div id="sc-cats" class="screen">
@@ -241,7 +266,7 @@
             {q: "شهر ظهور الحريد؟", a: "أبريل", w: ["أغسطس", "يناير", "يونيو"], h: "فصل الربيع."}
         ]},
         "c8": { t: "🏡 التراث", img: "https://images.unsplash.com/photo-1518780664697-55e3ad937233?w=500", q: [
-            {q: "شكل العشة الجيزانية؟", a: "مخروطي", w: ["مربع", "دائري", "مسطح"], h: "قمتها مدببة كالقبعة."},
+            {q: "شكل العشة الجيزانية?؟", a: "مخروطي", w: ["مربع", "دائري", "مسطح"], h: "قمتها مدببة كالقبعة."},
             {q: "ما هي القعادة؟", a: "سرير خشبي", w: ["طاولة", "دولاب", "كرسي"], h: "تنسج بالحبال."},
             {q: "سوق السبت في؟", a: "بيش", w: ["صبيا", "صامطة", "جازان"], h: "أقدم سوق شمال المنطقة."},
             {q: "إناء خشبي للأكل؟", a: "صحفة", w: ["كتاب", "ملعقة", "شوكة"], h: "يوضع فيها العيش."},
@@ -262,9 +287,13 @@
     let t2 = { n: "", s: 0, p50: true, px2: true, ph: true };
     let turn = 1, x2Act = false, selCat = "", timerInterval;
 
-    function startGame() {
+    function showHowToPlay() {
         t1.n = document.getElementById('in1').value || "الفريق الأول";
         t2.n = document.getElementById('in2').value || "الفريق الثاني";
+        nav('sc-how');
+    }
+
+    function startGame() {
         document.getElementById('n1').innerText = t1.n;
         document.getElementById('n2').innerText = t2.n;
         document.getElementById('header').style.display = 'grid';
@@ -379,7 +408,7 @@
 
     function useX2() { x2Act = true; if (turn === 1) t1.px2 = false; else t2.px2 = false; updateUI(); }
     function useHint() { 
-        let h = document.getElementById('hint-box'); h.innerText = "تلميحه " + DATA[selCat].q[0].h; h.style.display = 'block';
+        let h = document.getElementById('hint-box'); h.innerText = "💡 تلميحة: " + DATA[selCat].q[0].h; h.style.display = 'block';
         if (turn === 1) t1.ph = false; else t2.ph = false; updateUI(); 
     }
 
