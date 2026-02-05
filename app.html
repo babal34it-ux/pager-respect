@@ -2,8 +2,8 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>تحدي الـ 54 - النسخة الكاملة</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحدي الـ 54 - النسخة الاحترافية</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -11,7 +11,7 @@
             --secondary: #60a5fa;
             --accent: #f87171;
             --bg: #020617;
-            --card-bg: rgba(15, 23, 42, 0.95);
+            --card-bg: rgba(15, 23, 42, 0.98);
             --correct: #10b981;
             --wrong: #ef4444;
             --hint-color: #a855f7;
@@ -25,20 +25,20 @@
             color: #f8fafc;
             min-height: 100vh;
             display: flex;
-            align-items: center;
             justify-content: center;
             padding: 10px;
-            overflow: hidden;
+            overflow-y: auto;
         }
 
         .container {
             width: 100%;
-            max-width: 850px;
+            max-width: 800px;
             background: var(--card-bg);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 25px;
+            border-radius: 20px;
             box-shadow: 0 25px 50px -12px rgba(0,0,0,0.8);
+            margin: auto;
             overflow: hidden;
             position: relative;
         }
@@ -55,85 +55,72 @@
         }
 
         .score-box { 
-            padding: 10px; border-radius: 15px; text-align: center; 
-            border: 2px solid transparent; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            padding: 10px; border-radius: 12px; text-align: center; 
+            border: 2px solid transparent; transition: 0.3s;
             background: rgba(255,255,255,0.02);
         }
 
         .score-box.active { 
             border-color: var(--primary); 
             background: rgba(251, 191, 36, 0.1);
-            transform: scale(1.03);
-            animation: pulse 2s infinite;
+            transform: scale(1.02);
         }
 
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 0 5px rgba(251, 191, 36, 0.2); }
-            50% { box-shadow: 0 0 20px rgba(251, 191, 36, 0.5); }
-        }
+        .team-name { font-weight: 700; font-size: 0.85rem; color: #94a3b8; }
+        .score-val { font-size: 2rem; font-weight: 900; color: #fff; }
 
-        .team-name { font-weight: 700; font-size: 0.9rem; color: #94a3b8; margin-bottom: 3px; }
-        .score-val { font-size: 2.5rem; font-weight: 900; color: #fff; line-height: 1; }
-
-        .powers { display: flex; justify-content: center; gap: 8px; margin-top: 10px; }
+        .powers { display: flex; justify-content: center; gap: 5px; margin-top: 5px; }
         .p-btn { 
-            flex: 1; height: 40px; border-radius: 8px; border: none; 
-            cursor: pointer; color: #fff; font-size: 0.75rem; font-weight: 900;
-            transition: 0.3s;
+            flex: 1; height: 35px; border-radius: 6px; border: none; 
+            cursor: pointer; color: #fff; font-size: 0.7rem; font-weight: 900;
         }
-        .p-btn:disabled { opacity: 0.15; cursor: not-allowed; filter: grayscale(1); }
-        .p-btn.activated { border: 2px solid white; box-shadow: 0 0 15px rgba(255,255,255,0.4); animation: flash 1s infinite; }
+        .p-btn:disabled { opacity: 0.2; cursor: not-allowed; filter: grayscale(1); }
+        .p-btn.activated { border: 2px solid white; animation: flash 1s infinite; }
 
-        @keyframes flash { 50% { opacity: 0.7; } }
+        @keyframes flash { 50% { opacity: 0.5; } }
 
-        .screen { display: none; padding: 25px 20px; text-align: center; width: 100%; min-height: 500px;}
-        .screen.active { display: flex; flex-direction: column; justify-content: center; align-items: center; animation: fadeIn 0.4s ease; }
+        .screen { display: none; padding: 20px; text-align: center; width: 100%; }
+        .screen.active { display: flex; flex-direction: column; align-items: center; animation: fadeIn 0.4s ease; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .cat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 20px; width: 100%; }
-        @media (min-width: 650px) { .cat-grid { grid-template-columns: repeat(3, 1fr); } }
+        .cat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-top: 15px; width: 100%; }
 
         .cat-item { 
-            position: relative; height: 110px; border-radius: 18px; cursor: pointer;
+            position: relative; height: 100px; border-radius: 15px; cursor: pointer;
             overflow: hidden; border: 1px solid rgba(255,255,255,0.1); transition: 0.3s;
         }
-        .cat-item:hover { border-color: var(--primary); transform: translateY(-5px); background: rgba(255,255,255,0.05); }
-        .cat-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.3; transition: 0.3s; }
-        .cat-item:hover .cat-img { opacity: 0.5; transform: scale(1.1); }
-        .cat-content { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: center; }
+        .cat-item:hover { border-color: var(--primary); background: rgba(255,255,255,0.05); }
+        .cat-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.2; }
+        .cat-content { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: center; padding: 5px; }
         .cat-item.done { opacity: 0.1; pointer-events: none; filter: grayscale(1); }
 
-        .opt-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 20px; width: 100%; max-width: 650px; }
-        @media (min-width: 550px) { .opt-grid { grid-template-columns: 1fr 1fr; } }
+        .opt-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 15px; width: 100%; }
+        @media (min-width: 500px) { .opt-grid { grid-template-columns: 1fr 1fr; } }
 
         .opt-btn { 
             background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
-            color: #f1f5f9; padding: 20px; border-radius: 15px; font-size: 1.1rem;
+            color: #f1f5f9; padding: 15px; border-radius: 12px; font-size: 1rem;
             font-weight: 700; cursor: pointer; transition: 0.2s;
         }
-        .opt-btn:hover { background: rgba(255,255,255,0.12); transform: scale(1.02); }
-        .opt-btn.reveal-correct { background: var(--correct) !important; box-shadow: 0 0 25px var(--correct); color: white; border: none; }
+        .opt-btn.reveal-correct { background: var(--correct) !important; color: white; border: none; }
         .opt-btn.clicked-wrong { background: var(--wrong) !important; color: white; border: none; }
-        .opt-btn.hidden { visibility: hidden; opacity: 0; pointer-events: none; }
+        .opt-btn.hidden { visibility: hidden; opacity: 0; }
 
         .btn-main { 
             background: linear-gradient(135deg, var(--primary), #d97706); color: #000; 
-            padding: 18px 50px; border-radius: 15px; border: none; font-weight: 900; 
-            font-size: 1.3rem; cursor: pointer; transition: 0.3s; width: 100%; max-width: 320px;
-            box-shadow: 0 10px 25px rgba(217, 119, 6, 0.4);
+            padding: 15px 40px; border-radius: 12px; border: none; font-weight: 900; 
+            font-size: 1.1rem; cursor: pointer; width: 100%; max-width: 280px; margin-top: 10px;
         }
-        .btn-main:active { transform: scale(0.95); }
 
         input { 
             background: rgba(255,255,255,0.08); border: 2px solid rgba(255,255,255,0.1); 
-            padding: 15px; border-radius: 12px; color: #fff; width: 100%; max-width: 320px; 
-            margin-bottom: 12px; text-align: center; font-size: 1.1rem; outline: none; transition: 0.3s;
+            padding: 12px; border-radius: 10px; color: #fff; width: 100%; max-width: 280px; 
+            margin-bottom: 10px; text-align: center; font-size: 1rem; outline: none;
         }
-        input:focus { border-color: var(--primary); background: rgba(255,255,255,0.15); }
 
-        #qImage { width: 100%; max-width: 350px; height: 200px; object-fit: cover; border-radius: 20px; margin-bottom: 20px; border: 3px solid rgba(255,255,255,0.15); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        #hint-box { background: rgba(168, 85, 247, 0.15); border: 2px solid var(--hint-color); color: #fff; padding: 18px; border-radius: 15px; margin-bottom: 20px; display: none; width: 95%; font-size: 1rem; border-left: 6px solid var(--hint-color); }
+        #qImage { width: 100%; max-width: 300px; height: 150px; object-fit: cover; border-radius: 15px; margin-bottom: 15px; border: 2px solid rgba(255,255,255,0.1); }
+        #hint-box { background: rgba(168, 85, 247, 0.1); border: 1px solid var(--hint-color); color: #fff; padding: 12px; border-radius: 10px; margin-bottom: 15px; display: none; width: 100%; font-size: 0.9rem; }
     </style>
 </head>
 <body>
@@ -148,7 +135,7 @@
             <div class="powers">
                 <button id="p1_50" class="p-btn" style="background:var(--accent)" onclick="use5050()">½</button>
                 <button id="p1_x2" class="p-btn" style="background:var(--secondary)" onclick="useX2()">x2</button>
-                <button id="p1_hint" class="p-btn" style="background:var(--hint-color)" onclick="useHint()">تلميحة</button>
+                <button id="p1_hint" class="p-btn" style="background:var(--hint-color)" onclick="useHint()">💡</button>
             </div>
         </div>
         <div id="box2" class="score-box">
@@ -157,66 +144,63 @@
             <div class="powers">
                 <button id="p2_50" class="p-btn" style="background:var(--accent)" onclick="use5050()">½</button>
                 <button id="p2_x2" class="p-btn" style="background:var(--secondary)" onclick="useX2()">x2</button>
-                <button id="p2_hint" class="p-btn" style="background:var(--hint-color)" onclick="useHint()">تلميحة</button>
+                <button id="p2_hint" class="p-btn" style="background:var(--hint-color)" onclick="useHint()">💡</button>
             </div>
         </div>
     </div>
 
     <div id="sc-start" class="screen active">
-        <div style="font-size: 4.5rem; margin-bottom: 10px; filter: drop-shadow(0 0 15px var(--primary));">🔥</div>
-        <h1 style="font-size: 2.8rem; font-weight: 900; margin-bottom: 5px; color: var(--primary);">تحدي الـ 54</h1>
-        <p style="color: #94a3b8; margin-bottom: 30px; font-size: 1.2rem;"> </p>
-        <input type="text" id="in1" placeholder="اسم الفريق الأول" maxlength="12">
-        <input type="text" id="in2" placeholder="اسم الفريق الثاني" maxlength="12">
-        <button class="btn-main" onclick="goToRules()">دخول التحدي</button>
+        <h1 style="color: var(--primary); font-size: 2.2rem; margin-bottom: 20px;">تحدي الـ 54 🔥</h1>
+        <input type="text" id="in1" placeholder="اسم الفريق 1">
+        <input type="text" id="in2" placeholder="اسم الفريق 2">
+        <button class="btn-main" onclick="goToRules()">دخول</button>
     </div>
 
     <div id="sc-how" class="screen">
-        <h2 style="color: var(--primary); margin-bottom: 25px; font-size: 2rem;">🛡️ طريقة اللعب</h2>
-        <div style="text-align: right; background: rgba(255,255,255,0.05); padding: 25px; border-radius: 20px; width: 100%; max-width: 550px; line-height: 1.8; border: 1px solid rgba(255,255,255,0.1);">
-            <p>✅ <b>النقاط:</b> الإجابة الصحيحة = 10 نقاط.</p>
-            <p>✅ <b>التبادل:</b> الدور ينتقل تلقائياً بين الفريقين.</p>
-            <p>✅ <b>المضاعف (x2):</b> نقاطك تصبح 20، لكن حذارِ من الخطأ!</p>
-            <p>✅ <b>½:</b> يحذف لك خيارين خاطئين فوراً.</p>
-            <p>✅ <b>التوقيت:</b> لديك 25 ثانية فقط قبل ضياع الدور.</p>
+        <h2 style="color: var(--primary); margin-bottom: 15px;">🛡️ القوانين</h2>
+        <div style="text-align: right; font-size: 0.95rem; line-height: 1.6;">
+            <p>• الإجابة الصحيحة بـ 10 نقاط.</p>
+            <p>• الـ x2 يضاعف الربح لكن الخسارة تنهي الدور.</p>
+            <p>• زر الـ ½ يحذف خيارين خاطئين.</p>
+            <p>• زر المصباح يعطيك تلميحة عن الحل.</p>
+            <p>• الوقت: 25 ثانية لكل سؤال.</p>
         </div>
-        <button class="btn-main" style="margin-top: 30px;" onclick="startGame()">موافق، ابدأ المعركة!</button>
+        <button class="btn-main" onclick="startGame()">بدء اللعب</button>
     </div>
 
     <div id="sc-cats" class="screen">
-        <h2 id="turn-hint" style="font-size: 1.6rem; color: var(--primary); margin-bottom: 20px; letter-spacing: 1px;"></h2>
+        <h3 id="turn-hint" style="color: var(--primary); margin-bottom: 10px;"></h3>
         <div id="catGrid" class="cat-grid"></div>
     </div>
 
     <div id="sc-quiz" class="screen">
         <img id="qImage" src="">
-        <h4 id="qCat" style="color: var(--primary); font-size: 0.9rem; letter-spacing: 2px; font-weight: 900; margin-bottom: 10px;"></h4>
-        <h2 id="qText" style="margin-bottom: 25px; font-size: 1.5rem; line-height: 1.4;"></h2>
+        <h4 id="qCat" style="color: var(--primary); font-size: 0.8rem;"></h4>
+        <h2 id="qText" style="font-size: 1.2rem; margin: 10px 0;"></h2>
         <div id="hint-box"></div>
         <div id="optGrid" class="opt-grid"></div>
-        <div id="feedback-msg" style="margin-top: 30px; font-weight: 900; font-size: 1.4rem; min-height: 40px;"></div>
+        <div id="feedback-msg" style="margin-top: 15px; font-weight: 700;"></div>
     </div>
 
     <div id="sc-end" class="screen">
-        <div id="winEmoji" style="font-size: 7rem; margin-bottom: 15px;">🏆</div>
-        <h1 id="winMsg" style="font-size: 3rem; color: var(--primary); margin-bottom: 10px;"></h1>
-        <h2 id="finalTotal" style="font-size: 2.2rem; margin-bottom: 35px; letter-spacing: 6px; color: #94a3b8;"></h2>
-        <button class="btn-main" onclick="location.reload()">جولة انتقامية</button>
+        <div style="font-size: 4rem;">🏆</div>
+        <h1 id="winMsg" style="color: var(--primary);"></h1>
+        <h2 id="finalTotal"></h2>
+        <button class="btn-main" onclick="location.reload()">إعادة</button>
     </div>
 </div>
 
 <script>
-    // جميع الفئات الـ 9 والـ 54 سؤالاً بالكامل
     const DATA = {
-        "c1": { t: "🥘 أسرار الطبخ", img: "https://images.unsplash.com/photo-1547592166-23ac45744acd?w=500", q: [
+        "c1": { t: "🥘 أسرار الطبخ", img: "https://images.unsplash.com/photo-1547592166-23ac45744acd?w=400", q: [
             {q: "ماذا يسمى المرق المستخلص من لحم المغش المركز قبل إضافة الماء؟", a: "الصافي", w: ["البلول", "الوشنة", "الدقوس"], h: "نكهة اللحم النقية جداً."},
             {q: "في صناعة 'الحسية'، ما المكون الذي يمنع التصاق العجين بالملة؟", a: "النخالة (القشر)", w: ["السمن", "المرق", "ورق الموز"], h: "طبقة عازلة طبيعية من الحبوب."},
-            {q: "ما النبات العطري الذي يوضع تحت 'المغش' داخل الموفى لنكهة مدخنة؟", a: "المرخ", w: ["الكادي", "الريحان", "الشذاب"], h: "نبات بري مشهور بجازان."},
+            {q: "ما النبات العطري الذي يوضع تحت 'المغش' داخل الموفى؟", a: "المرخ", w: ["الكادي", "الريحان", "الشذاب"], h: "نبات بري مشهور بجازان."},
             {q: "كم مدة التخمير المثالية لخبز 'الخمير' الجيزاني الأصيل؟", a: "ليلة كاملة", w: ["ساعتين", "نصف ساعة", "يومين"], h: "يحتاج وقت طويل ليعطي الحموضة."},
             {q: "ما الفرق الجوهري بين 'المغش' و'البرمة'؟", a: "نوع الإناء (حجر vs فخار)", w: ["نوع اللحم", "كمية الماء", "طريقة التقديم"], h: "المغش يستخدم الحجر الأسود الصلب."},
             {q: "بماذا تدهن 'القعادة' عند تقديم المرسة لزيادة النكهة؟", a: "السمن القطراني", w: ["الزبدة", "العسل", "زيت السمسم"], h: "سمن برائحة الحطب والقوة."}
         ]},
-        "c2": { t: "🗣️ فصاحة اللهجة", img: "https://images.unsplash.com/photo-1522199670076-2852f80289c3?w=500", q: [
+        "c2": { t: "🗣️ فصاحة اللهجة", img: "https://images.unsplash.com/photo-1522199670076-2852f80289c3?w=400", q: [
             {q: "ما معنى كلمة 'يتمهوك' في وصف الشخص؟", a: "يتباطأ في عمله بكاسل", w: ["يتحدث بوضوح", "يمشي سريعاً", "يأكل كثيراً"], h: "وصف للكسل والبرود الشديد."},
             {q: "ما المقصود بكلمة 'المدعث' في وصف المكان؟", a: "المكان الفوضوي والمبعثر", w: ["الطريق الممهد", "المجلس الواسع", "البئر العميق"], h: "تقال عندما تضيع الأغراض في الزحام."},
             {q: "إذا قيل لك 'هب لي قداك'، فما هو 'القدا'؟", a: "نصيبك أو حصتك", w: ["طعامك", "ثوبك", "اسمك"], h: "كلمة تشير للحصة المخصصة للشخص."},
@@ -224,31 +208,31 @@
             {q: "ما معنى كلمة 'مباطي'؟", a: "متأخر جداً", w: ["قريب", "متسرع", "مستلقٍ"], h: "مرتبطة بالوقت الطويل."},
             {q: "كلمة 'جاري' في اللهجة الجيزانية العميقة تعني؟", a: "الآن أو في هذه اللحظة", w: ["جاري في السكن", "يركض", "بعد قليل"], h: "تعبير عن الاستمرارية الحالية."}
         ]},
-        "c3": { t: "🔫 احتراف الأسلحة", img: "https://images.unsplash.com/photo-1595590424283-b8f17842773f?w=500", q: [
-            {q: "كم تبلغ سرعة الرصاصة (Muzzle Velocity) لسلاح الـ Mini-14؟", a: "990 م/ث", w: ["880 م/ث", "910 م/ث", "715 م/ث"], h: "الأسرع في فئة الـ DMR باللعبة."},
+        "c3": { t: "🔫 احتراف الأسلحة", img: "https://images.unsplash.com/photo-1595590424283-b8f17842773f?w=400", q: [
+            {q: "كم تبلغ سرعة الرصاصة لسلاح الـ Mini-14؟", a: "990 م/ث", w: ["880 م/ث", "910 م/ث", "715 م/ث"], h: "الأسرع في فئة الـ DMR باللعبة."},
             {q: "أي قطعة تقلل الارتداد الأفقي بنسبة أكبر لسلاح الـ M416؟", a: "Angled Foregrip", w: ["Vertical Grip", "Half Grip", "Light Grip"], h: "تساعد في السيطرة يميناً ويساراً."},
-            {q: "ما السلاح الوحيد الذي يملك ضرر رأس يتجاوز 130 ضد خوذة 3؟", a: "AWM", w: ["M24", "Kar98k", "Lynx AMR"], h: "رصاصه أخضر حصري من الدروب."},
+            {q: "ما السلاح الذي يتجاوز ضرر رأسه 130 ضد خوذة 3؟", a: "AWM", w: ["M24", "Kar98k", "Lynx AMR"], h: "رصاصه أخضر حصري من الدروب."},
             {q: "كم طلقة لازمة لإسقاط عدو بدرع ليفل 2 بسلاح UMP45؟", a: "5 طلقات", w: ["3 طلقات", "7 طلقات", "4 طلقات"], h: "سلاح قوي جداً في المواجهات القريبة."},
-            {q: "سلاح الـ MG3 في وضعية (990 RPM) يفرغ مخزنه في حوالي؟", a: "4.5 ثوانٍ", w: ["6 ثوانٍ", "3 ثوانٍ", "8 ثوانٍ"], h: "أسرع معدل إطلاق نار في اللعبة."},
+            {q: "سلاح الـ MG3 في وضعية (990 RPM) يفرغ مخزنه في؟", a: "4.5 ثوانٍ", w: ["6 ثوانٍ", "3 ثوانٍ", "8 ثوانٍ"], h: "أسرع معدل إطلاق نار في اللعبة."},
             {q: "ما هي ميزة سلاح الـ Crossbow (القوس) الفريدة؟", a: "تجاهل جزء من الدرع", w: ["إطلاق نار أوتوماتيكي", "لا يظهر في الخريطة", "أسرع من الرصاص"], h: "سلاح صامت وفتاك جداً."}
         ]},
-        "c4": { t: "🗺️ تكتيك الخرائط", img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=500", q: [
+        "c4": { t: "🗺️ تكتيك الخرائط", img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400", q: [
             {q: "في خريطة ميرامار، أين تقع أكبر حلبة مصارعة مغطاة؟", a: "El Pozo", w: ["Pecado", "Los Leones", "San Martin"], h: "مدينة في الشمال الغربي من الخريطة."},
             {q: "كم جسر يربط جزيرة Sosnovka بالجزيرة الأم في ارنغل؟", a: "2", w: ["3", "1", "4"], h: "جسور الموت الشهيرة بالكمائن."},
-            {q: "أي منطقة في سانهوك تشتهر بوجود (3) مستودعات تحت الأرض؟", a: "Ruins", w: ["Bootcamp", "Paradise Resort", "Cave"], h: "منطقة أثرية صعبة القتال."},
-            {q: "ما الارتفاع الأقصى الذي يمكن أن يصل إليه 'المنطاد' في ليفيك؟", a: "150 متر", w: ["100 متر", "200 متر", "300 متر"], h: "ارتفاع متوسط يكشف الخصوم."},
+            {q: "أي منطقة في سانهوك تشتهر بوجود 3 مستودعات تحت الأرض؟", a: "Ruins", w: ["Bootcamp", "Paradise Resort", "Cave"], h: "منطقة أثرية صعبة القتال."},
+            {q: "ما الارتفاع الأقصى الذي يمكن أن يصل إليه المنطاد في ليفيك؟", a: "150 متر", w: ["100 متر", "200 متر", "300 متر"], h: "ارتفاع متوسط يكشف الخصوم."},
             {q: "أي خريطة تتميز بوجود نظام (Emergency Pickup) تلقائي؟", a: "نوسا", w: ["ارنغل", "ميرامار", "تايغو"], h: "خريطة سريعة جداً وصغيرة."},
             {q: "منطقة 'Goroka' الثلجية تقع في أي خريطة؟", a: "فيكندي", w: ["ليفيك", "سانهوك", "كاراكين"], h: "خريطة الثلج والمباني المتراصة."}
         ]},
-        "c5": { t: "🐪 ثقافة الإبل", img: "https://images.unsplash.com/photo-1589182373726-e4f658ab50f0?w=500", q: [
-            {q: "ماذا يسمى 'الوسم' الذي يوضع على رقبة الإبل لتمييز الملكية؟", a: "الشاهد", w: ["العقال", "القلادة", "الخزام"], h: "علامة بالكي تدل على القبيلة."},
+        "c5": { t: "🐪 ثقافة الإبل", img: "https://images.unsplash.com/photo-1589182373726-e4f658ab50f0?w=400", q: [
+            {q: "ماذا يسمى 'الوسم' الذي يوضع على رقبة الإبل؟", a: "الشاهد", w: ["العقال", "القلادة", "الخزام"], h: "علامة بالكي تدل على القبيلة."},
             {q: "ناقة 'الخلوج' هي الناقة التي؟", a: "تحن على حوارها الميت", w: ["تسبق في السباق", "كثيرة الحليب", "قائدة القطيع"], h: "وصف للحزن الشديد عند الإبل."},
             {q: "ما هو 'الظعينة' في سياق الإبل؟", a: "الإبل التي تحمل النساء", w: ["الإبل المريضة", "صغار الإبل", "الإبل المخصصة للسباق"], h: "مرتبطة بالرحيل والترحال قديماً."},
             {q: "ماذا يسمى صوت الإبل عند الغضب والهدير؟", a: "الرغاء", w: ["الحنين", "الصهيل", "الخوار"], h: "صوت قوي يخرج من الحنجرة."},
             {q: "كم تبلغ فترة حمل الناقة (بالأشهر)؟", a: "12 شهر", w: ["9 أشهر", "6 أشهر", "10 أشهر"], h: "سنة كاملة تقريباً."},
             {q: "ما هو 'المفرود' من الإبل؟", a: "الذي فصل عن أمه", w: ["كبير السن", "ذكر قوي", "ناقة بيضاء"], h: "عمره سنة واحدة تقريباً."}
         ]},
-        "c6": { t: "🌿 نباتات عطرية", img: "https://images.unsplash.com/photo-1596073413908-4482cee8821d?w=500", q: [
+        "c6": { t: "🌿 نباتات عطرية", img: "https://images.unsplash.com/photo-1596073413908-4482cee8821d?w=400", q: [
             {q: "ما الفرق بين 'الفل العزاني' و'الفل القريشي'؟", a: "العزاني أطول وأقوى رائحة", w: ["القريشي أصفر", "العزاني بلا رائحة", "لا يوجد فرق"], h: "العزاني يزرع في المناطق الجبلية."},
             {q: "نبات 'الوال' في جازان يشبه الفل ولكنه يتميز بـ؟", a: "بتلاته العريضة والكبيرة", w: ["لونه الأحمر", "رائحته الكريهة", "أنه لا يزهر"], h: "نوع فاخر ونادر جداً."},
             {q: "ما النبات العطري الذي يسمى 'شذاب' في مناطق و'بعيثران' في جازان؟", a: "البعيثران", w: ["الكادي", "الريحان", "النرجس"], h: "يتميز بلونه الأخضر الفاتح."},
@@ -256,7 +240,7 @@
             {q: "ما هو 'الكبش' في زينة الفل الجيزانية؟", a: "مجموعة فل مرتبة بشكل دائري", w: ["نوع من الشجر", "خيط رفيع", "إناء للزراعة"], h: "يوضع عادة في وسط العصابة."},
             {q: "لماذا يوضع الفل في 'محافظ' جلدية أو معدنية؟", a: "للحفاظ على برودته ورائحته", w: ["لإخفائه عن الناس", "لزيادة وزنه", "ليصبح لونه أحمر"], h: "الفل حساس جداً للحرارة."}
         ]},
-        "c7": { t: "🌊 أسرار البحر", img: "https://images.unsplash.com/photo-1551244072-5d12893278ab?w=500", q: [
+        "c7": { t: "🌊 أسرار البحر", img: "https://images.unsplash.com/photo-1551244072-5d12893278ab?w=400", q: [
             {q: "ما الظاهرة التي تؤدي لتجمع سمك 'الحريد' في فرسان؟", a: "موسم التزاوج", w: ["تغير التيارات", "البحث عن الغذاء", "الهروب من القروش"], h: "يحدث سنوياً في شهر أبريل."},
             {q: "ما اسم أعمق منطقة بحرية قريبة من سواحل جازان؟", a: "أخدود البحر الأحمر", w: ["خليج العقبة", "بحر العرب", "مضيق هرمز"], h: "منطقة غنية بالثروات المرجانية."},
             {q: "سمك 'الناجل' الحر يفضل العيش في؟", a: "الشعاب المرجانية العميقة", w: ["المياه الضحلة", "قرب الشواطئ", "المناطق الرملية"], h: "ملك السمك الأحمر وصعب الصيد."},
@@ -264,21 +248,21 @@
             {q: "ما هو 'الخور' في جغرافيا سواحل جازان؟", a: "لسان مائي داخل اليابسة", w: ["جبل تحت الماء", "نوع من السفن", "سمك سام"], h: "مكان هادئ لرسو السفن."},
             {q: "ما الموسم الذي يقل فيه الصيد بسبب الرياح الشديدة؟", a: "موسم الغبرة", w: ["موسم الربيع", "موسم الصيف", "موسم الأمطار"], h: "رياح موسمية شديدة تثير الغبار."}
         ]},
-        "c8": { t: "🏡 عمق التراث", img: "https://images.unsplash.com/photo-1518780664697-55e3ad937233?w=500", q: [
+        "c8": { t: "🏡 عمق التراث", img: "https://images.unsplash.com/photo-1518780664697-55e3ad937233?w=400", q: [
             {q: "ما المادة التي تصنع منها 'الحبال' لنسج القعادة؟", a: "ليف النخيل أو الدوم", w: ["البلاستيك", "القطن", "جلد الجمال"], h: "مواد طبيعية قوية التحمل."},
             {q: "ما هو 'الصوح' في بناء البيت الجيزاني القديم؟", a: "الفناء الخارجي المكشوف", w: ["سقف الغرفة", "باب البيت", "المطبخ"], h: "مكان للجلوس في الهواء الطلق."},
-            {q: "ماذا تسمى الفتحة العلوية في 'العشة' الجيزانية؟", a: "القمة (التغروية)", w: ["النافذة", "المنور", "المدخنة"], h: "تسمح بمرور الهواء الساخن للأعلى."},
+            {q: "ماذا تسمى الفتحة العلوية في 'العشة' الجيزانية؟", a: "القمة", w: ["النافذة", "المنور", "المدخنة"], h: "تسمح بمرور الهواء الساخن للأعلى."},
             {q: "ما هي وظيفة 'المركبة' قديماً في جازان؟", a: "حفظ أدوات الطبخ والموقد", w: ["وسيلة نقل", "خزانة ملابس", "سرير للطفل"], h: "ركن أساسي في المطبخ التراثي."},
             {q: "كم يبلغ عمر 'سوق الأحد' التاريخي في المسارحة؟", a: "أكثر من 300 عام", w: ["50 عام", "100 عام", "500 عام"], h: "من أقدم الأسواق الأسبوعية بالمنطقة."},
             {q: "ما هو 'الخزم' في أدوات الزينة التراثية؟", a: "حلقة توضع في الأنف", w: ["خاتم لليد", "حزام للخصر", "عقد للرقبة"], h: "كانت من سمات الجمال قديماً."}
         ]},
-        "c9": { t: "🍋 احتراف الزراعة", img: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=500", q: [
-            {q: "أي صنف من المانجو الجيزاني يعتبر الأغلى والأكثر طلباً؟", a: "السنسيشن", w: ["تومي", "هندي", "جلن"], h: "يتميز بلونه الجذاب وطعمه الفريد."},
+        "c9": { t: "🍋 احتراف الزراعة", img: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400", q: [
+            {q: "أي صنف من المانجو الجيزاني يعتبر الأغلى؟", a: "السنسيشن", w: ["تومي", "هندي", "جلن"], h: "يتميز بلونه الجذاب وطعمه الفريد."},
             {q: "ما هو 'العنبرود'؟ وهل له اسم آخر؟", a: "البابايا", w: ["التين", "الرمان", "الخوخ"], h: "فاكهة استوائية صفراء طبية."},
             {q: "ما المرض الذي يهدد مزارع البن الخولاني تاريخياً؟", a: "صدأ الأوراق", w: ["الجفاف", "الملوحة", "الطيور"], h: "مرض فطري يصيب الشجر الجبلي."},
             {q: "متى يبدأ موسم حصاد 'الخضير' في تهامة جازان؟", a: "فصل الخريف", w: ["عز الصيف", "نهاية الشتاء", "بداية الربيع"], h: "مرتبط بموسم الأمطار والمخر."},
             {q: "ما هي 'المسحاة' في أدوات المزارع الجيزاني؟", a: "أداة لتمهيد الأرض والري", w: ["إناء للبذور", "آلة للحصاد", "سلة للمانجو"], h: "أهم أداة يدوية للمزارع."},
-            {q: "جازان تنتج كمية هائلة من 'الموز' في أي محافظة؟", a: "محافظة ضمد", w: ["صبيا", "صامطة", "الدرب"], h: "تشتهر بمزارع الموز والمانجو الكثيفة."}
+            {q: "جازان تنتج كمية هائلة من الموز في أي محافظة؟", a: "محافظة ضمد", w: ["صبيا", "صامطة", "الدرب"], h: "تشتهر بمزارع الموز والمانجو الكثيفة."}
         ]}
     };
 
@@ -294,8 +278,8 @@
     }
 
     function goToRules() {
-        t1.n = document.getElementById('in1').value.trim() || "الصقور";
-        t2.n = document.getElementById('in2').value.trim() || "الذئاب";
+        t1.n = document.getElementById('in1').value || "الفريق 1";
+        t2.n = document.getElementById('in2').value || "الفريق 2";
         nav('sc-how');
     }
 
@@ -314,7 +298,7 @@
             let count = DATA[k].q.length;
             let d = document.createElement('div');
             d.className = 'cat-item' + (count === 0 ? ' done' : '');
-            d.innerHTML = `<img src="${DATA[k].img}" class="cat-img"><div class="cat-content"><b>${DATA[k].t}</b><small style="color:var(--primary)">${count} أسئلة</small></div>`;
+            d.innerHTML = `<img src="${DATA[k].img}" class="cat-img"><div class="cat-content"><b>${DATA[k].t}</b><small>${count} أسئلة</small></div>`;
             if(count > 0) d.onclick = () => loadQ(k);
             grid.appendChild(d);
         }
@@ -363,13 +347,11 @@
         document.querySelectorAll('.opt-btn').forEach(b => b.style.pointerEvents = 'none');
         const f = document.getElementById('feedback-msg');
         
-        resetPowersUI();
-
         if (isC) {
             btn.classList.add('reveal-correct');
             let p = x2Act ? 20 : 10;
             if (turn === 1) t1.s += p; else t2.s += p;
-            f.innerText = "صح! +" + p + " نقطة"; f.style.color = "var(--correct)";
+            f.innerText = "صحيح! +" + p; f.style.color = "var(--correct)";
         } else {
             if(btn) btn.classList.add('clicked-wrong');
             f.innerText = "خطأ! الجواب: " + DATA[selCat].q[0].a; f.style.color = "var(--wrong)";
@@ -380,36 +362,31 @@
             DATA[selCat].q.shift();
             turn = (turn === 1) ? 2 : 1;
             x2Act = false;
+            resetPowersUI();
             if (isEnd()) return;
             nav('sc-cats');
             drawCats();
-        }, 2800);
+        }, 2500);
     }
 
     function updateUI() {
         document.getElementById('s1').innerText = t1.s;
         document.getElementById('s2').innerText = t2.s;
-        document.getElementById('turn-hint').innerText = "الدور الآن لـ: " + (turn === 1 ? t1.n : t2.n);
+        document.getElementById('turn-hint').innerText = "دور " + (turn === 1 ? t1.n : t2.n);
         document.getElementById('box1').classList.toggle('active', turn === 1);
         document.getElementById('box2').classList.toggle('active', turn === 2);
         
         const inQuiz = document.getElementById('sc-quiz').classList.contains('active');
-        
         document.getElementById('p1_50').disabled = !inQuiz || !t1.p50 || turn !== 1;
         document.getElementById('p1_x2').disabled = !inQuiz || !t1.px2 || turn !== 1;
         document.getElementById('p1_hint').disabled = !inQuiz || !t1.ph || turn !== 1;
-        
         document.getElementById('p2_50').disabled = !inQuiz || !t2.p50 || turn !== 2;
         document.getElementById('p2_x2').disabled = !inQuiz || !t2.px2 || turn !== 2;
         document.getElementById('p2_hint').disabled = !inQuiz || !t2.ph || turn !== 2;
     }
 
     function resetPowersUI() {
-        document.querySelectorAll('.p-btn').forEach(b => {
-            b.classList.remove('activated');
-            if(b.id.includes('x2')) b.innerText = "x2";
-            if(b.id.includes('hint')) b.innerText = "تلميحة";
-        });
+        document.querySelectorAll('.p-btn').forEach(b => b.classList.remove('activated'));
     }
 
     function use5050() {
@@ -421,20 +398,16 @@
 
     function useX2() { 
         x2Act = true; 
-        let btn = document.getElementById(`p${turn}_x2`);
-        btn.classList.add('activated');
-        btn.innerText = "مضاعف!";
+        document.getElementById(`p${turn}_x2`).classList.add('activated');
         if (turn === 1) t1.px2 = false; else t2.px2 = false; 
         updateUI(); 
     }
     
     function useHint() { 
         let hBox = document.getElementById('hint-box'); 
-        hBox.innerHTML = "💡 <b>تلميحة:</b> " + DATA[selCat].q[0].h; 
+        hBox.innerHTML = "💡 " + DATA[selCat].q[0].h; 
         hBox.style.display = 'block';
-        let btn = document.getElementById(`p${turn}_hint`);
-        btn.classList.add('activated');
-        btn.innerText = "تلميح..";
+        document.getElementById(`p${turn}_hint`).classList.add('activated');
         if (turn === 1) t1.ph = false; else t2.ph = false; 
         updateUI(); 
     }
@@ -442,9 +415,8 @@
     function isEnd() {
         let rem = 0; for (let k in DATA) rem += DATA[k].q.length;
         if (rem === 0) {
-            let win = t1.s > t2.s ? t1.n : (t2.s > t1.s ? t2.n : "تعادل عادل!");
-            document.getElementById('winMsg').innerText = (t1.s === t2.s) ? "النتيجة: تعادل" : "الفائز: " + win;
-            document.getElementById('winEmoji').innerText = (t1.s === t2.s) ? "🤝" : "🏆";
+            let win = t1.s > t2.s ? t1.n : (t2.s > t1.s ? t2.n : "تعادل!");
+            document.getElementById('winMsg').innerText = "الفائز: " + win;
             document.getElementById('finalTotal').innerText = `${t1.s} - ${t2.s}`;
             nav('sc-end'); return true;
         }
