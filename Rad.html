@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ملاذ الصمت | 200 عبارة</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #050505;
+            --rain-speed: 1s;
+            --rain-opacity: 0.15;
+            --fog-opacity: 0.03;
+        }
+
+        body {
+            margin: 0; height: 100vh; display: flex; justify-content: center;
+            align-items: center; background: var(--bg-color); overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .lightning-flash {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: white; opacity: 0; pointer-events: none; z-index: 100;
+        }
+
+        .fog { position: absolute; width: 200%; height: 100%; background: rgba(255, 255, 255, var(--fog-opacity)); filter: blur(60px); pointer-events: none; }
+        .rain { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+        .drop { position: absolute; background: rgba(255, 255, 255, var(--rain-opacity)); width: 1px; height: 25px; animation: fall var(--rain-speed) linear infinite; }
+        @keyframes fall { to { transform: translateY(100vh); } }
+
+        .glass-drop {
+            position: absolute; background: rgba(255, 255, 255, 0.2);
+            width: 2px; height: 2px; border-radius: 50%; pointer-events: none;
+            animation: slideDown 5s linear infinite;
+        }
+        @keyframes slideDown { 
+            0% { opacity: 0.5; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(200px) scale(0.5); }
+        }
+
+        .card {
+            background: rgba(10, 10, 10, 0.8); backdrop-filter: blur(25px);
+            padding: 50px 40px; border-radius: 25px; text-align: center;
+            width: 500px; max-width: 85%; border: 1px solid rgba(255, 255, 255, 0.05);
+            z-index: 10; color: #d1d1d1; box-shadow: 0 40px 80px rgba(0,0,0,0.9);
+            position: relative;
+        }
+
+        #quote-text { font-size: 1.3rem; margin: 30px 0; min-height: 120px; line-height: 1.8; color: #ececec; }
+        
+        .theme-selector { position: absolute; top: -60px; left: 0; width: 100%; display: flex; gap: 10px; justify-content: center; }
+        .theme-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #777; padding: 6px 15px; border-radius: 20px; cursor: pointer; font-size: 0.8rem; transition: 0.3s; }
+        .theme-btn.active { background: #fff; color: #000; }
+
+        .main-btn { background: none; color: #fff; border: 1px solid #333; padding: 12px 40px; border-radius: 5px; cursor: pointer; font-size: 1rem; transition: 0.3s; margin-bottom: 25px; }
+        .main-btn:hover { border-color: #fff; background: rgba(255,255,255,0.05); }
+
+        .actions { display: flex; gap: 25px; justify-content: center; }
+        .actions i { cursor: pointer; font-size: 1.3rem; color: #444; transition: 0.3s; }
+        .actions i:hover { color: #fff; }
+        .actions .fa-heart.active { color: #e74c3c; }
+
+        .toast { position: fixed; bottom: -50px; left: 50%; transform: translateX(-50%); background: #fff; color: #000; padding: 10px 30px; border-radius: 5px; transition: 0.5s; z-index: 1000; }
+        .toast.show { bottom: 40px; }
+        #counter { font-size: 0.7rem; color: #333; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+<div id="lightning" class="lightning-flash"></div>
+<div class="fog"></div>
+<div class="rain" id="rainContainer"></div>
+<div id="toast" class="toast">تم النسخ</div>
+
+<div class="card">
+    <div class="theme-selector">
+        <div class="theme-btn active" onclick="setTheme('light', this)">مطر هادئ</div>
+        <div class="theme-btn" onclick="setTheme('storm', this)">عاصفة رعدية</div>
+    </div>
+
+    <div id="quote-text"></div>
+    
+    <button class="main-btn" onclick="getNextQuote()">عبارة أخرى</button>
+
+    <div class="actions">
+        <i id="favIcon" class="fas fa-heart" onclick="toggleFavorite()"></i>
+        <i class="fab fa-x-twitter" onclick="shareX()"></i>
+        <i class="fas fa-copy" onclick="copyText()"></i>
+    </div>
+    <div id="counter"></div>
+</div>
+
+<script>
+    const allQuotes = [
+        "يحدث أن يكون الهدوء، صراخاً لا يسمعه أحد.", "أصعب الفقد هو أن تفقد نفسك وأنت حي.", "خيبة الأمل تجعلك شخصاً لا يشبهك.", "لم يكن الوداع مؤلماً، بل بقاء الذكريات.", "نحن نبكي على ما تبقى لنا منهم.", "أقصى مراحل الألم أن يبرد شعورك.", "متعب من كوني بخير أمام الناس.", "لا أحد يشعر بثقل الكلمات التي لم تُقال.", "المطر يشبه دموع السماء على ذكرياتنا.", "ربما نعتاد الوجع، لكننا لا نشفى.", "توقفنا عن العتاب لأن لا شيء سيتغير.", "أشتاق لنفسي التي لم تكن تعرف الحزن.", "كنا غرباء، ثم أحباء، ثم عدنا غرباء.", "كلما حاولت النسيان، نبتت ذكرى جديدة.", "يؤلمني أننا صرنا غريبين مرة أخرى.", "القلوب الهادئة هي الأكثر وجعاً.", "أصعب شعور أنهم اكتفوا منك فجأة.", "نكتب لنبكي بصمت خلف الحروف.", "كأنني أمشي في ضباب لا ينتهي.", "الليل صديق من أثقله الحزن.", "نرحل لأن المكان ضاق بصمتنا.", "الخيبة أن تكتشف أنك كنت تبني سراباً.", "الوجع في الانتظار العبثي.", "العزلة أن لا تجد من يكتب لك.", "أخاف أن ينساني الله كما فعلوا.", "الصبر بلا فرج هو استنزاف للروح.", "منكسر كغصن لا يجد من يتكئ عليه.", "غصة في الحلق ترفض الرحيل.", "المطر يخبرني أن السماء تبكي معنا.", "لا شيء يكسر القلب مثل كلمة 'كنت'.", "الغياب لا يؤلم، الحضور الباهت هو الوجع.", "خلف كل ابتسامة، ألف طعنة صامتة.", "أنا بخير، كذبة أقولها لنفسي كل صباح.", "الوحدة ليست في المكان، بل في الروح.", "خذلوني من ظننتهم سندي في العاصفة.", "سقطت الأقنعة وبقي الوجع عارياً.", "من الصعب أن تشرح حزنك لأحد.", "قلبي ليس حجراً، لكنه تفتت من كثرة الطرق.", "السكوت أحياناً هو صرخة مكتومة.", "ليتني أستطيع مسح ذاكرتي بضغطة زر.", "الحب الذي انتهى هو موت مؤجل.", "أشعر أنني غريب حتى في منزلي.", "تعبت من الركض خلف من يهرب مني.", "الماضي سجن، وأنا السجين والحارس.", "كل الدروب تؤدي إلى الخيبة.", "كنت كافياً للجميع، ولم يكن أحد كافياً لي.", "البرد في الروح لا تدفئه النار.", "النوم هو الهروب الوحيد المتاح.", "أبحث عني في ركام الذكريات.", "الصدفة جمعتنا، والقدر مزقنا.", "أصعب حرب هي حربك مع عقلك.", "ما نفع الضوء إذا كان الظلام داخلك؟", "أصبحت أخشى الفرح لأنه يتبعه وجع.", "أنا مجرد رقم في حياة أحدهم.", "الجروح القديمة تفتحها نسمة هواء.", "لا تعاتب أحداً، من أرادك لم يرحل.", "الحياة تمضي، وأنا واقف في مكاني.", "كسروني ثم سألوا لماذا تتغير؟", "أنا لا أكرهك، أنا فقدت الأمل فيك.", "في قلبي مقبرة للأماني التي لم تتحقق.", "الدموع هي الكلمات التي عجز اللسان عنها.", "أنا متعب حتى من التنفس.", "أين أذهب من وجع يسكن جلدي؟", "الخيانة طعنة من يدٍ كنت تقبّلها.", "صرنا نخاف من البدايات الجميلة.", "الليل يطول حين تفتقد من تحب.", "الكلمات الجارحة لا تُنسى مهما طال الزمن.", "أنا أبتسم، لكن عيني تحكي قصة أخرى.", "ماذا لو كان كل هذا مجرد كابوس؟", "لم أعد أهتم، وهذا أسوأ ما وصلته.", "الحنين هو الوجع الذي لا دواء له.", "الرسائل القديمة هي سمّ بطيء.", "كيف ننسى من جعلنا ننسى الجميع؟", "كل الأماكن فارغة بدونك.", "أشعر أنني فقدت القدرة على الثقة.", "الوعود هي مجرد كلام ينتهي مفعوله.", "أنا وحيد كالقمر وسط النجوم.", "الكسر الذي في قلبي لا يجبره اعتذار.", "أنا أغرق في بحر من الصمت.", "الحياة لا تمنحنا دائماً ما نحب.", "الخيبة تأتي دائماً ممن نحب.", "أنا مجرد ذكرى عابرة في قلبك.", "لماذا كلما اقتربتُ من الفرح، ابتعد؟", "الصمت هو لغتي الجديدة.", "أنا أعيش في الماضي لأن الحاضر مؤلم.", "توقفت عن انتظار أي شيء من أي أحد.", "القلب الذي أحبّ بصدق، ينكسر بصدق.", "لا أحد يفهم عمق الجرح إلا من ذاقه.", "أنا بخير، فقط قلبي يؤلمني قليلاً.", "الانتظار هو الموت على قيد الحياة.", "الوجع أن تبتسم وأنت تريد البكاء.", "لا أحد يشعر بي، حتى ظلي يتركني بالليل.", "لماذا نرحل حين نحتاج البقاء؟", "الذكريات هي عدوي الأول.", "الخريف في روحي لا ينتهي.", "أنا مجرد ظل لشخص كان سعيداً.", "تعبت من كوني قوياً طوال الوقت.", "لا أحد يسأل عن حالي بصدق.", "أنا أختنق من كثرة الكتمان.", "القلب الذي يسامح دائماً، ينكسر دائماً.", "الغياب هو حقيقة أننا لسنا مهمين.", "أشعر أنني عبء على الجميع.", "ليتني لم أقابلك يوماً.", "الخيبة هي أن أراك غريباً بعد كل شيء.", "أنا لا أبحث عن أحد، أنا أبحث عن نفسي.", "الجروح تلتئم، لكن الندوب تبقى.", "أنا سجين فكرة لن تتحقق.", "الحزن هو رفيقي الذي لا يمل.", "أنا أصرخ بداخلي والكون صامت.", "لماذا لا ينتهي الوجع؟", "الهروب هو الحل الوحيد الذي أعرفه.", "أنا أتلاشى ببطء.", "الوعود الكاذبة هي سكين في الظهر.", "أنا لا أعيش، أنا فقط أنتظر النهاية.", "كل شيء جميل له نهاية حزينة.", "أنا متعب من كل شيء.", "الخذلان هو أن تضع ثقتك في غير محلها.", "أنا ضائع في زحام الحياة.", "لا أحد يحبني كما كنت أحبهم.", "الرحيل بصمت هو أرقى أنواع الوجع.", "ليت الأماني حقيقة.", "أنا أفتقدك، وهذا كل ما يمكنني قوله.", "الوجع الحقيقي هو أن تفتقد نفسك.", "الظلام ليس مخيفاً، الناس هم المخيفون.", "أنا أعيش في حلم لم يتحقق.", "كل الدروب مسدودة.", "أنا حزين، ولا أعرف السبب.", "القلب الذي يحزن لا ينسى.", "أنا مجرد عابر سبيل في حياتك.", "لماذا القلوب القاسية دائماً تفوز؟", "أنا متعب من التمثيل.", "الصدق في هذا الزمان جريمة.", "أنا أشتاق لأيام لم تعد موجودة.", "الخيبة أن ترى من تحب يرحل دون سبب.", "أنا لا أنتمي لهذا العالم.", "الدموع هي لغة القلوب المكسورة.", "أنا وحيد حتى مع نفسي.", "كل شيء يتغير، حتى القلوب.", "أنا أنتظر معجزة لن تحدث.", "الضيق في القلب لا يرحم.", "أنا أتألم، لكنني صامت.", "ليت الزمان يعود يوماً.", "أنا فقدت الشغف في كل شيء.", "الخيبة هي الحقيقة المرة.", "أنا غريب في وطني.", "القلب المحطم لا يصدر صوتاً.", "أنا أبحث عن مخرج من حزني.", "لا أحد يستحق التضحية.", "أنا انتهيت قبل أن أبدأ.", "الموت ليس رحيل الروح، بل رحيل الأمل.", "أنا أسير ذكريات لا ترحم.", "كل كلمة قلتها كانت صدقاً، وكل كلمة سمعتها كانت كذباً.", "أنا وحيد في عاصفة وجعي.", "لماذا الحزن هو من يختارنا؟", "أنا أتمنى أن أنام ولا أستيقظ.", "الخيبة هي نهاية كل قصة جميلة.", "أنا لم أعد أعرف من أنا.", "القلب الذي ينكسر، لا يعود كما كان.", "أنا أتلاشى في الضباب.", "لا شيء يستمر للأبد، حتى الوجع.", "أنا أفتقد ضحكتي الحقيقية.", "الخيبة هي أن تسقط ولا تجد يداً.", "أنا وحيد في عالم مليء بالناس.", "تعبت من الانتظار.", "كل شيء باهت.", "أنا غريق في بئر من الحزن.", "الخيبة هي الدرس الذي لا ينتهي.", "أنا لا أريد سوى الهدوء.", "ليتني لم أكن.", "الصمت هو صرخة في وجه الخذلان.", "الكلمات لم تعد تكفي لوصف الانهيار.", "هناك جرح لا يبرأ، وفقد لا يعوض.", "أنا مجرد رماد لأحلام احترقت.", "لماذا نشعر بالوحدة ونحن محاطون بالناس؟", "الرحيل أحياناً يكون قمة الشجاعة.", "ليت النسيان يشترى بالمال.", "الوجع أن تشتاق لشخص لن تراه مجدداً.", "أنا متعب من كل هذا الصخب.", "الخيبة هي أن تثق بمن لا يستحق.", "أنا وحيد في محطة خالية.", "كل الوعود كانت مجرد سراب.", "لماذا ننتظر من لا يعود؟", "القلب الذي يتألم صامت دائماً.", "أنا بقايا شخص كان يوماً سعيداً.", "تعبت من وضع الأقنعة.", "الخيبة هي نهاية التوقعات.", "أنا غريب حتى في أحلامي.", "الليل طويل لمن يحمل في قلبه غصة.", "الوجع لا يرحم الصغار.", "أنا تائه في صحراء مشاعري.", "ليت قلبي لم يخفق يوماً.", "الخيبة هي أن تُترك في منتصف الطريق.", "أنا مجرد ذكرى ستنسى قريباً."
+    ];
+
+    let availableQuotes = [];
+    let currentQuote = "";
+    let typingTimer;
+    let favorites = JSON.parse(localStorage.getItem('myFavs')) || [];
+
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    function typeWriter(text, i = 0) {
+        if (i < text.length) {
+            document.getElementById("quote-text").innerHTML += text.charAt(i);
+            typingTimer = setTimeout(() => typeWriter(text, i + 1), 40);
+        }
+    }
+
+    function getNextQuote() {
+        clearTimeout(typingTimer);
+        
+        if (availableQuotes.length === 0) {
+            availableQuotes = shuffle([...allQuotes]);
+        }
+        
+        currentQuote = availableQuotes.pop();
+        document.getElementById("quote-text").innerHTML = "";
+        typeWriter(currentQuote);
+        
+        document.getElementById('counter').innerText = `المتبقي في القائمة: ${availableQuotes.length}`;
+        updateFavIcon();
+    }
+
+    function toggleFavorite() {
+        const idx = favorites.indexOf(currentQuote);
+        if(idx > -1) favorites.splice(idx, 1);
+        else favorites.push(currentQuote);
+        localStorage.setItem('myFavs', JSON.stringify(favorites));
+        updateFavIcon();
+        showToast(idx > -1 ? "تمت الإزالة" : "أضيفت للمفضلة");
+    }
+
+    function updateFavIcon() {
+        document.getElementById('favIcon').classList.toggle('active', favorites.includes(currentQuote));
+    }
+
+    function setTheme(type, btn) {
+        document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const root = document.documentElement;
+        if (type === 'light') {
+            root.style.setProperty('--rain-speed', '1s');
+            root.style.setProperty('--rain-opacity', '0.15');
+        } else {
+            root.style.setProperty('--rain-speed', '0.3s');
+            root.style.setProperty('--rain-opacity', '0.5');
+        }
+    }
+
+    function initRain() {
+        const container = document.getElementById('rainContainer');
+        for (let i = 0; i < 80; i++) {
+            let drop = document.createElement('div');
+            drop.className = 'drop';
+            drop.style.left = Math.random() * 100 + "vw";
+            drop.style.animationDelay = Math.random() * 2 + "s";
+            container.appendChild(drop);
+        }
+    }
+
+    function copyText() {
+        navigator.clipboard.writeText(currentQuote);
+        showToast("تم النسخ");
+    }
+
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.innerText = msg;
+        t.className = "toast show";
+        setTimeout(() => t.className = "toast", 2000);
+    }
+
+    function shareX() {
+        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(currentQuote)}`);
+    }
+
+    initRain();
+    getNextQuote();
+</script>
+
+</body>
+</html>
