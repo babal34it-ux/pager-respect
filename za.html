@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> الـ TT </title>
+    <title>تحدي الـ 54 </title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -36,14 +37,8 @@
         .opt-btn.reveal-correct { background: var(--correct) !important; border: none; color: white; transform: scale(1.02); }
         .opt-btn.clicked-wrong { background: var(--wrong) !important; border: none; color: white; }
         .opt-btn.hidden { visibility: hidden; opacity: 0; }
-        .btn-main { background: var(--primary); color: #000; padding: 15px 40px; border-radius: 12px; border: none; font-weight: 900; cursor: pointer; margin-top: 10px; width: 250px;}
-        .btn-alt { background: transparent; color: var(--primary); border: 2px solid var(--primary); padding: 10px 20px; border-radius: 12px; font-weight: 700; cursor: pointer; margin-top: 10px; width: 250px;}
+        .btn-main { background: var(--primary); color: #000; padding: 15px 40px; border-radius: 12px; border: none; font-weight: 900; cursor: pointer; margin-top: 10px;}
         input { padding: 12px; border-radius: 8px; border: 1px solid #334155; background: #1e293b; color: white; margin-bottom: 10px; width: 250px; text-align: center; }
-        
-        /* تصميم خانات تقسيم الأسماء */
-        .splitter-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; max-width: 500px; margin-bottom: 15px; }
-        .splitter-grid input { width: 100%; margin-bottom: 0; font-size: 0.9rem; }
-
         #qImage { width: 100%; max-width: 320px; height: 160px; object-fit: contain; background: #1e293b; border-radius: 15px; margin-bottom: 15px; }
         #hint-box { background: rgba(168, 85, 247, 0.15); border: 1px solid var(--hint-color); padding: 10px; border-radius: 10px; margin-bottom: 10px; display: none; width: 100%; font-size: 0.9rem; animation: fadeIn 0.5s; }
         #feedback-msg { margin-top: 15px; font-weight: 700; min-height: 25px; font-size: 1.2rem; }
@@ -76,22 +71,10 @@
     </div>
 
     <div id="sc-start" class="screen active">
-        <h1 style="color:var(--primary); margin-bottom:15px;"> الـ TT 🏆</h1>
-        <div style="background: rgba(255,255,255,0.03); padding: 20px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1);">
-            <p style="margin-bottom: 10px; font-weight: 700;">أسماء الفرق</p>
-            <input type="text" id="in1" placeholder="مثلاً: فريق الصقور">
-            <input type="text" id="in2" placeholder="مثلاً: فريق الملوك">
-        </div>
+        <h1 style="color:var(--primary); margin-bottom:15px;">تحدي الـ 54 🏆</h1>
+        <input type="text" id="in1" placeholder="اسم الفريق 1">
+        <input type="text" id="in2" placeholder="اسم الفريق 2">
         <button class="btn-main" onclick="startGame()">دخول اللعبة</button>
-        <button class="btn-alt" onclick="nav('sc-splitter')">⚙️ تقسيم 10 لاعبين عشوائياً</button>
-    </div>
-
-    <div id="sc-splitter" class="screen">
-        <h2 style="color:var(--secondary); margin-bottom:15px;">أدخل أسماء اللاعبين</h2>
-        <div class="splitter-grid" id="namesContainer">
-            </div>
-        <button class="btn-main" onclick="processSplit()">تقسيم وإرجاعي للبداية</button>
-        <button class="btn-alt" style="border-color: #64748b; color: #64748b;" onclick="nav('sc-start')">إلغاء</button>
     </div>
 
     <div id="sc-cats" class="screen">
@@ -114,16 +97,6 @@
 </div>
 
 <script>
-    // إنشاء 10 خانات إدخال تلقائياً
-    const namesContainer = document.getElementById('namesContainer');
-    for (let i = 1; i <= 10; i++) {
-        let input = document.createElement('input');
-        input.type = 'text';
-        input.placeholder = 'لاعب ' + i;
-        input.className = 'player-input';
-        namesContainer.appendChild(input);
-    }
-
     const DATA = {
         "c_stars": { t: "🇸🇦 مشاهير السعودية", img: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400", q: [
             {q: "فنان سعودي لقب بـ 'فنان العرب'؟", a: "محمد عبده", w: ["طلال مداح", "راشد الماجد", "عبادي الجوهر"], h: "صاحب أغنية الأماكن."},
@@ -178,7 +151,7 @@
             {q: "قطعة الارتداد الأفقي لـ M416؟", a: "Angled Foregrip", w: ["Vertical", "Half", "Thumb"], h: "المقبض المائل."},
             {q: "سلاح يستخدم رصاص 0.45؟", a: "Vector", w: ["Uzi", "M416", "AKM"], h: "سريع جداً."},
             {q: "سلاح DMR يستخدم 7.62؟", a: "SLR", w: ["Mini-14", "QBU", "VSS"], h: "ارتداده قوي."},
-            {q: "أسرع سلاح في إطلاق النار? ", a: "MG3", w: ["M416", "Uzi", "Vector"], h: "بوضعية 990."},
+            {q: "أسرع سلاح في إطلاق النار؟", a: "MG3", w: ["M416", "Uzi", "Vector"], h: "بوضعية 990."},
             {q: "رصاص DP-28 الأساسي؟", a: "47 رصاصة", w: ["30", "40", "50"], h: "رقم فردي."},
             {q: "قناص لا يصدر صوتاً؟", a: "VSS", w: ["SKS", "M24", "Kar98k"], h: "كاتم مدمج."},
             {q: "Shotgun يطلق طلقتين بسرعة؟", a: "DBS", w: ["S12K", "S686", "S1897"], h: "فتاك جداً."},
@@ -263,33 +236,6 @@
     let t2 = { s: 0, p50: true, px2: true, ph: true };
     let turn = 1, x2Act = false, selCat = "", timer, currentScreen = 'sc-start';
 
-    // وظيفة معالجة التقسيم
-    function processSplit() {
-        let inputs = document.querySelectorAll('.player-input');
-        let players = [];
-        inputs.forEach(inp => {
-            if(inp.value.trim() !== "") players.push(inp.value.trim());
-        });
-
-        if (players.length < 2) {
-            alert("يرجى إدخال اسمين على الأقل للتقسيم!");
-            return;
-        }
-
-        // خلط الأسماء عشوائياً
-        players.sort(() => Math.random() - 0.5);
-
-        let mid = Math.ceil(players.length / 2);
-        let group1 = players.slice(0, mid).join(" - ");
-        let group2 = players.slice(mid).join(" - ");
-
-        // تعبئة خانات الفرق في الصفحة الرئيسية
-        document.getElementById('in1').value = group1;
-        document.getElementById('in2').value = group2;
-
-        nav('sc-start');
-    }
-
     function startGame() {
         t1.n = document.getElementById('in1').value || "الفريق الأول";
         t2.n = document.getElementById('in2').value || "الفريق الثاني";
@@ -303,7 +249,7 @@
         currentScreen = id;
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         document.getElementById(id).classList.add('active');
-        if(id === 'sc-cats' || id === 'sc-quiz') updateUI();
+        updateUI();
     }
 
     function drawCats() {
