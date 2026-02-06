@@ -3,637 +3,314 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ajar Respect | أجر ريسبكت</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <title>المنصة الموحدة للتشفير والترجمة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-purple: #7c3aed;
-            --secondary-purple: #9333ea;
-            --light-purple: #a855f7;
-            --dark-purple: #5b21b6;
-            --ultra-light-purple: #c4b5fd;
-            --text-dark: #1e1b4b;
-            --text-light: #e9d5ff;
+            --primary-glow: rgba(157, 78, 221, 0.5);
+            --glass-bg: rgba(255, 255, 255, 0.07);
+            --border-color: rgba(255, 255, 255, 0.18);
+            --accent-color: #9d4edd;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
         body {
             font-family: 'Cairo', sans-serif;
-            min-height: 100vh;
-            position: relative;
-            overflow-x: hidden;
-            color: var(--text-dark);
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #1a0b2e 0%, #2d1b4e 25%, #4a1a5e 50%, #2d1b4e 75%, #1a0b2e 100%);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
-            z-index: -2;
-        }
-
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .glass-orb {
-            position: fixed;
-            border-radius: 50%;
-            background: rgba(124, 58, 237, 0.15);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(168, 85, 247, 0.4);
-            z-index: -1;
-            animation: float 20s ease-in-out infinite;
-            box-shadow: 0 0 60px rgba(124, 58, 237, 0.3);
-        }
-
-        .orb-1 {
-            width: 400px;
-            height: 400px;
-            top: -200px;
-            right: -200px;
-            animation-delay: 0s;
-        }
-
-        .orb-2 {
-            width: 300px;
-            height: 300px;
-            bottom: -150px;
-            left: -150px;
-            animation-delay: 5s;
-        }
-
-        .orb-3 {
-            width: 250px;
-            height: 250px;
-            top: 50%;
-            left: 50%;
-            animation-delay: 10s;
-        }
-
-        @keyframes float {
-            0%, 100% { 
-                transform: translate(0, 0) rotate(0deg);
-                opacity: 0.3;
-            }
-            25% { 
-                transform: translate(50px, -50px) rotate(90deg);
-                opacity: 0.5;
-            }
-            50% { 
-                transform: translate(0, -100px) rotate(180deg);
-                opacity: 0.4;
-            }
-            75% { 
-                transform: translate(-50px, -50px) rotate(270deg);
-                opacity: 0.6;
-            }
-        }
-
-        header {
-            background: rgba(26, 11, 46, 0.6);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border-bottom: 1px solid rgba(168, 85, 247, 0.3);
-            color: white;
-            text-align: center;
-            padding: 70px 20px;
-            box-shadow: 0 8px 32px rgba(124, 58, 237, 0.5);
-            position: relative;
-            overflow: hidden;
-        }
-
-        header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                45deg,
-                transparent 30%,
-                rgba(255, 255, 255, 0.1) 50%,
-                transparent 70%
-            );
-            animation: shimmer 8s linear infinite;
-        }
-
-        @keyframes shimmer {
-            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-        }
-
-        header h1 {
-            font-size: 3.5rem;
-            font-weight: 900;
-            margin-bottom: 15px;
-            text-shadow: 0 0 30px rgba(168, 85, 247, 0.8),
-                         0 0 60px rgba(168, 85, 247, 0.5);
-            animation: glow 3s ease-in-out infinite alternate;
-            letter-spacing: 3px;
-            position: relative;
-            z-index: 1;
-        }
-
-        @keyframes glow {
-            from {
-                text-shadow: 0 0 20px rgba(168, 85, 247, 0.8),
-                             0 0 40px rgba(168, 85, 247, 0.5);
-            }
-            to {
-                text-shadow: 0 0 40px rgba(168, 85, 247, 1),
-                             0 0 80px rgba(168, 85, 247, 0.7),
-                             0 0 100px rgba(168, 85, 247, 0.5);
-            }
-        }
-
-        header p {
-            font-size: 1.4rem;
-            font-weight: 400;
-            opacity: 0.95;
-            position: relative;
-            z-index: 1;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 60px auto;
-            padding: 20px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 35px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .card {
-            background: rgba(26, 11, 46, 0.5);
-            backdrop-filter: blur(30px) saturate(180%);
-            -webkit-backdrop-filter: blur(30px) saturate(180%);
-            border-radius: 25px;
-            padding: 45px 35px;
-            text-align: center;
-            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-            text-decoration: none;
-            color: white;
-            border: 1px solid rgba(168, 85, 247, 0.3);
-            box-shadow: 
-                0 8px 32px rgba(124, 58, 237, 0.3),
-                inset 0 1px 0 rgba(168, 85, 247, 0.2);
-            position: relative;
-            overflow: hidden;
-            animation: cardSlideUp 0.6s ease-out backwards;
-        }
-
-        .card:nth-child(1) { animation-delay: 0.1s; }
-        .card:nth-child(2) { animation-delay: 0.2s; }
-        .card:nth-child(3) { animation-delay: 0.3s; }
-        .card:nth-child(4) { animation-delay: 0.4s; }
-        .card:nth-child(5) { animation-delay: 0.5s; }
-        .card:nth-child(6) { animation-delay: 0.6s; }
-
-        @keyframes cardSlideUp {
-            from {
-                opacity: 0;
-                transform: translateY(60px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(255, 255, 255, 0.2),
-                transparent
-            );
-            transition: left 0.7s;
-        }
-
-        .card:hover::before {
-            left: 100%;
-        }
-
-        .card:hover {
-            transform: translateY(-20px) scale(1.05);
-            background: rgba(74, 26, 94, 0.6);
-            border-color: rgba(168, 85, 247, 0.7);
-            box-shadow: 
-                0 20px 60px rgba(124, 58, 237, 0.6),
-                inset 0 1px 0 rgba(168, 85, 247, 0.4),
-                0 0 40px rgba(168, 85, 247, 0.4);
-        }
-
-        .card::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(168, 85, 247, 0.3) 0%, transparent 70%);
-            transform: translate(-50%, -50%);
-            transition: all 0.6s ease-out;
-            pointer-events: none;
-        }
-
-        .card:hover::after {
-            width: 300px;
-            height: 300px;
-        }
-
-        .card i {
-            font-size: 55px;
-            margin-bottom: 25px;
-            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.5));
-            position: relative;
-            z-index: 1;
-        }
-
-        .card:hover i {
-            transform: scale(1.3) rotateY(360deg);
-            filter: drop-shadow(0 0 30px rgba(255, 255, 255, 0.8));
-        }
-
-        .fa-book-quran { color: #fbbf24; }
-        .fa-hands-praying { color: #c084fc; }
-        .fa-scroll { color: #fb7185; }
-        .fa-mosque { color: #fcd34d; }
-        .fa-clock { color: #60a5fa; }
-        .fa-dharmachakra { color: #34d399; }
-
-        .card h2 {
-            margin: 20px 0;
-            font-size: 1.7rem;
-            font-weight: 700;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-            position: relative;
-            z-index: 1;
-        }
-
-        .card p {
-            font-size: 1.05rem;
-            line-height: 1.7;
-            font-weight: 400;
-            opacity: 0.9;
-            position: relative;
-            z-index: 1;
-        }
-
-        .stats-section {
-            background: rgba(26, 11, 46, 0.6);
-            backdrop-filter: blur(25px) saturate(180%);
-            -webkit-backdrop-filter: blur(25px) saturate(180%);
-            padding: 50px 40px;
-            text-align: center;
-            margin: 50px auto;
-            max-width: 1000px;
-            border-radius: 30px;
-            border: 1px solid rgba(168, 85, 247, 0.4);
-            box-shadow: 
-                0 8px 32px rgba(124, 58, 237, 0.5),
-                inset 0 1px 0 rgba(168, 85, 247, 0.3);
-            animation: fadeInScale 1s ease-out;
-            position: relative;
-            overflow: hidden;
-            color: white;
-        }
-
-        @keyframes fadeInScale {
-            from {
-                opacity: 0;
-                transform: scale(0.9);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        .stats-section::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(45deg, 
-                #5b21b6, #7c3aed, #a855f7, #c084fc, #5b21b6);
-            background-size: 300% 300%;
-            border-radius: 30px;
-            z-index: -1;
-            animation: borderGlow 4s linear infinite;
-            opacity: 0.8;
-        }
-
-        @keyframes borderGlow {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .stats-section > div {
-            margin: 25px 0;
-            font-size: 1.4rem;
-            font-weight: 600;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-        }
-
-        .counter {
-            font-size: 3rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, #fbbf24, #f59e0b, #fbbf24);
-            background-size: 200% 200%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            display: inline-block;
-            animation: counterPulse 2s ease-in-out infinite, gradientFlow 3s linear infinite;
-            filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.6));
-        }
-
-        @keyframes counterPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.08); }
-        }
-
-        @keyframes gradientFlow {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .scroll-to-top {
-            position: fixed;
-            bottom: 35px;
-            left: 35px;
-            width: 60px;
-            height: 60px;
-            background: rgba(26, 11, 46, 0.7);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(168, 85, 247, 0.4);
-            color: white;
-            border-radius: 50%;
+            background: radial-gradient(circle at center, #1a1a2e 0%, #0f0f1a 100%);
+            margin: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
-            cursor: pointer;
-            box-shadow: 0 8px 32px rgba(124, 58, 237, 0.5);
-            opacity: 0;
-            transition: all 0.4s ease;
-            z-index: 1000;
+            min-height: 100vh;
+            color: #fff;
+            overflow: hidden;
         }
 
-        .scroll-to-top.visible {
-            opacity: 1;
-        }
-
-        .scroll-to-top:hover {
-            transform: translateY(-8px) scale(1.1);
-            background: rgba(168, 85, 247, 0.3);
-            box-shadow: 0 12px 40px rgba(124, 58, 237, 0.5);
-        }
-
-        footer {
-            text-align: center;
-            padding: 40px 20px;
-            color: white;
-            font-weight: 500;
-            margin-top: 60px;
-            background: rgba(26, 11, 46, 0.6);
-            backdrop-filter: blur(20px);
-            border-top: 1px solid rgba(168, 85, 247, 0.3);
-        }
-
-        footer p {
-            margin: 12px 0;
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-        }
-
-        .heart {
-            color: #fb7185;
-            animation: heartbeat 1.5s ease-in-out infinite;
-            filter: drop-shadow(0 0 10px rgba(251, 113, 133, 0.8));
-        }
-
-        @keyframes heartbeat {
-            0%, 100% { transform: scale(1); }
-            25% { transform: scale(1.15); }
-            50% { transform: scale(1); }
-        }
-
-        .particle {
-            position: fixed;
-            width: 6px;
-            height: 6px;
-            background: rgba(168, 85, 247, 0.8);
-            border-radius: 50%;
-            pointer-events: none;
+        body::before {
+            content: "";
+            position: absolute;
+            width: 400px; height: 400px;
+            background: var(--primary-glow);
+            filter: blur(120px);
             z-index: -1;
-            animation: particleFloat 15s linear infinite;
-            box-shadow: 0 0 10px rgba(168, 85, 247, 0.8);
         }
 
-        @keyframes particleFloat {
-            0% {
-                transform: translateY(100vh) translateX(0) scale(0);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100vh) translateX(100px) scale(1);
-                opacity: 0;
-            }
+        .main-container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 28px;
+            padding: 30px;
+            width: 90%;
+            max-width: 550px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--border-color);
+            text-align: center;
         }
 
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 2.2rem;
-            }
-
-            header p {
-                font-size: 1.1rem;
-            }
-
-            .container {
-                grid-template-columns: 1fr;
-                gap: 25px;
-                margin: 40px auto;
-            }
-
-            .card {
-                padding: 35px 25px;
-            }
-
-            .counter {
-                font-size: 2.3rem;
-            }
-
-            .glass-orb {
-                display: none;
-            }
+        h1 {
+            font-size: 1.6rem;
+            margin-bottom: 25px;
+            background: linear-gradient(to right, #fff, #b79ced);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
+
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 25px;
+            background: rgba(0,0,0,0.3);
+            padding: 5px;
+            border-radius: 15px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 10px 5px;
+            border: none;
+            background: transparent;
+            color: #aaa;
+            cursor: pointer;
+            font-family: 'Cairo';
+            font-weight: 700;
+            font-size: 0.85rem;
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+
+        .tab-btn.active {
+            background: var(--accent-color);
+            color: white;
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        .tool-section { display: none; animation: fadeIn 0.4s ease; }
+        .tool-section.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        label { display: block; text-align: right; margin: 15px 5px 8px; font-size: 0.85rem; color: #d1d1d1; }
+
+        textarea {
+            width: 100%;
+            height: 90px;
+            border-radius: 15px;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            color: #fff;
+            font-size: 1rem;
+            resize: none;
+            outline: none;
+            transition: 0.3s;
+            text-align: center;
+        }
+
+        textarea:focus { border-color: var(--accent-color); }
+
+        .btn-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        button.action-btn {
+            padding: 12px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: 'Cairo';
+            font-size: 0.9rem;
+        }
+
+        /* تعديل الزر ليكون بنفس التصميم الممتلئ */
+        .btn-primary { 
+            background: linear-gradient(135deg, #7b2cbf, #9d4edd); 
+            color: white; 
+            box-shadow: 0 4px 15px rgba(123, 44, 191, 0.3);
+        }
+        
+        button.action-btn:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.2);
+        }
+
+        .swap-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-radius: 50%;
+            width: 35px; height: 35px;
+            margin: 10px auto;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; border: 1px solid var(--border-color);
+            transition: 0.3s;
+        }
+        .swap-btn:hover { transform: rotate(180deg); background: var(--accent-color); }
+
+        .status-bar {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .status-badge { font-size: 0.75rem; color: #00ffaa; background: rgba(0, 255, 170, 0.1); padding: 3px 10px; border-radius: 10px; }
+        .small-btn { padding: 5px 12px; font-size: 0.75rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: white; cursor: pointer; }
     </style>
 </head>
 <body>
 
-<div class="glass-orb orb-1"></div>
-<div class="glass-orb orb-2"></div>
-<div class="glass-orb orb-3"></div>
+<div class="main-container">
+    <h1>منصة فرقة ستانلي الاستخباراتية</h1>
 
-<script>
-    for(let i = 0; i < 20; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        particle.style.left = Math.random() * 100 + '%';
-        particle.style.animationDelay = Math.random() * 15 + 's';
-        particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
-        document.body.appendChild(particle);
-    }
-</script>
-
-<header>
-    <h1>✨ أجر ريسبكت ✨</h1>
-    <p>موسوعة الأجر والذكر - طريقك للجنة</p>
-</header>
-
-<div class="container">
-    <a href="quran.html" class="card">
-        <i class="fas fa-book-quran"></i>
-        <h2>📖 الختمة والتفسير</h2>
-        <p>القرآن الكريم كاملاً مع التفسير الميسر آية بآية</p>
-    </a>
-
-    <a href="azkar.html" class="card">
-        <i class="fas fa-hands-praying"></i>
-        <h2>🤲 الأذكار الإسلامية</h2>
-        <p>أذكار الصباح والمساء وجميع الأذكار بضغطة واحدة</p>
-    </a>
-
-    <a href="hadith.html" class="card">
-        <i class="fas fa-scroll"></i>
-        <h2>📜 الأحاديث الشريفة</h2>
-        <p>السنة النبوية الصحيحة من الكتب الستة</p>
-    </a>
-
-    <a href="stories.html" class="card">
-        <i class="fas fa-mosque"></i>
-        <h2>✨ قصص الأنبياء</h2>
-        <p>موسوعة كاملة لقصص الأنبياء من آدم إلى محمد ﷺ</p>
-    </a>
-
-    <a href="prayers.html" class="card">
-        <i class="fas fa-clock"></i>
-        <h2>🕌 أوقات الصلاة</h2>
-        <p>مواقيت الصلاة الدقيقة حسب موقعك الجغرافي</p>
-    </a>
-
-    <a href="tasbih.html" class="card">
-        <i class="fas fa-dharmachakra"></i>
-        <h2>📿 المسبحة الذكية</h2>
-        <p>عداد تسبيح رقمي تفاعلي مع حفظ السجلات</p>
-    </a>
-</div>
-
-<div class="stats-section">
-    <div>
-        <i class="fas fa-users" style="margin-left: 10px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.5));"></i>
-        إجمالي زيارات الموقع: <span id="visitCount" class="counter">0</span>
+    <div class="tabs">
+        <button class="tab-btn active" onclick="showTool('morse', this)">مورس</button>
+        <button class="tab-btn" onclick="showTool('pager', this)">بيجر</button>
+        <button class="tab-btn" onclick="showTool('translator', this)">مترجم</button>
     </div>
-    <div>
-        <i class="fas fa-hands-praying" style="margin-left: 10px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.5));"></i>
-        إجمالي التسبيحات عالمياً: <span id="tasbihCount" class="counter">0</span>
+
+    <div id="morse" class="tool-section active">
+        <label>الإدخال (نص أو مورس)</label>
+        <textarea id="morseInput" placeholder="اكتب شفرة او نص المراد تشفيره"></textarea>
+        <div class="btn-group">
+            <button class="action-btn btn-primary" onclick="morseAction('encode')">تشفير مورس</button>
+            <button class="action-btn btn-primary" onclick="morseAction('decode')">فك التشفير</button>
+        </div>
+        <label>النتيجة</label>
+        <textarea id="morseOutput" readonly></textarea>
+    </div>
+
+    <div id="pager" class="tool-section">
+        <label>الإدخال (نص أو أرقام)</label>
+        <textarea id="pagerInput" placeholder="اكتب الجملة أو الأرقام..."></textarea>
+        <div class="btn-group">
+            <button class="action-btn btn-primary" onclick="pagerAction('encode')">تشفير بيجر</button>
+            <button class="action-btn btn-primary" onclick="pagerAction('decode')">فك الشفرة</button>
+        </div>
+        <label>النتيجة</label>
+        <textarea id="pagerOutput" readonly></textarea>
+    </div>
+
+    <div id="translator" class="tool-section">
+        <label id="sourceLabel">المصدر: الروسية</label>
+        <textarea id="transInput" placeholder="أدخل النص للترجمة..."></textarea>
+        <div class="swap-btn" onclick="swapTransLanguages()">⇄</div>
+        <label id="targetLabel">الهدف: العربية</label>
+        <textarea id="transOutput" placeholder="النتيجة ستظهر هنا..." readonly></textarea>
+        <button class="action-btn btn-primary" style="width: 100%; margin-top: 15px;" onclick="translateText()">ترجمة فورية</button>
+    </div>
+
+    <div class="status-bar">
+        <div style="display: flex; gap: 8px;">
+            <button class="small-btn" onclick="copyResult()">نسخ</button>
+            <button class="small-btn" onclick="clearInputs()">مسح</button>
+        </div>
+        <div id="status" class="status-badge">جاهز</div>
     </div>
 </div>
 
-<div class="scroll-to-top" id="scrollBtn">
-    <i class="fas fa-arrow-up"></i>
-</div>
-
-<footer>
-    <p>صُنع بـ <span class="heart">❤️</span> لوجه الله تعالى</p>
-    <p style="font-size: 0.95rem; opacity: 0.9;">جميع الحقوق محفوظة © 2026</p>
-</footer>
-
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        let visits = localStorage.getItem('visitCount') || 0;
-        visits = parseInt(visits) + 1;
-        localStorage.setItem('visitCount', visits);
-        
-        animateCounter('visitCount', 0, visits, 1000);
-        
-        let globalTasbih = 45902;
-        animateCounter('tasbihCount', 0, globalTasbih, 2000);
-    });
+    // بيانات مورس
+    const morseAlphabet = {
+        'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.', 'G': '--.', 'H': '....',
+        'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..', 'M': '--', 'N': '-.', 'O': '---', 'P': '.--.',
+        'Q': '--.-', 'R': '.-.', 'S': '...', 'T': '-', 'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-',
+        'Y': '-.--', 'Z': '--..', '1': '.----', '2': '..---', '3': '...--', '4': '....-', '5': '.....',
+        '6': '-....', '7': '--...', '8': '---..', '9': '----.', '0': '-----', ' ': '/',
+        'ا': '.-', 'ب': '-...', 'ت': '-', 'ث': '-.-.', 'ج': '.---', 'ح': '....', 'خ': '---', 'د': '-..',
+        'ذ': '--..', 'ر': '.-.', 'ز': '---.', 'س': '...', 'ش': '----', 'ص': '-..-', 'ض': '...-', 'ط': '..-',
+        'ظ': '-.--', 'ع': '.--.', 'غ': '--.', 'ف': '..-.', 'ق': '--.-', 'ك': '-.-', 'ل': '.-..', 'م': '--',
+        'ن': '-.', 'ه': '..', 'و': '.--', 'ي': '..---'
+    };
+    const reverseMorse = Object.fromEntries(Object.entries(morseAlphabet).map(([k, v]) => [v, k]));
 
-    function animateCounter(elementId, start, end, duration) {
-        const element = document.getElementById(elementId);
-        const increment = (end - start) / (duration / 16);
-        let current = start;
+    // بيانات البيجر
+    const pagerLetters = ["ا","ب","ت","ث","ج","ح","خ","د","ذ","ر","ز","س","ش","ص","ض","ط","ظ","ع","غ","ف","ق","ك","ل","م","ن","هـ","و","ي"];
 
-        const timer = setInterval(() => {
-            current += increment;
-            if (current >= end) {
-                element.textContent = Math.floor(end).toLocaleString('ar-EG');
-                clearInterval(timer);
-            } else {
-                element.textContent = Math.floor(current).toLocaleString('ar-EG');
-            }
-        }, 16);
+    let isRussianToArabic = true;
+
+    function showTool(toolId, btn) {
+        document.querySelectorAll('.tool-section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(toolId).classList.add('active');
+        btn.classList.add('active');
+        updateStatus("انتقلت إلى " + btn.innerText);
     }
 
-    const scrollBtn = document.getElementById('scrollBtn');
-    
-    window.addEventListener('scroll', () => {
-        if (window.pageYOffset > 300) {
-            scrollBtn.classList.add('visible');
+    function morseAction(type) {
+        const input = document.getElementById('morseInput').value.trim();
+        const output = document.getElementById('morseOutput');
+        if(!input) return;
+        if(type === 'encode') {
+            output.value = input.toUpperCase().split('').map(c => morseAlphabet[c] || c).join(' ');
         } else {
-            scrollBtn.classList.remove('visible');
+            output.value = input.split(' ').map(c => reverseMorse[c] || (c === '/' ? ' ' : '')).join('');
         }
-    });
+        updateStatus("تمت العملية");
+    }
 
-    scrollBtn.addEventListener('click', () => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    });
+    function pagerAction(type) {
+        const input = document.getElementById('pagerInput').value.trim();
+        const output = document.getElementById('pagerOutput');
+        if(!input) return;
+        if(type === 'encode') {
+            output.value = input.split(/\s+/).map(w => w.split('').map(c => pagerLetters.indexOf(c) + 1).filter(n => n > 0).join(' ')).join(' - ');
+        } else {
+            output.value = input.split("-").map(p => p.trim().split(/\s+/).map(n => pagerLetters[parseInt(n)-1] || '').join('')).join(' ');
+        }
+        updateStatus("تمت العملية");
+    }
+
+    function swapTransLanguages() {
+        isRussianToArabic = !isRussianToArabic;
+        document.getElementById('sourceLabel').innerText = isRussianToArabic ? "الغة المراد ترجمتها: الروسية" : "الغة المراد ترجمتها: العربية";
+        document.getElementById('targetLabel').innerText = isRussianToArabic ? "الغة المراد الترجمة اليها: العربية" : "الغة المراد الترجمة اليها: الروسية";
+    }
+
+    async function translateText() {
+        const text = document.getElementById('transInput').value.trim();
+        const output = document.getElementById('transOutput');
+        if(!text) return;
+        output.value = "جارٍ الترجمة...";
+        const sl = isRussianToArabic ? "ru" : "ar", tl = isRussianToArabic ? "ar" : "ru";
+        try {
+            const res = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sl}&tl=${tl}&dt=t&q=${encodeURIComponent(text)}`);
+            const data = await res.json();
+            output.value = data[0].map(item => item[0]).join('');
+            updateStatus("تمت الترجمة");
+        } catch {
+            output.value = "خطأ في الاتصال";
+        }
+    }
+
+    function copyResult() {
+        const activeOut = document.querySelector('.tool-section.active textarea[readonly]');
+        if(activeOut.value) {
+            navigator.clipboard.writeText(activeOut.value);
+            updateStatus("تم النسخ!");
+        }
+    }
+
+    function clearInputs() {
+        document.querySelectorAll('textarea').forEach(t => t.value = "");
+        updateStatus("تم المسح");
+    }
+
+    function updateStatus(msg) {
+        const s = document.getElementById('status');
+        s.innerText = msg;
+        setTimeout(() => s.innerText = "جاهز", 2000);
+    }
 </script>
 
 </body>
