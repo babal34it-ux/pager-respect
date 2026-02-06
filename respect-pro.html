@@ -3,115 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>المنصة الموحدة للتشفير والترجمة</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <title>منصة ستانلي الاستخباراتية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-glow: rgba(157, 78, 221, 0.5);
-            --glass-bg: rgba(255, 255, 255, 0.07);
-            --border-color: rgba(255, 255, 255, 0.18);
-            --accent-color: #9d4edd;
+            --bg-dark: #050505;
+            --card-bg: #0f0f0f;
+            --input-bg: #151515;
+            --border-color: #222;
+            --accent-color: #ffffff; /* تم استبدال البنفسجي بالأبيض/الرمادي للفخامة */
+            --text-gray: #888;
+            --glow: rgba(255, 255, 255, 0.05);
         }
 
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box; transition: all 0.2s ease-in-out; }
 
         body {
             font-family: 'Cairo', sans-serif;
-            background: radial-gradient(circle at center, #1a1a2e 0%, #0f0f1a 100%);
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(circle at 50% 50%, #111 0%, #050505 100%);
             margin: 0;
             display: flex;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
             color: #fff;
-            overflow: hidden;
-        }
-
-        body::before {
-            content: "";
-            position: absolute;
-            width: 400px; height: 400px;
-            background: var(--primary-glow);
-            filter: blur(120px);
-            z-index: -1;
+            overflow-x: hidden;
         }
 
         .main-container {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border-radius: 28px;
-            padding: 30px;
-            width: 90%;
-            max-width: 550px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+            background: var(--card-bg);
             border: 1px solid var(--border-color);
-            text-align: center;
+            border-radius: 20px;
+            padding: 35px;
+            width: 95%;
+            max-width: 500px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
 
         h1 {
-            font-size: 1.6rem;
-            margin-bottom: 25px;
-            background: linear-gradient(to right, #fff, #b79ced);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-size: 1.4rem;
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 30px;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
         }
 
         .tabs {
             display: flex;
-            gap: 8px;
+            gap: 5px;
             margin-bottom: 25px;
-            background: rgba(0,0,0,0.3);
+            background: var(--input-bg);
             padding: 5px;
-            border-radius: 15px;
+            border-radius: 12px;
         }
 
         .tab-btn {
             flex: 1;
-            padding: 10px 5px;
+            padding: 10px;
             border: none;
             background: transparent;
-            color: #aaa;
+            color: var(--text-gray);
             cursor: pointer;
             font-family: 'Cairo';
             font-weight: 700;
-            font-size: 0.85rem;
-            border-radius: 10px;
-            transition: 0.3s;
+            border-radius: 8px;
         }
 
         .tab-btn.active {
-            background: var(--accent-color);
-            color: white;
-            box-shadow: 0 0 15px var(--primary-glow);
+            background: #222;
+            color: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
 
-        .tool-section { display: none; animation: fadeIn 0.4s ease; }
+        .tool-section { display: none; animation: fadeIn 0.3s ease; }
         .tool-section.active { display: block; }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(5px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        label { display: block; text-align: right; margin: 15px 5px 8px; font-size: 0.85rem; color: #d1d1d1; }
+        label { 
+            display: block; 
+            text-align: right; 
+            margin: 15px 5px 8px; 
+            font-size: 0.75rem; 
+            color: var(--text-gray); 
+            font-weight: bold;
+        }
 
         textarea {
             width: 100%;
             height: 90px;
-            border-radius: 15px;
-            padding: 12px;
-            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 15px;
+            background: var(--input-bg);
             border: 1px solid var(--border-color);
             color: #fff;
-            font-size: 1rem;
+            font-size: 0.95rem;
             resize: none;
             outline: none;
-            transition: 0.3s;
             text-align: center;
         }
 
-        textarea:focus { border-color: var(--accent-color); }
+        textarea:focus {
+            border-color: #444;
+            background: #181818;
+        }
+
+        textarea[readonly] {
+            color: #00ffaa; /* لون النتيجة طابع استخباراتي أخضر هادئ */
+            background: rgba(0,0,0,0.2);
+            border-style: dashed;
+        }
 
         .btn-group {
             display: grid;
@@ -120,43 +130,48 @@
             margin: 20px 0;
         }
 
-        button.action-btn {
+        .action-btn {
             padding: 12px;
-            border-radius: 12px;
-            border: none;
+            border-radius: 10px;
+            border: 1px solid #333;
+            background: #1a1a1a;
+            color: #eee;
             font-weight: 700;
             cursor: pointer;
-            transition: 0.3s;
             font-family: 'Cairo';
-            font-size: 0.9rem;
         }
 
-        /* تعديل الزر ليكون بنفس التصميم الممتلئ */
         .btn-primary { 
-            background: linear-gradient(135deg, #7b2cbf, #9d4edd); 
-            color: white; 
-            box-shadow: 0 4px 15px rgba(123, 44, 191, 0.3);
+            background: #fff; 
+            color: #000;
+            border: none;
         }
         
-        button.action-btn:hover {
+        .action-btn:hover {
             transform: translateY(-2px);
-            filter: brightness(1.2);
+            background: #252525;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #ccc;
+            color: #000;
         }
 
         .swap-btn {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
+            background: #1a1a1a;
+            color: #fff;
             border-radius: 50%;
-            width: 35px; height: 35px;
+            width: 40px; height: 40px;
             margin: 10px auto;
             display: flex; align-items: center; justify-content: center;
             cursor: pointer; border: 1px solid var(--border-color);
-            transition: 0.3s;
         }
-        .swap-btn:hover { transform: rotate(180deg); background: var(--accent-color); }
+
+        .swap-btn:hover { background: #333; transform: rotate(180deg); }
 
         .status-bar {
-            margin-top: 20px;
+            margin-top: 25px;
             padding-top: 15px;
             border-top: 1px solid var(--border-color);
             display: flex;
@@ -164,14 +179,33 @@
             align-items: center;
         }
 
-        .status-badge { font-size: 0.75rem; color: #00ffaa; background: rgba(0, 255, 170, 0.1); padding: 3px 10px; border-radius: 10px; }
-        .small-btn { padding: 5px 12px; font-size: 0.75rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: white; cursor: pointer; }
+        .status-badge { 
+            font-size: 0.7rem; 
+            color: #888; 
+            background: #111; 
+            padding: 4px 12px; 
+            border-radius: 20px;
+            border: 1px solid #222;
+        }
+
+        .small-btn { 
+            padding: 6px 15px; 
+            font-size: 0.75rem; 
+            border-radius: 8px; 
+            border: 1px solid #333; 
+            background: #111; 
+            color: #fff; 
+            cursor: pointer; 
+        }
+
+        .small-btn:hover { background: #222; }
+
     </style>
 </head>
 <body>
 
 <div class="main-container">
-    <h1>منصة فرقة ستانلي الاستخباراتية</h1>
+    <h1>فـرقة ستـانلي الاستخباراتيـة</h1>
 
     <div class="tabs">
         <button class="tab-btn active" onclick="showTool('morse', this)">مورس</button>
@@ -180,22 +214,22 @@
     </div>
 
     <div id="morse" class="tool-section active">
-        <label>الإدخال (نص أو مورس)</label>
-        <textarea id="morseInput" placeholder="اكتب شفرة او نص المراد تشفيره"></textarea>
+        <label>نص الإدخال</label>
+        <textarea id="morseInput" placeholder="اكتب هنا..."></textarea>
         <div class="btn-group">
-            <button class="action-btn btn-primary" onclick="morseAction('encode')">تشفير مورس</button>
-            <button class="action-btn btn-primary" onclick="morseAction('decode')">فك التشفير</button>
+            <button class="action-btn btn-primary" onclick="morseAction('encode')">تشفير</button>
+            <button class="action-btn" onclick="morseAction('decode')">فك التشفير</button>
         </div>
         <label>النتيجة</label>
         <textarea id="morseOutput" readonly></textarea>
     </div>
 
     <div id="pager" class="tool-section">
-        <label>الإدخال (نص أو أرقام)</label>
+        <label>نص الإدخال</label>
         <textarea id="pagerInput" placeholder="اكتب الجملة أو الأرقام..."></textarea>
         <div class="btn-group">
             <button class="action-btn btn-primary" onclick="pagerAction('encode')">تشفير بيجر</button>
-            <button class="action-btn btn-primary" onclick="pagerAction('decode')">فك الشفرة</button>
+            <button class="action-btn" onclick="pagerAction('decode')">فك الشفرة</button>
         </div>
         <label>النتيجة</label>
         <textarea id="pagerOutput" readonly></textarea>
@@ -203,10 +237,10 @@
 
     <div id="translator" class="tool-section">
         <label id="sourceLabel">المصدر: الروسية</label>
-        <textarea id="transInput" placeholder="أدخل النص للترجمة..."></textarea>
+        <textarea id="transInput" placeholder="أدخل النص..."></textarea>
         <div class="swap-btn" onclick="swapTransLanguages()">⇄</div>
         <label id="targetLabel">الهدف: العربية</label>
-        <textarea id="transOutput" placeholder="النتيجة ستظهر هنا..." readonly></textarea>
+        <textarea id="transOutput" readonly></textarea>
         <button class="action-btn btn-primary" style="width: 100%; margin-top: 15px;" onclick="translateText()">ترجمة فورية</button>
     </div>
 
@@ -215,12 +249,11 @@
             <button class="small-btn" onclick="copyResult()">نسخ</button>
             <button class="small-btn" onclick="clearInputs()">مسح</button>
         </div>
-        <div id="status" class="status-badge">جاهز</div>
+        <div id="status" class="status-badge">SYSTEM READY</div>
     </div>
 </div>
 
 <script>
-    // بيانات مورس
     const morseAlphabet = {
         'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.', 'G': '--.', 'H': '....',
         'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..', 'M': '--', 'N': '-.', 'O': '---', 'P': '.--.',
@@ -233,10 +266,7 @@
         'ن': '-.', 'ه': '..', 'و': '.--', 'ي': '..---'
     };
     const reverseMorse = Object.fromEntries(Object.entries(morseAlphabet).map(([k, v]) => [v, k]));
-
-    // بيانات البيجر
     const pagerLetters = ["ا","ب","ت","ث","ج","ح","خ","د","ذ","ر","ز","س","ش","ص","ض","ط","ظ","ع","غ","ف","ق","ك","ل","م","ن","هـ","و","ي"];
-
     let isRussianToArabic = true;
 
     function showTool(toolId, btn) {
@@ -244,7 +274,7 @@
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         document.getElementById(toolId).classList.add('active');
         btn.classList.add('active');
-        updateStatus("انتقلت إلى " + btn.innerText);
+        updateStatus(btn.innerText.toUpperCase());
     }
 
     function morseAction(type) {
@@ -256,7 +286,7 @@
         } else {
             output.value = input.split(' ').map(c => reverseMorse[c] || (c === '/' ? ' ' : '')).join('');
         }
-        updateStatus("تمت العملية");
+        updateStatus("DONE");
     }
 
     function pagerAction(type) {
@@ -268,28 +298,28 @@
         } else {
             output.value = input.split("-").map(p => p.trim().split(/\s+/).map(n => pagerLetters[parseInt(n)-1] || '').join('')).join(' ');
         }
-        updateStatus("تمت العملية");
+        updateStatus("DONE");
     }
 
     function swapTransLanguages() {
         isRussianToArabic = !isRussianToArabic;
-        document.getElementById('sourceLabel').innerText = isRussianToArabic ? "الغة المراد ترجمتها: الروسية" : "الغة المراد ترجمتها: العربية";
-        document.getElementById('targetLabel').innerText = isRussianToArabic ? "الغة المراد الترجمة اليها: العربية" : "الغة المراد الترجمة اليها: الروسية";
+        document.getElementById('sourceLabel').innerText = isRussianToArabic ? "المصدر: الروسية" : "المصدر: العربية";
+        document.getElementById('targetLabel').innerText = isRussianToArabic ? "الهدف: العربية" : "الهدف: الروسية";
     }
 
     async function translateText() {
         const text = document.getElementById('transInput').value.trim();
         const output = document.getElementById('transOutput');
         if(!text) return;
-        output.value = "جارٍ الترجمة...";
+        output.value = "CONNECTING...";
         const sl = isRussianToArabic ? "ru" : "ar", tl = isRussianToArabic ? "ar" : "ru";
         try {
             const res = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sl}&tl=${tl}&dt=t&q=${encodeURIComponent(text)}`);
             const data = await res.json();
             output.value = data[0].map(item => item[0]).join('');
-            updateStatus("تمت الترجمة");
+            updateStatus("TRANSLATED");
         } catch {
-            output.value = "خطأ في الاتصال";
+            output.value = "ERROR";
         }
     }
 
@@ -297,19 +327,19 @@
         const activeOut = document.querySelector('.tool-section.active textarea[readonly]');
         if(activeOut.value) {
             navigator.clipboard.writeText(activeOut.value);
-            updateStatus("تم النسخ!");
+            updateStatus("COPIED");
         }
     }
 
     function clearInputs() {
         document.querySelectorAll('textarea').forEach(t => t.value = "");
-        updateStatus("تم المسح");
+        updateStatus("CLEARED");
     }
 
     function updateStatus(msg) {
         const s = document.getElementById('status');
         s.innerText = msg;
-        setTimeout(() => s.innerText = "جاهز", 2000);
+        setTimeout(() => s.innerText = "SYSTEM READY", 2000);
     }
 </script>
 
