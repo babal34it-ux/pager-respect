@@ -2,49 +2,67 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>IPA Studio | التعديل الشامل</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPA Studio | مغير الحقوق الشامل</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Cairo', sans-serif; background-color: #0f172a; color: white; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
-        .card { background: #1e293b; padding: 30px; border-radius: 20px; width: 100%; max-width: 500px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
-        .input-group { margin-bottom: 15px; text-align: right; }
-        label { display: block; margin-bottom: 5px; color: #3b82f6; font-weight: bold; }
+        :root { --bg: #0f172a; --card: #1e293b; --primary: #3b82f6; }
+        body { font-family: 'Cairo', sans-serif; background-color: var(--bg); color: white; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; padding: 20px; }
+        .card { background: var(--card); padding: 30px; border-radius: 20px; width: 100%; max-width: 500px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05); }
+        h2 { text-align: center; color: var(--primary); margin-bottom: 25px; }
+        .upload-area { border: 2px dashed #475569; border-radius: 15px; padding: 25px; text-align: center; cursor: pointer; margin-bottom: 20px; transition: 0.3s; }
+        .upload-area:hover { border-color: var(--primary); background: rgba(59, 130, 246, 0.05); }
+        .field-group { margin-bottom: 15px; text-align: right; }
+        label { display: block; margin-bottom: 5px; color: #94a3b8; font-size: 0.9rem; }
         input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #334155; background: #0f172a; color: white; box-sizing: border-box; }
-        .btn-submit { width: 100%; background: #3b82f6; color: white; border: none; padding: 15px; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 20px; }
-        .upload-area { border: 2px dashed #475569; padding: 20px; border-radius: 15px; text-align: center; margin-bottom: 20px; cursor: pointer; }
-        .section-title { border-bottom: 1px solid #334155; padding-bottom: 10px; margin-bottom: 15px; color: #94a3b8; font-size: 0.9rem; }
+        .btn-submit { width: 100%; background: var(--primary); color: white; border: none; padding: 15px; border-radius: 10px; font-weight: bold; font-size: 1.1rem; cursor: pointer; margin-top: 20px; transition: 0.3s; }
+        .btn-submit:hover { background: #2563eb; transform: translateY(-2px); }
+        #loader { display: none; color: #fbbf24; margin-top: 15px; text-align: center; font-size: 0.9rem; }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h2 style="text-align: center;">تغيير الحقوق الشامل</h2>
-        <form action="/process" method="POST" enctype="multipart/form-data">
-            
-            <div class="upload-area" onclick="document.getElementById('ipa').click()">
-                <span id="fn">ارفع ملف الـ IPA هنا</span>
-                <input type="file" id="ipa" name="ipa_file" hidden required onchange="document.getElementById('fn').innerText = this.files[0].name">
-            </div>
 
-            <div class="section-title">المعلومات الأساسية (خارج التطبيق)</div>
-            <div class="input-group">
-                <input type="text" name="new_name" placeholder="اسم التطبيق الجديد" required>
-            </div>
-            <div class="input-group">
-                <input type="text" name="new_id" placeholder="الـ Bundle ID الجديد (الحقوق البرمجية)" required>
-            </div>
+<div class="card">
+    <h2>تعديل حقوق IPA</h2>
+    <p style="text-align: center; font-size: 0.8rem; color: #64748b;">تغيير الاسم، الـ ID، والحقوق الداخلية</p>
+    
+    <form action="/process" method="POST" enctype="multipart/form-data" onsubmit="startLoading()">
+        
+        <div class="upload-area" onclick="document.getElementById('ipa').click()">
+            <div id="file-label">📦 اضغط لرفع ملف الـ IPA</div>
+            <input type="file" id="ipa" name="ipa_file" accept=".ipa" hidden required onchange="showName()">
+        </div>
 
-            <div class="section-title">التعديل العميق (داخل محتوى التطبيق)</div>
-            <div class="input-group">
-                <label>النص القديم المراد حذفه:</label>
-                <input type="text" name="old_rights" placeholder="مثلاً: المطور @اسم_قديم" required>
-            </div>
-            <div class="input-group">
-                <label>نص الحقوق الجديد:</label>
-                <input type="text" name="new_rights" placeholder="مثلاً: المطور @اسمك_هنا" required>
-            </div>
+        <div class="field-group">
+            <label>اسم التطبيق (الخارجي):</label>
+            <input type="text" name="new_name" placeholder="مثلاً: واتساب بلس" required>
+        </div>
 
-            <button type="submit" class="btn-submit">بدء المعالجة واستبدال كل شيء</button>
-        </form>
-    </div>
+        <div class="field-group">
+            <label>معرف الحزمة (Bundle ID):</label>
+            <input type="text" name="new_id" placeholder="com.developer.myapp" required>
+        </div>
+
+        <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px; margin-top: 20px;">
+            <label style="color: #fbbf24;">تعديل النصوص الداخلية (Deep Edit):</label>
+            <input type="text" name="old_rights" placeholder="النص القديم (مثلاً: حقوق المطور فلان)" style="margin-bottom: 10px;" required>
+            <input type="text" name="new_rights" placeholder="نص حقوقك الجديد" required>
+        </div>
+
+        <button type="submit" class="btn-submit">تعديل وحفظ الملف</button>
+        <div id="loader">⚙️ جاري فك الملف وتعديل الحقوق... قد يستغرق دقيقة.</div>
+    </form>
+</div>
+
+<script>
+    function showName() {
+        const file = document.getElementById('ipa').files[0];
+        if (file) document.getElementById('file-label').innerText = "تم اختيار: " + file.name;
+    }
+    function startLoading() {
+        document.getElementById('loader').style.display = "block";
+    }
+</script>
+
 </body>
 </html>
