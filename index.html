@@ -2,176 +2,49 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IPA الحقوق - لوحة التحكم</title>
+    <title>IPA Studio | التعديل الشامل</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary: #00d2ff;
-            --secondary: #3a7bd5;
-            --bg: #0f172a;
-            --card-bg: rgba(30, 41, 59, 0.7);
-        }
-
-        body {
-            font-family: 'Cairo', sans-serif;
-            background: var(--bg);
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-        }
-
-        .container {
-            background: var(--card-bg);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
-            padding: 40px;
-            width: 100%;
-            max-width: 500px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-        }
-
-        h1 {
-            text-align: center;
-            font-size: 2rem;
-            margin-bottom: 10px;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        p.subtitle {
-            text-align: center;
-            color: #94a3b8;
-            margin-bottom: 30px;
-            font-size: 0.9rem;
-        }
-
-        .upload-zone {
-            border: 2px dashed #334155;
-            border-radius: 16px;
-            padding: 30px;
-            text-align: center;
-            cursor: pointer;
-            transition: 0.3s;
-            margin-bottom: 25px;
-            background: rgba(15, 23, 42, 0.5);
-        }
-
-        .upload-zone:hover {
-            border-color: var(--primary);
-            background: rgba(0, 210, 255, 0.05);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #cbd5e1;
-        }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 12px 16px;
-            border-radius: 12px;
-            border: 1px solid #334155;
-            background: #1e293b;
-            color: white;
-            font-family: 'Cairo', sans-serif;
-            box-sizing: border-box;
-            transition: 0.3s;
-        }
-
-        input[type="text"]:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(0, 210, 255, 0.2);
-        }
-
-        .btn-submit {
-            width: 100%;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            color: white;
-            border: none;
-            padding: 16px;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.3s;
-            box-shadow: 0 10px 15px -3px rgba(58, 123, 213, 0.3);
-        }
-
-        .btn-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 20px 25px -5px rgba(58, 123, 213, 0.4);
-            filter: brightness(1.1);
-        }
-
-        .footer-note {
-            text-align: center;
-            font-size: 0.75rem;
-            color: #64748b;
-            margin-top: 20px;
-        }
+        body { font-family: 'Cairo', sans-serif; background-color: #0f172a; color: white; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
+        .card { background: #1e293b; padding: 30px; border-radius: 20px; width: 100%; max-width: 500px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        .input-group { margin-bottom: 15px; text-align: right; }
+        label { display: block; margin-bottom: 5px; color: #3b82f6; font-weight: bold; }
+        input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #334155; background: #0f172a; color: white; box-sizing: border-box; }
+        .btn-submit { width: 100%; background: #3b82f6; color: white; border: none; padding: 15px; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 20px; }
+        .upload-area { border: 2px dashed #475569; padding: 20px; border-radius: 15px; text-align: center; margin-bottom: 20px; cursor: pointer; }
+        .section-title { border-bottom: 1px solid #334155; padding-bottom: 10px; margin-bottom: 15px; color: #94a3b8; font-size: 0.9rem; }
     </style>
 </head>
 <body>
+    <div class="card">
+        <h2 style="text-align: center;">تغيير الحقوق الشامل</h2>
+        <form action="/process" method="POST" enctype="multipart/form-data">
+            
+            <div class="upload-area" onclick="document.getElementById('ipa').click()">
+                <span id="fn">ارفع ملف الـ IPA هنا</span>
+                <input type="file" id="ipa" name="ipa_file" hidden required onchange="document.getElementById('fn').innerText = this.files[0].name">
+            </div>
 
-<div class="container">
-    <h1>مُعدل الحقوق IPA</h1>
-    <p class="subtitle">تعديل الاسم، الـ Bundle ID، والنصوص الداخلية</p>
+            <div class="section-title">المعلومات الأساسية (خارج التطبيق)</div>
+            <div class="input-group">
+                <input type="text" name="new_name" placeholder="اسم التطبيق الجديد" required>
+            </div>
+            <div class="input-group">
+                <input type="text" name="new_id" placeholder="الـ Bundle ID الجديد (الحقوق البرمجية)" required>
+            </div>
 
-    <form action="/modify" method="POST" enctype="multipart/form-data">
-        
-        <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
-            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--primary); margin-bottom: 10px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-            <p id="fileName">اضغط لرفع ملف الـ IPA</p>
-            <input type="file" id="fileInput" name="ipa_file" accept=".ipa" hidden onchange="updateFileName()">
-        </div>
+            <div class="section-title">التعديل العميق (داخل محتوى التطبيق)</div>
+            <div class="input-group">
+                <label>النص القديم المراد حذفه:</label>
+                <input type="text" name="old_rights" placeholder="مثلاً: المطور @اسم_قديم" required>
+            </div>
+            <div class="input-group">
+                <label>نص الحقوق الجديد:</label>
+                <input type="text" name="new_rights" placeholder="مثلاً: المطور @اسمك_هنا" required>
+            </div>
 
-        <div class="form-group">
-            <label>اسم التطبيق الجديد:</label>
-            <input type="text" name="app_name" placeholder="مثال: تطبيق المطور" required>
-        </div>
-
-        <div class="form-group">
-            <label>الـ Bundle ID (الحقوق الخارجية):</label>
-            <input type="text" name="bundle_id" placeholder="com.developer.app" required>
-        </div>
-
-        <div class="form-group">
-            <label>تعديل الحقوق الداخلية (نصوص الواجهة):</label>
-            <input type="text" name="old_text" placeholder="النص القديم المراد حذفه" style="margin-bottom: 10px;">
-            <input type="text" name="new_text" placeholder="اسمك أو نصك الجديد">
-        </div>
-
-        <button type="submit" class="btn-submit">بدء المعالجة وتحميل الملف</button>
-    </form>
-
-    <p class="footer-note">ملاحظة: هذا الموقع يقوم بالتعديل البرمجي، ستحتاج لإعادة توقيع الملف لاحقاً.</p>
-</div>
-
-<script>
-    function updateFileName() {
-        const input = document.getElementById('fileInput');
-        const display = document.getElementById('fileName');
-        if (input.files.length > 0) {
-            display.innerText = "تم اختيار: " + input.files[0].name;
-            display.style.color = "#00d2ff";
-        }
-    }
-</script>
-
+            <button type="submit" class="btn-submit">بدء المعالجة واستبدال كل شيء</button>
+        </form>
+    </div>
 </body>
 </html>
