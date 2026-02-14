@@ -3,64 +3,370 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IPA Studio | مغير الحقوق الشامل</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <title>اسئلة ريسبكت</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #0f172a; --card: #1e293b; --primary: #3b82f6; }
-        body { font-family: 'Cairo', sans-serif; background-color: var(--bg); color: white; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; padding: 20px; }
-        .card { background: var(--card); padding: 30px; border-radius: 20px; width: 100%; max-width: 500px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05); }
-        h2 { text-align: center; color: var(--primary); margin-bottom: 25px; }
-        .upload-area { border: 2px dashed #475569; border-radius: 15px; padding: 25px; text-align: center; cursor: pointer; margin-bottom: 20px; transition: 0.3s; }
-        .upload-area:hover { border-color: var(--primary); background: rgba(59, 130, 246, 0.05); }
-        .field-group { margin-bottom: 15px; text-align: right; }
-        label { display: block; margin-bottom: 5px; color: #94a3b8; font-size: 0.9rem; }
-        input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #334155; background: #0f172a; color: white; box-sizing: border-box; }
-        .btn-submit { width: 100%; background: var(--primary); color: white; border: none; padding: 15px; border-radius: 10px; font-weight: bold; font-size: 1.1rem; cursor: pointer; margin-top: 20px; transition: 0.3s; }
-        .btn-submit:hover { background: #2563eb; transform: translateY(-2px); }
-        #loader { display: none; color: #fbbf24; margin-top: 15px; text-align: center; font-size: 0.9rem; }
+        :root {
+            --primary: #9d4edd;
+            --secondary: #c77dff;
+            --accent: #e0aaff;
+            --bg: #0f0c29;
+            --glass: rgba(255, 255, 255, 0.08);
+            --border: rgba(255, 255, 255, 0.18);
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a0033 0%, #0f0020 50%, #240046 100%);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(157, 78, 221, 0.15) 0%, transparent 70%);
+            top: -200px;
+            right: -200px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(199, 125, 255, 0.1) 0%, transparent 70%);
+            bottom: -150px;
+            left: -150px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        header {
+            width: 100%;
+            padding: 25px 30px;
+            text-align: center;
+            background: rgba(15, 12, 41, 0.6);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 45px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .respect-logo {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 10px;
+            object-fit: contain;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, #e0aaff, #c77dff, #9d4edd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(157, 78, 221, 0.4);
+            font-weight: 700;
+        }
+
+        .main-container {
+            width: 95%;
+            max-width: 520px;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 50px;
+        }
+
+        .nav-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 30px;
+            padding: 8px;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+        }
+
+        .btn-tab {
+            padding: 14px;
+            border: none;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.7);
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .btn-tab:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .btn-tab.active-btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(157, 78, 221, 0.4);
+        }
+
+        .content-card {
+            background: var(--glass);
+            backdrop-filter: blur(25px);
+            border: 1px solid var(--border);
+            border-radius: 28px;
+            padding: 35px;
+            display: none;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+            animation: fadeSlideIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes fadeSlideIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(25px) scale(0.98);
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .content-card.active {
+            display: block;
+        }
+
+        .input-group {
+            margin-bottom: 22px;
+            text-align: right;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 16px;
+            background: rgba(0, 0, 0, 0.25);
+            border: 1.5px solid var(--border);
+            border-radius: 14px;
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        input:focus, textarea:focus {
+            border-color: var(--primary);
+            background: rgba(0, 0, 0, 0.35);
+            box-shadow: 0 0 0 3px rgba(157, 78, 221, 0.15);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .btn-action {
+            width: 100%;
+            padding: 17px;
+            background: linear-gradient(135deg, #7b2cbf 0%, #9d4edd 50%, #c77dff 100%);
+            border: none;
+            border-radius: 14px;
+            color: #fff;
+            font-weight: 700;
+            font-size: 1.05rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            box-shadow: 0 6px 25px rgba(157, 78, 221, 0.3);
+        }
+
+        .btn-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 35px rgba(157, 78, 221, 0.5);
+        }
+
+        .question-box {
+            background: rgba(157, 78, 221, 0.08);
+            padding: 18px 20px;
+            border-radius: 16px;
+            margin-top: 18px;
+            border-right: 4px solid var(--primary);
+            text-align: right;
+            word-wrap: break-word;
+            animation: slideInRight 0.4s ease;
+        }
+
+        #questionsList {
+            margin-top: 30px;
+            max-height: 450px;
+            overflow-y: auto;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            opacity: 0.5;
+        }
+
+        .success-message {
+            position: fixed;
+            top: 100px;
+            right: 50%;
+            transform: translateX(50%) translateY(-150px);
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 16px 28px;
+            border-radius: 12px;
+            z-index: 1000;
+            animation: slideDown 0.4s ease forwards;
+        }
+
+        @keyframes slideDown { to { transform: translateX(50%) translateY(0); } }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+
+        @media (max-width: 600px) {
+            header h1 { font-size: 1.8rem; }
+            .content-card { padding: 25px; }
+        }
     </style>
 </head>
 <body>
 
-<div class="card">
-    <h2>تعديل حقوق IPA</h2>
-    <p style="text-align: center; font-size: 0.8rem; color: #64748b;">تغيير الاسم، الـ ID، والحقوق الداخلية</p>
-    
-    <form action="/process" method="POST" enctype="multipart/form-data" onsubmit="startLoading()">
-        
-        <div class="upload-area" onclick="document.getElementById('ipa').click()">
-            <div id="file-label">📦 اضغط لرفع ملف الـ IPA</div>
-            <input type="file" id="ipa" name="ipa_file" accept=".ipa" hidden required onchange="showName()">
-        </div>
+<header>
+    <img src="bg.jpg" alt="RESPECT" class="respect-logo">
+    <h1>اسئلة ريسبكت</h1>
+</header>
 
-        <div class="field-group">
-            <label>اسم التطبيق (الخارجي):</label>
-            <input type="text" name="new_name" placeholder="مثلاً: واتساب بلس" required>
-        </div>
+<div class="main-container">
+    <div class="nav-buttons">
+        <button id="btnAsk" class="btn-tab active-btn" onclick="toggleView('ask')">اسئل ستريمرك</button>
+        <button id="btnView" class="btn-tab" onclick="toggleView('view')">شوف اسألتك</button>
+    </div>
 
-        <div class="field-group">
-            <label>معرف الحزمة (Bundle ID):</label>
-            <input type="text" name="new_id" placeholder="com.developer.myapp" required>
+    <div id="askView" class="content-card active">
+        <div class="input-group">
+            <label>اسأل الستريمر هنا</label>
+            <input type="text" id="streamerName" placeholder="">
         </div>
-
-        <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px; margin-top: 20px;">
-            <label style="color: #fbbf24;">تعديل النصوص الداخلية (Deep Edit):</label>
-            <input type="text" name="old_rights" placeholder="النص القديم (مثلاً: حقوق المطور فلان)" style="margin-bottom: 10px;" required>
-            <input type="text" name="new_rights" placeholder="نص حقوقك الجديد" required>
+        <div class="input-group">
+            <label>سؤالك</label>
+            <textarea id="questionBody" rows="4" placeholder="اكتب سؤالك هنا..."></textarea>
         </div>
+        <button class="btn-action" onclick="pushQuestion()">إرسال</button>
+    </div>
 
-        <button type="submit" class="btn-submit">تعديل وحفظ الملف</button>
-        <div id="loader">⚙️ جاري فك الملف وتعديل الحقوق... قد يستغرق دقيقة.</div>
-    </form>
+    <div id="viewView" class="content-card">
+        <div class="input-group">
+            <label>ادخل اسم ستريمر لترى الاسئلة الموجهة إليه</label>
+            <input type="text" id="searchName" placeholder="">
+        </div>
+        <button class="btn-action" onclick="fetchQuestions()">عرض الأسئلة</button>
+        <div id="questionsList"></div>
+    </div>
 </div>
 
 <script>
-    function showName() {
-        const file = document.getElementById('ipa').files[0];
-        if (file) document.getElementById('file-label').innerText = "تم اختيار: " + file.name;
+    function toggleView(view) {
+        document.getElementById('askView').classList.remove('active');
+        document.getElementById('viewView').classList.remove('active');
+        document.getElementById('btnAsk').classList.remove('active-btn');
+        document.getElementById('btnView').classList.remove('active-btn');
+
+        if(view === 'ask') {
+            document.getElementById('askView').classList.add('active');
+            document.getElementById('btnAsk').classList.add('active-btn');
+        } else {
+            document.getElementById('viewView').classList.add('active');
+            document.getElementById('btnView').classList.add('active-btn');
+        }
     }
-    function startLoading() {
-        document.getElementById('loader').style.display = "block";
+
+    function showSuccess(msg) {
+        const div = document.createElement('div');
+        div.className = 'success-message';
+        div.textContent = msg;
+        document.body.appendChild(div);
+        setTimeout(() => div.remove(), 3000);
+    }
+
+    function pushQuestion() {
+        const name = document.getElementById('streamerName').value.trim().toLowerCase();
+        const text = document.getElementById('questionBody').value.trim();
+
+        if(!name || !text) {
+            alert("اكمل البيانات أولاً");
+            return;
+        }
+
+        let db = JSON.parse(localStorage.getItem('respect_db') || '[]');
+        db.push({ to: name, msg: text, date: Date.now() });
+        localStorage.setItem('respect_db', JSON.stringify(db));
+
+        showSuccess("تم إرسال سؤالك بنجاح!");
+        document.getElementById('streamerName').value = '';
+        document.getElementById('questionBody').value = '';
+    }
+
+    function fetchQuestions() {
+        const name = document.getElementById('searchName').value.trim().toLowerCase();
+        const container = document.getElementById('questionsList');
+        container.innerHTML = '';
+
+        if(!name) {
+            alert("من فضلك اكتب اسم الستريمر");
+            return;
+        }
+
+        let db = JSON.parse(localStorage.getItem('respect_db') || '[]');
+        let results = db.filter(item => item.to === name);
+
+        if(results.length === 0) {
+            container.innerHTML = '<div class="empty-state">لا توجد اسئلة حالياً لهذا الإستريمر</div>';
+            return;
+        }
+
+        results.reverse().forEach((item, index) => {
+            const div = document.createElement('div');
+            div.className = 'question-box';
+            div.style.animationDelay = (index * 0.05) + 's';
+            div.textContent = item.msg;
+            container.appendChild(div);
+        });
     }
 </script>
 
