@@ -1,260 +1,1254 @@
 <!DOCTYPE html>
+
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>برا السالفة - النسخة الشاملة الرمضانية</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>برا السالفة 🌙</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --bg-blue: #1a2a6c;
-            --bg-orange: #f39c12;
-            --card-bg: #ffffff;
-            --text-dark: #2d3436;
-            --ramadan-gold: #ffd700;
+            --night: #0a0e1a;
+            --deep: #111827;
+            --card: #1a2235;
+            --gold: #f5c518;
+            --orange: #ff6b35;
+            --teal: #00d4aa;
+            --purple: #7c3aed;
+            --text: #f0f4ff;
+            --muted: #8892a4;
+            --border: rgba(245, 197, 24, 0.25);
         }
 
-        body {
-            font-family: 'Cairo', sans-serif;
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
-            margin: 0; display: flex; justify-content: center; align-items: center;
-            min-height: 100vh; padding: 15px; overflow-x: hidden;
-        }
+```
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        .lantern {
-            position: fixed; top: -10px; font-size: 35px; color: var(--ramadan-gold);
-            animation: swing 3s ease-in-out infinite; transform-origin: top center; z-index: 1000;
-        }
-        .lantern-left { left: 15px; } .lantern-right { right: 15px; }
-        @keyframes swing { 0%, 100% { transform: rotate(-10deg); } 50% { transform: rotate(10deg); } }
+    body {
+        font-family: 'Cairo', sans-serif;
+        background: var(--night);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 15px;
+        overflow-x: hidden;
+        position: relative;
+    }
 
-        .container {
-            background: var(--card-bg); padding: 25px; border-radius: 30px;
-            width: 100%; max-width: 500px; text-align: center;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4); max-height: 90vh; overflow-y: auto;
-            position: relative; border: 3px solid var(--ramadan-gold);
-        }
+    /* Starry background */
+    body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background-image: 
+            radial-gradient(1px 1px at 10% 15%, rgba(255,255,255,0.7) 0%, transparent 100%),
+            radial-gradient(1px 1px at 25% 40%, rgba(255,255,255,0.5) 0%, transparent 100%),
+            radial-gradient(1.5px 1.5px at 50% 10%, rgba(255,255,255,0.8) 0%, transparent 100%),
+            radial-gradient(1px 1px at 70% 30%, rgba(255,255,255,0.6) 0%, transparent 100%),
+            radial-gradient(1px 1px at 85% 60%, rgba(255,255,255,0.4) 0%, transparent 100%),
+            radial-gradient(1.5px 1.5px at 15% 70%, rgba(255,255,255,0.7) 0%, transparent 100%),
+            radial-gradient(1px 1px at 90% 80%, rgba(255,255,255,0.5) 0%, transparent 100%),
+            radial-gradient(1px 1px at 40% 85%, rgba(255,255,255,0.6) 0%, transparent 100%),
+            radial-gradient(1px 1px at 60% 55%, rgba(255,255,255,0.4) 0%, transparent 100%),
+            radial-gradient(1.5px 1.5px at 35% 25%, rgba(255,255,255,0.8) 0%, transparent 100%);
+        pointer-events: none;
+        z-index: 0;
+    }
 
-        .categories-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
-        .category-card {
-            border-radius: 12px; padding: 15px; cursor: pointer; transition: 0.2s;
-            border: 3px solid transparent; color: white; font-weight: 700; font-size: 15px;
-            display: flex; flex-direction: column; align-items: center; gap: 5px;
-        }
-        .category-card i { font-size: 22px; }
-        .category-card.selected { border-color: #2d3436; transform: scale(0.95); box-shadow: inset 0 0 10px rgba(0,0,0,0.2); }
+    /* Moon decoration */
+    .moon {
+        position: fixed;
+        top: 20px;
+        left: 30px;
+        font-size: 50px;
+        opacity: 0.15;
+        animation: moonFloat 8s ease-in-out infinite;
+        z-index: 0;
+    }
 
-        input { width: 100%; padding: 12px; border-radius: 12px; border: 2px solid #eee; margin-bottom: 10px; font-family: 'Cairo'; box-sizing: border-box; }
-        button { width: 100%; padding: 15px; border-radius: 15px; border: none; font-weight: 700; font-size: 18px; cursor: pointer; background-color: var(--bg-orange); color: white; margin-top: 10px; }
-        
-        .game-display { padding: 25px; border-radius: 20px; color: white; min-height: 150px; display: flex; flex-direction: column; justify-content: center; margin-bottom: 15px; }
-        .player-tag { background: #f0f2f5; padding: 5px 12px; border-radius: 20px; margin: 3px; display: inline-block; font-size: 13px; border: 1px solid #ddd; }
-        
-        .vote-btn { background: #f8f9fa; color: #2d3436; margin-bottom: 8px; border: 2px solid #eee; }
-        .option-btn { background: #6c5ce7; color: white; font-size: 16px; margin: 5px 0; border-bottom: 4px solid #4834d4; }
-        
-        .hidden { display: none !important; }
-    </style>
+    @keyframes moonFloat {
+        0%, 100% { transform: translateY(0px) rotate(-5deg); }
+        50% { transform: translateY(-15px) rotate(5deg); }
+    }
+
+    /* Lanterns */
+    .lanterns {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: space-between;
+        padding: 0 20px;
+        z-index: 10;
+        pointer-events: none;
+    }
+
+    .lantern {
+        font-size: 32px;
+        animation: swing 4s ease-in-out infinite;
+        transform-origin: top center;
+        filter: drop-shadow(0 0 8px rgba(245,197,24,0.6));
+    }
+
+    .lantern:nth-child(2) { animation-delay: -2s; animation-duration: 5s; }
+
+    @keyframes swing {
+        0%, 100% { transform: rotate(-12deg); }
+        50% { transform: rotate(12deg); }
+    }
+
+    .container {
+        background: var(--card);
+        border-radius: 28px;
+        width: 100%;
+        max-width: 480px;
+        border: 1px solid var(--border);
+        box-shadow: 
+            0 0 0 1px rgba(245,197,24,0.1),
+            0 25px 50px rgba(0,0,0,0.7),
+            0 0 80px rgba(245,197,24,0.05);
+        position: relative;
+        z-index: 1;
+        overflow: hidden;
+    }
+
+    /* Gold top bar */
+    .container::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, transparent, var(--gold), var(--orange), var(--gold), transparent);
+    }
+
+    .screen { padding: 28px 24px; display: none; }
+    .screen.active { display: block; }
+
+    /* Header */
+    .game-logo {
+        text-align: center;
+        margin-bottom: 24px;
+    }
+
+    .game-logo .title {
+        font-size: 32px;
+        font-weight: 900;
+        background: linear-gradient(135deg, var(--gold), var(--orange));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        letter-spacing: -1px;
+    }
+
+    .game-logo .subtitle {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 4px;
+        letter-spacing: 1px;
+    }
+
+    /* Tabs for category filter */
+    .section-label {
+        font-size: 12px;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 10px;
+        margin-top: 20px;
+    }
+
+    /* Player Input */
+    .input-row {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 12px;
+    }
+
+    .input-field {
+        flex: 1;
+        background: rgba(255,255,255,0.05);
+        border: 1.5px solid rgba(255,255,255,0.1);
+        border-radius: 14px;
+        padding: 12px 16px;
+        color: var(--text);
+        font-family: 'Cairo', sans-serif;
+        font-size: 15px;
+        outline: none;
+        transition: border-color 0.2s;
+    }
+
+    .input-field::placeholder { color: var(--muted); }
+    .input-field:focus { border-color: var(--gold); }
+
+    .add-btn {
+        background: var(--gold);
+        color: #0a0e1a;
+        border: none;
+        border-radius: 14px;
+        padding: 12px 18px;
+        font-family: 'Cairo', sans-serif;
+        font-weight: 700;
+        font-size: 20px;
+        cursor: pointer;
+        transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    .add-btn:hover { transform: scale(1.05); box-shadow: 0 4px 15px rgba(245,197,24,0.4); }
+    .add-btn:active { transform: scale(0.95); }
+
+    /* Player chips */
+    .players-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        min-height: 40px;
+        padding: 10px;
+        background: rgba(0,0,0,0.2);
+        border-radius: 14px;
+        border: 1px dashed rgba(255,255,255,0.1);
+    }
+
+    .player-chip {
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.15);
+        color: var(--text);
+        padding: 5px 12px;
+        border-radius: 30px;
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    .player-chip:hover { background: rgba(255,50,50,0.2); border-color: rgba(255,50,50,0.4); }
+    .player-chip .remove-x { font-size: 10px; opacity: 0.6; }
+
+    .player-count {
+        font-size: 12px;
+        color: var(--muted);
+        text-align: center;
+        margin-top: 6px;
+    }
+
+    /* Categories */
+    .cats-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .cat-card {
+        background: rgba(255,255,255,0.04);
+        border: 1.5px solid rgba(255,255,255,0.08);
+        border-radius: 14px;
+        padding: 14px 10px;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-align: center;
+        color: var(--muted);
+    }
+
+    .cat-card:hover {
+        border-color: rgba(255,255,255,0.2);
+        background: rgba(255,255,255,0.07);
+        color: var(--text);
+    }
+
+    .cat-card.selected {
+        border-color: var(--gold);
+        background: rgba(245,197,24,0.12);
+        color: var(--gold);
+        box-shadow: 0 0 20px rgba(245,197,24,0.15);
+    }
+
+    .cat-icon {
+        font-size: 24px;
+        display: block;
+        margin-bottom: 6px;
+    }
+
+    .cat-name {
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    /* Difficulty selector */
+    .diff-row {
+        display: flex;
+        gap: 6px;
+    }
+
+    .diff-btn {
+        flex: 1;
+        background: rgba(255,255,255,0.04);
+        border: 1.5px solid rgba(255,255,255,0.08);
+        border-radius: 10px;
+        padding: 8px;
+        color: var(--muted);
+        font-family: 'Cairo', sans-serif;
+        font-size: 12px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .diff-btn.active { border-color: var(--teal); color: var(--teal); background: rgba(0,212,170,0.1); }
+
+    /* Main action button */
+    .primary-btn {
+        width: 100%;
+        padding: 16px;
+        border-radius: 16px;
+        border: none;
+        font-family: 'Cairo', sans-serif;
+        font-weight: 900;
+        font-size: 18px;
+        cursor: pointer;
+        transition: all 0.2s;
+        background: linear-gradient(135deg, var(--gold), var(--orange));
+        color: #0a0e1a;
+        margin-top: 20px;
+        letter-spacing: 0.5px;
+        box-shadow: 0 8px 25px rgba(245,197,24,0.3);
+    }
+
+    .primary-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(245,197,24,0.4); }
+    .primary-btn:active { transform: translateY(0); }
+
+    /* Game screen */
+    .turn-header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .progress-dots {
+        display: flex;
+        justify-content: center;
+        gap: 6px;
+        margin-bottom: 16px;
+    }
+
+    .dot {
+        width: 8px; height: 8px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.1);
+        transition: background 0.3s;
+    }
+
+    .dot.done { background: var(--teal); }
+    .dot.current { background: var(--gold); transform: scale(1.3); }
+
+    .turn-name {
+        font-size: 26px;
+        font-weight: 900;
+        color: var(--text);
+    }
+
+    .turn-instruction {
+        font-size: 13px;
+        color: var(--muted);
+        margin-top: 4px;
+    }
+
+    .phone-pass {
+        background: rgba(255,255,255,0.04);
+        border: 1px dashed rgba(255,255,255,0.15);
+        border-radius: 16px;
+        padding: 20px;
+        text-align: center;
+        margin: 16px 0;
+    }
+
+    .phone-icon {
+        font-size: 40px;
+        display: block;
+        margin-bottom: 8px;
+        animation: phoneShake 2s ease-in-out infinite;
+    }
+
+    @keyframes phoneShake {
+        0%, 100% { transform: rotate(0deg); }
+        25% { transform: rotate(-5deg); }
+        75% { transform: rotate(5deg); }
+    }
+
+    .reveal-btn {
+        width: 100%;
+        padding: 18px;
+        border-radius: 16px;
+        border: none;
+        font-family: 'Cairo', sans-serif;
+        font-weight: 900;
+        font-size: 20px;
+        cursor: pointer;
+        background: linear-gradient(135deg, #7c3aed, #4f46e5);
+        color: white;
+        box-shadow: 0 8px 25px rgba(124,58,237,0.35);
+        transition: all 0.2s;
+    }
+
+    .reveal-btn:hover { transform: translateY(-2px); }
+
+    /* Role card */
+    .role-card {
+        border-radius: 20px;
+        padding: 28px 20px;
+        text-align: center;
+        margin: 16px 0;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .role-card.insider {
+        background: linear-gradient(135deg, #1a3a2a, #0d2318);
+        border: 1px solid rgba(0,212,170,0.3);
+    }
+
+    .role-card.outsider {
+        background: linear-gradient(135deg, #2a1a3a, #150d23);
+        border: 1px solid rgba(124,58,237,0.3);
+    }
+
+    .role-badge {
+        display: inline-block;
+        padding: 4px 14px;
+        border-radius: 30px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        margin-bottom: 12px;
+    }
+
+    .insider .role-badge { background: rgba(0,212,170,0.2); color: var(--teal); }
+    .outsider .role-badge { background: rgba(245,197,24,0.2); color: var(--gold); }
+
+    .role-main {
+        font-size: 15px;
+        color: rgba(255,255,255,0.6);
+        margin-bottom: 8px;
+    }
+
+    .role-word {
+        font-size: 36px;
+        font-weight: 900;
+        letter-spacing: -1px;
+    }
+
+    .insider .role-word { color: var(--teal); }
+    .outsider .role-word { color: var(--gold); }
+
+    .role-hint {
+        font-size: 12px;
+        margin-top: 10px;
+        opacity: 0.6;
+    }
+
+    /* Timer */
+    .timer-ring {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 10px 0;
+    }
+
+    .timer-display {
+        background: rgba(0,0,0,0.3);
+        border: 2px solid var(--gold);
+        border-radius: 50%;
+        width: 70px;
+        height: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        font-weight: 900;
+        color: var(--gold);
+    }
+
+    .timer-display.warning { border-color: var(--orange); color: var(--orange); animation: pulse 0.5s ease-in-out infinite; }
+
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+    }
+
+    /* Vote screen */
+    .vote-grid {
+        display: grid;
+        gap: 10px;
+        margin-top: 16px;
+    }
+
+    .vote-card {
+        background: rgba(255,255,255,0.04);
+        border: 1.5px solid rgba(255,255,255,0.08);
+        border-radius: 14px;
+        padding: 16px 20px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        transition: all 0.2s;
+        color: var(--text);
+        font-size: 16px;
+        font-weight: 700;
+    }
+
+    .vote-card:hover {
+        border-color: var(--orange);
+        background: rgba(255,107,53,0.1);
+        transform: translateX(-4px);
+    }
+
+    .vote-number {
+        width: 32px; height: 32px;
+        background: rgba(255,255,255,0.08);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        color: var(--muted);
+    }
+
+    /* Guess screen */
+    .guess-options {
+        display: grid;
+        gap: 10px;
+        margin-top: 16px;
+    }
+
+    .guess-btn {
+        background: rgba(255,255,255,0.05);
+        border: 1.5px solid rgba(255,255,255,0.1);
+        border-radius: 14px;
+        padding: 16px 20px;
+        cursor: pointer;
+        color: var(--text);
+        font-family: 'Cairo', sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        transition: all 0.2s;
+        text-align: right;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .guess-btn:hover {
+        border-color: var(--purple);
+        background: rgba(124,58,237,0.15);
+        transform: translateX(-4px);
+    }
+
+    .guess-letter {
+        background: rgba(124,58,237,0.3);
+        color: var(--text);
+        width: 30px; height: 30px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        flex-shrink: 0;
+    }
+
+    /* End screen */
+    .end-result {
+        text-align: center;
+        padding: 10px 0;
+    }
+
+    .trophy-anim {
+        font-size: 70px;
+        display: block;
+        margin-bottom: 10px;
+        animation: trophyBounce 0.6s ease-out;
+    }
+
+    @keyframes trophyBounce {
+        0% { transform: scale(0) rotate(-10deg); }
+        60% { transform: scale(1.2) rotate(5deg); }
+        100% { transform: scale(1) rotate(0deg); }
+    }
+
+    .end-title {
+        font-size: 28px;
+        font-weight: 900;
+        color: var(--text);
+        margin-bottom: 6px;
+    }
+
+    .end-card {
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 16px;
+        padding: 20px;
+        margin: 16px 0;
+        text-align: right;
+    }
+
+    .end-detail {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 0;
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+        font-size: 14px;
+    }
+
+    .end-detail:last-child { border-bottom: none; }
+    .end-detail .label { color: var(--muted); }
+    .end-detail .value { color: var(--text); font-weight: 700; }
+
+    .restart-btn {
+        width: 100%;
+        padding: 16px;
+        border-radius: 16px;
+        border: 1px solid var(--gold);
+        font-family: 'Cairo', sans-serif;
+        font-weight: 900;
+        font-size: 17px;
+        cursor: pointer;
+        background: transparent;
+        color: var(--gold);
+        margin-top: 8px;
+        transition: all 0.2s;
+    }
+
+    .restart-btn:hover { background: rgba(245,197,24,0.1); }
+
+    /* Notification toast */
+    .toast {
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%) translateY(80px);
+        background: #1a2235;
+        border: 1px solid var(--gold);
+        color: var(--text);
+        padding: 12px 24px;
+        border-radius: 30px;
+        font-size: 14px;
+        font-weight: 600;
+        z-index: 1000;
+        transition: transform 0.3s ease;
+        white-space: nowrap;
+    }
+
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    /* Settings toggle */
+    .settings-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 12px;
+    }
+
+    .toggle-label {
+        font-size: 13px;
+        color: var(--muted);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .toggle {
+        width: 42px;
+        height: 22px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 11px;
+        cursor: pointer;
+        position: relative;
+        transition: background 0.2s;
+        border: none;
+    }
+
+    .toggle.on { background: var(--teal); }
+
+    .toggle::after {
+        content: '';
+        position: absolute;
+        width: 18px; height: 18px;
+        background: white;
+        border-radius: 50%;
+        top: 2px; right: 2px;
+        transition: right 0.2s;
+    }
+
+    .toggle.on::after { right: 22px; }
+
+    .divider {
+        height: 1px;
+        background: rgba(255,255,255,0.06);
+        margin: 20px 0;
+    }
+
+    /* Score tracking */
+    .score-row {
+        display: flex;
+        gap: 8px;
+        margin-top: 16px;
+    }
+
+    .score-card {
+        flex: 1;
+        background: rgba(0,0,0,0.2);
+        border: 1px solid rgba(255,255,255,0.06);
+        border-radius: 12px;
+        padding: 12px;
+        text-align: center;
+    }
+
+    .score-label { font-size: 11px; color: var(--muted); }
+    .score-val { font-size: 24px; font-weight: 900; color: var(--text); }
+
+    .cat-display {
+        background: rgba(245,197,24,0.1);
+        border: 1px solid rgba(245,197,24,0.2);
+        border-radius: 10px;
+        padding: 8px 14px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: var(--gold);
+        margin-top: 10px;
+    }
+
+    h3 {
+        font-size: 18px;
+        color: var(--text);
+        font-weight: 700;
+    }
+
+    .instructions {
+        background: rgba(0,0,0,0.2);
+        border-right: 3px solid var(--gold);
+        padding: 12px 16px;
+        border-radius: 8px;
+        font-size: 12px;
+        color: var(--muted);
+        line-height: 1.8;
+        margin-top: 10px;
+    }
+
+</style>
+```
+
 </head>
 <body>
 
-<div class="lantern lantern-left"><i class="fa-solid fa-lightbulb"></i></div>
-<div class="lantern lantern-right"><i class="fa-solid fa-lightbulb"></i></div>
+<div class="moon">🌙</div>
+
+<div class="lanterns">
+    <div class="lantern">🏮</div>
+    <div class="lantern">🏮</div>
+</div>
+
+<div class="toast" id="toast"></div>
 
 <div class="container">
-    <div id="setup-screen">
-        <h2 style="color: var(--bg-blue); margin-bottom: 5px;"><i class="fa-solid fa-moon"></i> برا السالفة</h2>
-        <p style="font-size: 13px; color: #666; margin-bottom: 15px;">النسخة الشاملة | خلك ذيب لا يكفشونك!</p>
-        
-        <input type="text" id="player-name" placeholder="اسم اللاعب...">
-        <button onclick="addPlayer()" style="background: var(--bg-blue);">إضافة لاعب +</button>
-        <div id="player-list" style="margin: 15px 0;"></div>
-        
-        <h3 style="border-top: 1px solid #eee; padding-top: 10px;">اختر الباقة:</h3>
-        <div class="categories-grid" id="cats-grid">
-            </div>
-        <button onclick="startGame()" style="background: #2d3436; margin-top:20px; font-size: 22px;">ابدأ اللعب 🚀</button>
+
+```
+<!-- SETUP SCREEN -->
+<div class="screen active" id="setup-screen">
+    <div class="game-logo">
+        <div class="title">🌙 برا السالفة</div>
+        <div class="subtitle">اللعبة الشاملة | خلك ذيب لا يكفشونك!</div>
     </div>
 
-    <div id="game-screen" class="hidden">
-        <h2 id="current-player-name"></h2>
-        <p>مرر الجوال لهذا الشخص</p>
-        <button id="reveal-btn" onclick="reveal()">اكشف دوري 👀</button>
-        <div id="role-result" class="hidden">
-            <div id="display-box" class="game-display"></div>
-            <button onclick="nextPlayer()" style="background: #2d3436;">فهمت، خبيت الكلمة</button>
-        </div>
+    <div class="section-label"><i class="fa fa-users"></i> اللاعبين</div>
+    <div class="input-row">
+        <input type="text" id="player-name" class="input-field" placeholder="اسم اللاعب..." maxlength="20" onkeypress="if(event.key==='Enter') addPlayer()">
+        <button class="add-btn" onclick="addPlayer()">+</button>
+    </div>
+    <div class="players-grid" id="player-list">
+        <span style="color: var(--muted); font-size:12px; margin: auto; padding: 5px;">ما في لاعبين بعد...</span>
+    </div>
+    <div class="player-count" id="player-count">0 لاعبين</div>
+
+    <div class="divider"></div>
+
+    <div class="section-label"><i class="fa fa-gamepad"></i> اختر الباقة</div>
+    <div class="cats-grid" id="cats-grid"></div>
+
+    <div class="divider"></div>
+
+    <div class="section-label"><i class="fa fa-sliders"></i> الإعدادات</div>
+    <div class="section-label" style="margin-top:5px; margin-bottom:5px; font-size: 11px;">مستوى الصعوبة:</div>
+    <div class="diff-row">
+        <button class="diff-btn active" id="diff-easy" onclick="setDiff('easy')">🟢 سهل</button>
+        <button class="diff-btn" id="diff-medium" onclick="setDiff('medium')">🟡 متوسط</button>
+        <button class="diff-btn" id="diff-hard" onclick="setDiff('hard')">🔴 صعب</button>
+    </div>
+    <div class="settings-row">
+        <span class="toggle-label"><i class="fa fa-clock"></i> تفعيل العداد (3 دقايق)</span>
+        <button class="toggle" id="timer-toggle" onclick="toggleTimer()"></button>
+    </div>
+    <div class="settings-row">
+        <span class="toggle-label"><i class="fa fa-user-secret"></i> لاعبين جواسيس أكثر (2 جاسوس)</span>
+        <button class="toggle" id="multi-toggle" onclick="toggleMulti()"></button>
     </div>
 
-    <div id="vote-screen" class="hidden">
-        <h2>مين اللي برا السالفة؟ <i class="fa-solid fa-gavel"></i></h2>
-        <div id="vote-options"></div>
+    <div class="instructions">
+        📌 كيف تلعب: كل لاعب يشوف كلمته، اللي "برا السالفة" ما يعرفها. تقدرون تحاشون وتسألون ولازم تكشفونه! إذا كفشوه يحاول يحزر الكلمة.
     </div>
 
-    <div id="guess-screen" class="hidden">
-        <h2 style="color: #e67e22;">كفشوك! وش الكلمة؟</h2>
-        <div id="word-options"></div>
+    <button class="primary-btn" onclick="startGame()">ابدأ اللعب 🚀</button>
+</div>
+
+<!-- GAME SCREEN -->
+<div class="screen" id="game-screen">
+    <div class="turn-header">
+        <div class="progress-dots" id="progress-dots"></div>
+        <div class="turn-name" id="current-player-name">—</div>
+        <div class="turn-instruction">مرر الجوال بدون ما تعرض الشاشة لأي أحد</div>
     </div>
 
-    <div id="end-screen" class="hidden">
-        <h1 id="end-title"></h1>
-        <div id="end-msg" class="game-display"></div>
-        <button onclick="location.reload()" style="background: var(--bg-blue);">لعبة جديدة 🔄</button>
+    <div class="phone-pass">
+        <span class="phone-icon">📱</span>
+        <div style="font-size: 13px; color: var(--muted);">بس أنت تقدر تشوف الشاشة</div>
+    </div>
+
+    <div id="reveal-section">
+        <button class="reveal-btn" onclick="reveal()">👁 اكشف دوري</button>
+    </div>
+
+    <div id="role-section" style="display:none;">
+        <div id="role-card-el"></div>
+        <button class="primary-btn" onclick="nextPlayer()">فهمت، خبيت الكلمة ✅</button>
     </div>
 </div>
 
+<!-- DISCUSSION SCREEN -->
+<div class="screen" id="discuss-screen">
+    <div style="text-align:center; margin-bottom: 16px;">
+        <div style="font-size: 40px; margin-bottom:8px;">💬</div>
+        <h3>وقت النقاش!</h3>
+        <div style="font-size: 13px; color: var(--muted); margin-top: 4px;">تناقشوا بينكم وحاولوا تكشفون اللي برا السالفة</div>
+    </div>
+
+    <div id="timer-section" style="display:none;">
+        <div class="timer-ring">
+            <div class="timer-display" id="timer-display">3:00</div>
+        </div>
+    </div>
+
+    <div class="cat-display">
+        <i class="fa fa-tag"></i>
+        <span id="discuss-category">—</span>
+    </div>
+
+    <div style="margin-top: 20px; font-size: 13px; color: var(--muted);">
+        اللاعبين:
+    </div>
+    <div id="discuss-players" style="margin-top: 8px; display: flex; flex-wrap: wrap; gap: 8px;"></div>
+
+    <button class="primary-btn" onclick="startVote()" style="margin-top: 20px;">التصويت الآن 🗳</button>
+</div>
+
+<!-- VOTE SCREEN -->
+<div class="screen" id="vote-screen">
+    <div style="text-align:center; margin-bottom: 8px;">
+        <div style="font-size: 36px; margin-bottom:6px;">🗳</div>
+        <h3>مين اللي برا السالفة؟</h3>
+        <div style="font-size: 13px; color: var(--muted); margin-top: 4px;">صوتوا لأكثر شخص مشبوه</div>
+    </div>
+    <div class="vote-grid" id="vote-options"></div>
+</div>
+
+<!-- GUESS SCREEN -->
+<div class="screen" id="guess-screen">
+    <div style="text-align:center; margin-bottom: 16px;">
+        <div style="font-size: 36px; margin-bottom:6px;">🤔</div>
+        <h3 style="color: var(--orange);">كفشوك! وش الكلمة؟</h3>
+        <div style="font-size: 13px; color: var(--muted); margin-top: 4px;">الجاسوس يقدر ينقذ نفسه إذا حزر صح</div>
+    </div>
+    <div class="guess-options" id="word-options"></div>
+</div>
+
+<!-- END SCREEN -->
+<div class="screen" id="end-screen">
+    <div class="end-result">
+        <span class="trophy-anim" id="end-emoji">🏆</span>
+        <div class="end-title" id="end-title">—</div>
+        <div style="font-size: 14px; color: var(--muted); margin-top: 6px;" id="end-subtitle">—</div>
+    </div>
+
+    <div class="end-card" id="end-details"></div>
+
+    <div class="score-row" id="score-row" style="display:none;">
+        <div class="score-card">
+            <div class="score-label">فوز الجماعة</div>
+            <div class="score-val" id="team-score">0</div>
+        </div>
+        <div class="score-card">
+            <div class="score-label">فوز الجاسوس</div>
+            <div class="score-val" id="spy-score">0</div>
+        </div>
+    </div>
+
+    <button class="primary-btn" onclick="playAgain()">العب مرة ثانية 🔄</button>
+    <button class="restart-btn" onclick="location.reload()">ابدأ من الأول 🏠</button>
+</div>
+```
+
+</div>
+
 <script>
-    const data = {
-        "جازان": ["مرسة", "مغش", "خمير", "حنيذ", "فل جازاني", "جبل فيفا", "فرسان", "لحوح", "وفد"],
-        "أكلات رمضان": ["سمبوسة", "فيمتو", "لقيمات", "شوربة شوفان", "تمر", "قطايف", "هريس", "جريش"],
-        "حيوانات": ["أسد", "فيل", "زرافة", "نمر", "قرد", "تمساح", "بطريق", "جمل", "ذئب", "ثعلب"],
-        "أكلات": ["كبسة", "شاورما", "برجر", "بيتزا", "كنافة", "سوشي", "منسف", "مكرونة"],
-        "رياضة": ["هدف", "كرة قدم", "سلة", "تسلل", "حارس", "مدرج", "حكم", "تنس"],
-        "ملابس": ["ثوب", "شماغ", "فستان", "قميص", "بشت", "قبعة", "جاكيت", "جزمة"],
-        "تقنية": ["آيفون", "قوقل", "واتساب", "لابتوب", "واي فاي", "شاحن", "تطبيق", "سناب شات"],
-        "أماكن": ["مطار", "مستشفى", "حديقة", "مدرسة", "مول", "مسجد", "شاطئ", "فندق"],
-        "ترفيه": ["سينما", "مسلسل", "لعبة", "فشار", "بلاستيشن", "يوتيوب", "نتفلكس", "تيك توك"],
-        "مدرسة": ["قلم", "دفتر", "سبورة", "فسحة", "اختبار", "مدير", "طاولة", "مقصف"],
-        "البيت": ["ثلاجة", "تلفزيون", "كنبة", "مطبخ", "سرير", "مكيف", "ستارة", "ساعة"],
-        "مهن": ["طيار", "دكتور", "مهندس", "شرطي", "طباخ", "نجار", "محامي", "مدرس"],
-        "سفر": ["جواز", "تذكرة", "شنطة سفر", "فندق", "قطار", "خريطة", "سياحة", "بحر"],
-        "ماركات": ["نايك", "أديداس", "شانيل", "رولكس", "أبل", "سامسونج", "تويوتا", "زارا"]
-    };
+const data = {
+    "جازان 🌿": ["مرسة", "مغش", "خمير", "حنيذ", "فل جازاني", "جبل فيفا", "فرسان", "لحوح", "وفد", "بصل أخضر", "ضمد", "جيزان"],
+    "أكلات رمضان 🌙": ["سمبوسة", "فيمتو", "لقيمات", "شوربة شوفان", "تمر", "قطايف", "هريس", "جريش", "عصيدة", "خبيصة", "منقلة", "مطبق"],
+    "حيوانات 🐾": ["أسد", "فيل", "زرافة", "نمر", "قرد", "تمساح", "بطريق", "جمل", "ذئب", "ثعلب", "كنغر", "بطة"],
+    "أكلات 🍔": ["كبسة", "شاورما", "برجر", "بيتزا", "كنافة", "سوشي", "منسف", "مكرونة", "مجبوس", "مضغوط", "مندي", "كشري"],
+    "رياضة ⚽": ["هدف", "كرة قدم", "سلة", "تسلل", "حارس", "مدرج", "حكم", "تنس", "سباحة", "ملاكمة", "كريكيت", "طائرة"],
+    "ملابس 👕": ["ثوب", "شماغ", "فستان", "قميص", "بشت", "قبعة", "جاكيت", "جزمة", "صديري", "شورت", "تنورة", "كمة"],
+    "تقنية 📱": ["آيفون", "قوقل", "واتساب", "لابتوب", "واي فاي", "شاحن", "تطبيق", "سناب شات", "تغريدة", "كلاود", "برمجة", "إيميل"],
+    "أماكن 📍": ["مطار", "مستشفى", "حديقة", "مدرسة", "مول", "مسجد", "شاطئ", "فندق", "متحف", "مزرعة", "ملعب", "مكتبة"],
+    "ترفيه 🎬": ["سينما", "مسلسل", "لعبة", "فشار", "بلاستيشن", "يوتيوب", "نتفلكس", "تيك توك", "بودكاست", "رواية", "مسرح", "مهرجان"],
+    "مدرسة 📚": ["قلم", "دفتر", "سبورة", "فسحة", "اختبار", "مدير", "طاولة", "مقصف", "معلم", "حقيبة", "ممحاة", "مبراة"],
+    "البيت 🏠": ["ثلاجة", "تلفزيون", "كنبة", "مطبخ", "سرير", "مكيف", "ستارة", "ساعة", "غسالة", "دولاب", "مرآة", "باب"],
+    "مهن 👔": ["طيار", "دكتور", "مهندس", "شرطي", "طباخ", "نجار", "محامي", "مدرس", "فنان", "مصور", "ممرض", "سائق"],
+    "سفر ✈️": ["جواز", "تذكرة", "شنطة سفر", "فندق", "قطار", "خريطة", "سياحة", "بحر", "فيزا", "جمارك", "رحلة", "برنامج"],
+    "ماركات 🛍️": ["نايك", "أديداس", "شانيل", "رولكس", "أبل", "سامسونج", "تويوتا", "زارا", "لويس", "غوتشي", "ايكيا", "H&M"]
+};
 
-    const icons = {
-        "جازان": "fa-mountain-sun", "أكلات رمضان": "fa-moon", "حيوانات": "fa-paw", 
-        "أكلات": "fa-utensils", "رياضة": "fa-soccer-ball", "ملابس": "fa-shirt",
-        "تقنية": "fa-laptop", "أماكن": "fa-map-location-dot", "ترفيه": "fa-film",
-        "مدرسة": "fa-graduation-cap", "البيت": "fa-house", "مهن": "fa-briefcase",
-        "سفر": "fa-plane", "ماركات": "fa-bag-shopping"
-    };
+const catColors = {
+    "جازان 🌿": "#27ae60",
+    "أكلات رمضان 🌙": "#e67e22",
+    "حيوانات 🐾": "#e74c3c",
+    "أكلات 🍔": "#f39c12",
+    "رياضة ⚽": "#2980b9",
+    "ملابس 👕": "#8e44ad",
+    "تقنية 📱": "#16a085",
+    "أماكن 📍": "#2c3e50",
+    "ترفيه 🎬": "#c0392b",
+    "مدرسة 📚": "#1a5276",
+    "البيت 🏠": "#6c7a89",
+    "مهن 👔": "#d35400",
+    "سفر ✈️": "#1abc9c",
+    "ماركات 🛍️": "#9b59b6"
+};
 
-    let players = [];
-    let gameOrder = [];
-    let selectedCat = "";
-    let chosenWord = "";
-    let impostorIndex = -1;
-    let currentStep = 0;
+// State
+let players = [];
+let selectedCat = "";
+let difficulty = "easy";
+let useTimer = false;
+let multiSpy = false;
+let timerInterval = null;
 
-    // توليد مربعات الفئات
-    const grid = document.getElementById('cats-grid');
-    Object.keys(data).forEach(cat => {
-        const card = document.createElement('div');
-        card.className = 'category-card';
-        card.style.backgroundColor = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0'); // لون عشوائي
-        if(cat === "جازان") card.style.backgroundColor = "#27ae60";
-        if(cat === "أكلات رمضان") card.style.backgroundColor = "#e67e22";
-        
-        card.innerHTML = `<i class="fa-solid ${icons[cat] || 'fa-star'}"></i> ${cat}`;
-        card.onclick = () => selectCategory(cat, card);
-        grid.appendChild(card);
+let gameState = {
+    chosenWord: "",
+    impostors: [],
+    gameOrder: [],
+    currentStep: 0,
+    scores: { team: 0, spy: 0 }
+};
+
+// Build categories grid
+const grid = document.getElementById('cats-grid');
+Object.keys(data).forEach(cat => {
+    const card = document.createElement('div');
+    card.className = 'category-card cat-card';
+    card.setAttribute('data-cat', cat);
+    card.innerHTML = `<span class="cat-icon">${cat.split(' ').pop()}</span><span class="cat-name">${cat.split(' ')[0]}</span>`;
+    card.style.borderColor = 'rgba(255,255,255,0.08)';
+    card.onclick = () => selectCategory(cat, card);
+    grid.appendChild(card);
+});
+
+function addPlayer() {
+    const input = document.getElementById('player-name');
+    const name = input.value.trim();
+    if (!name) return;
+    if (players.includes(name)) return showToast('اللاعب موجود بالفعل!');
+    if (players.length >= 12) return showToast('الحد الأقصى 12 لاعب!');
+    players.push(name);
+    updatePlayerList();
+    input.value = "";
+    input.focus();
+}
+
+function removePlayer(idx) {
+    players.splice(idx, 1);
+    updatePlayerList();
+}
+
+function updatePlayerList() {
+    const list = document.getElementById('player-list');
+    if (players.length === 0) {
+        list.innerHTML = '<span style="color: var(--muted); font-size:12px; margin: auto; padding: 5px;">ما في لاعبين بعد...</span>';
+    } else {
+        list.innerHTML = players.map((p, i) => 
+            `<div class="player-chip" onclick="removePlayer(${i})">
+                <span>${p}</span>
+                <span class="remove-x">✕</span>
+            </div>`
+        ).join('');
+    }
+    const count = players.length;
+    document.getElementById('player-count').textContent = `${count} لاعب${count === 1 ? '' : 'ين'}`;
+}
+
+function selectCategory(cat, el) {
+    selectedCat = cat;
+    document.querySelectorAll('.cat-card').forEach(c => {
+        c.classList.remove('selected');
+        c.style.borderColor = 'rgba(255,255,255,0.08)';
     });
+    el.classList.add('selected');
+}
 
-    function addPlayer() {
-        const input = document.getElementById('player-name');
-        if(input.value.trim()) {
-            players.push(input.value.trim());
-            document.getElementById('player-list').innerHTML += `<span class="player-tag">${input.value}</span>`;
-            input.value = "";
-        }
+function setDiff(d) {
+    difficulty = d;
+    ['easy','medium','hard'].forEach(x => document.getElementById('diff-'+x).classList.remove('active'));
+    document.getElementById('diff-'+d).classList.add('active');
+}
+
+function toggleTimer() {
+    useTimer = !useTimer;
+    const btn = document.getElementById('timer-toggle');
+    btn.classList.toggle('on', useTimer);
+}
+
+function toggleMulti() {
+    multiSpy = !multiSpy;
+    const btn = document.getElementById('multi-toggle');
+    btn.classList.toggle('on', multiSpy);
+}
+
+function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    // Scroll to top
+    document.querySelector('.container').scrollTop = 0;
+}
+
+function startGame() {
+    if (players.length < 3) return showToast('سجل 3 لاعبين على الأقل! 👥');
+    if (!selectedCat) return showToast('اختر باقة للعب! 🎮');
+
+    const words = [...data[selectedCat]];
+    gameState.chosenWord = words[Math.floor(Math.random() * words.length)];
+
+    const numSpies = (multiSpy && players.length >= 6) ? 2 : 1;
+    gameState.impostors = [];
+    while (gameState.impostors.length < numSpies) {
+        const idx = Math.floor(Math.random() * players.length);
+        if (!gameState.impostors.includes(idx)) gameState.impostors.push(idx);
     }
 
-    function selectCategory(cat, el) {
-        selectedCat = cat;
-        document.querySelectorAll('.category-card').forEach(c => c.classList.remove('selected'));
-        el.classList.add('selected');
-    }
+    gameState.gameOrder = [...Array(players.length).keys()].sort(() => Math.random() - 0.5);
+    gameState.currentStep = 0;
 
-    function startGame() {
-        if(players.length < 3) return alert("سجل 3 لاعبين على الأقل!");
-        if(!selectedCat) return alert("اختر باقة للعب!");
-        
-        chosenWord = data[selectedCat][Math.floor(Math.random() * data[selectedCat].length)];
-        impostorIndex = Math.floor(Math.random() * players.length);
-        
-        // خلط الترتيب
-        gameOrder = [...Array(players.length).keys()];
-        gameOrder.sort(() => Math.random() - 0.5);
-        
-        currentStep = 0;
-        document.getElementById('setup-screen').classList.add('hidden');
-        document.getElementById('game-screen').classList.remove('hidden');
+    buildProgressDots();
+    showScreen('game-screen');
+    updateTurn();
+}
+
+function buildProgressDots() {
+    const el = document.getElementById('progress-dots');
+    el.innerHTML = players.map((_, i) => `<div class="dot" id="dot-${i}"></div>`).join('');
+}
+
+function updateProgressDots() {
+    players.forEach((_, i) => {
+        const dot = document.getElementById('dot-' + i);
+        if (!dot) return;
+        if (i < gameState.currentStep) dot.className = 'dot done';
+        else if (i === gameState.currentStep) dot.className = 'dot current';
+        else dot.className = 'dot';
+    });
+}
+
+function updateTurn() {
+    const pIdx = gameState.gameOrder[gameState.currentStep];
+    document.getElementById('current-player-name').textContent = '👤 ' + players[pIdx];
+    document.getElementById('reveal-section').style.display = 'block';
+    document.getElementById('role-section').style.display = 'none';
+    updateProgressDots();
+}
+
+function reveal() {
+    document.getElementById('reveal-section').style.display = 'none';
+    document.getElementById('role-section').style.display = 'block';
+
+    const pIdx = gameState.gameOrder[gameState.currentStep];
+    const isSpy = gameState.impostors.includes(pIdx);
+    const el = document.getElementById('role-card-el');
+
+    if (isSpy) {
+        const catName = selectedCat.split(' ')[0];
+        el.innerHTML = `
+            <div class="role-card outsider">
+                <div class="role-badge">🤫 أنت الجاسوس</div>
+                <div class="role-main">التصنيف:</div>
+                <div class="role-word">${catName}</div>
+                <div class="role-hint">ما تعرف الكلمة — ادمج وما تنكشف!</div>
+            </div>`;
+    } else {
+        const hintText = difficulty === 'hard' ? 'لا تقول الكلمة مباشرة' : difficulty === 'medium' ? 'دور حول الكلمة' : 'الكلمة ظاهرة فوق';
+        el.innerHTML = `
+            <div class="role-card insider">
+                <div class="role-badge">✅ أنت من الجماعة</div>
+                <div class="role-main">الكلمة هي:</div>
+                <div class="role-word">${gameState.chosenWord}</div>
+                <div class="role-hint">${hintText}</div>
+            </div>`;
+    }
+}
+
+function nextPlayer() {
+    gameState.currentStep++;
+    if (gameState.currentStep < players.length) {
         updateTurn();
+    } else {
+        startDiscussion();
+    }
+}
+
+function startDiscussion() {
+    showScreen('discuss-screen');
+    document.getElementById('discuss-category').textContent = selectedCat;
+
+    const dp = document.getElementById('discuss-players');
+    dp.innerHTML = players.map(p => `<div class="player-chip">${p}</div>`).join('');
+
+    if (useTimer) {
+        document.getElementById('timer-section').style.display = 'block';
+        let seconds = 180;
+        const timerEl = document.getElementById('timer-display');
+        clearInterval(timerInterval);
+        timerInterval = setInterval(() => {
+            seconds--;
+            const m = Math.floor(seconds / 60);
+            const s = seconds % 60;
+            timerEl.textContent = `${m}:${s.toString().padStart(2,'0')}`;
+            if (seconds <= 30) timerEl.classList.add('warning');
+            if (seconds <= 0) {
+                clearInterval(timerInterval);
+                startVote();
+            }
+        }, 1000);
+    } else {
+        document.getElementById('timer-section').style.display = 'none';
+    }
+}
+
+function startVote() {
+    clearInterval(timerInterval);
+    showScreen('vote-screen');
+    const container = document.getElementById('vote-options');
+    container.innerHTML = players.map((p, idx) => `
+        <div class="vote-card" onclick="checkVote(${idx})">
+            <span>${p}</span>
+            <div class="vote-number">${idx + 1}</div>
+        </div>`
+    ).join('');
+}
+
+function checkVote(idx) {
+    if (gameState.impostors.includes(idx)) {
+        showGuessOptions(idx);
+    } else {
+        finishGame(false, players[idx], false);
+    }
+}
+
+function showGuessOptions(spyIdx) {
+    showScreen('guess-screen');
+    const container = document.getElementById('word-options');
+    let options = [gameState.chosenWord];
+    let others = [...data[selectedCat]].filter(w => w !== gameState.chosenWord);
+
+    const numFake = difficulty === 'easy' ? 2 : difficulty === 'medium' ? 3 : 4;
+    for (let i = 0; i < numFake && others.length > 0; i++) {
+        const r = Math.floor(Math.random() * others.length);
+        options.push(others.splice(r, 1)[0]);
     }
 
-    function updateTurn() {
-        let pIdx = gameOrder[currentStep];
-        document.getElementById('current-player-name').innerText = "دور: " + players[pIdx];
-        document.getElementById('reveal-btn').classList.remove('hidden');
-        document.getElementById('role-result').classList.add('hidden');
+    options.sort(() => Math.random() - 0.5);
+    const letters = ['أ', 'ب', 'ج', 'د', 'هـ'];
+    container.innerHTML = options.map((opt, i) => `
+        <button class="guess-btn" onclick="checkGuess('${opt}')">
+            <div class="guess-letter">${letters[i]}</div>
+            <span>${opt}</span>
+        </button>`
+    ).join('');
+}
+
+function checkGuess(word) {
+    if (word === gameState.chosenWord) {
+        gameState.scores.spy++;
+        finishGame(true, null, true);
+    } else {
+        gameState.scores.team++;
+        finishGame(false, null, false);
+    }
+}
+
+function finishGame(spyWin, wrongVoted, spyGuessed) {
+    showScreen('end-screen');
+
+    const spyNames = gameState.impostors.map(i => players[i]).join(' و ');
+
+    if (spyWin) {
+        document.getElementById('end-emoji').textContent = '😎';
+        document.getElementById('end-title').textContent = 'فاز الجاسوس!';
+        document.getElementById('end-subtitle').textContent = 'خلص عليكم وحزر الكلمة!';
+    } else if (wrongVoted) {
+        document.getElementById('end-emoji').textContent = '😅';
+        document.getElementById('end-title').textContent = 'كفشتوا غلط!';
+        document.getElementById('end-subtitle').textContent = `اللي كوفش: ${wrongVoted} — فاز الجاسوس`;
+    } else {
+        document.getElementById('end-emoji').textContent = '🏆';
+        document.getElementById('end-title').textContent = 'فاز الفريق!';
+        document.getElementById('end-subtitle').textContent = 'كفشوا الجاسوس وعرفوا الكلمة!';
     }
 
-    function reveal() {
-        document.getElementById('reveal-btn').classList.add('hidden');
-        const res = document.getElementById('role-result');
-        const box = document.getElementById('display-box');
-        res.classList.remove('hidden');
-        
-        let pIdx = gameOrder[currentStep];
-        if(pIdx === impostorIndex) {
-            box.parentElement.style.backgroundColor = "#1a2a6c";
-            box.innerHTML = `<div>أنت اللي برا السالفة! 🤫</div><div style="font-size:14px; margin-top:10px;">التصنيف: ${selectedCat}</div>`;
-        } else {
-            box.parentElement.style.backgroundColor = "#f39c12";
-            box.innerHTML = `<div style="font-size:14px;">الكلمة هي:</div><div style="font-size:28px; font-weight:900;">${chosenWord}</div>`;
-        }
-    }
+    document.getElementById('end-details').innerHTML = `
+        <div class="end-detail">
+            <span class="label">الجاسوس</span>
+            <span class="value">${spyNames}</span>
+        </div>
+        <div class="end-detail">
+            <span class="label">الكلمة</span>
+            <span class="value">${gameState.chosenWord}</span>
+        </div>
+        <div class="end-detail">
+            <span class="label">الباقة</span>
+            <span class="value">${selectedCat}</span>
+        </div>
+        <div class="end-detail">
+            <span class="label">عدد اللاعبين</span>
+            <span class="value">${players.length}</span>
+        </div>`;
 
-    function nextPlayer() {
-        currentStep++;
-        if(currentStep < players.length) updateTurn();
-        else startVote();
-    }
+    document.getElementById('score-row').style.display = 'flex';
+    document.getElementById('team-score').textContent = gameState.scores.team;
+    document.getElementById('spy-score').textContent = gameState.scores.spy;
+}
 
-    function startVote() {
-        document.getElementById('game-screen').classList.add('hidden');
-        document.getElementById('vote-screen').classList.remove('hidden');
-        const container = document.getElementById('vote-options');
-        container.innerHTML = "";
-        players.forEach((p, idx) => {
-            container.innerHTML += `<button class="vote-btn" onclick="checkVote(${idx})">${p}</button>`;
-        });
-    }
-
-    function checkVote(idx) {
-        document.getElementById('vote-screen').classList.add('hidden');
-        if(idx === impostorIndex) showGuessOptions();
-        else finishGame(false, `خسرتوا! اللي كان برا السالفة هو "${players[impostorIndex]}".. جحفلكم!`);
-    }
-
-    function showGuessOptions() {
-        document.getElementById('guess-screen').classList.remove('hidden');
-        const container = document.getElementById('word-options');
-        let options = [chosenWord];
-        let others = [...data[selectedCat]].filter(w => w !== chosenWord);
-        for(let i=0; i<3; i++) {
-            if(others.length > 0) options.push(others.splice(Math.floor(Math.random()*others.length), 1)[0]);
-        }
-        options.sort(() => Math.random() - 0.5);
-        container.innerHTML = "";
-        options.forEach(opt => {
-            container.innerHTML += `<button class="option-btn" onclick="checkGuess('${opt}')">${opt}</button>`;
-        });
-    }
-
-    function checkGuess(word) {
-        document.getElementById('guess-screen').classList.add('hidden');
-        if(word === chosenWord) finishGame(true, `فاز اللي برا السالفة! حزر الكلمة ذيب: ${chosenWord}`);
-        else finishGame(false, `كفشتوه وما عرف الكلمة! الكلمة كانت: ${chosenWord}`);
-    }
-
-    function finishGame(isImpostorWin, msg) {
-        document.getElementById('end-screen').classList.remove('hidden');
-        document.getElementById('end-title').innerText = isImpostorWin ? "فوز اللي برا السالفة! 😎" : "فوز الجماعة! 🏆";
-        document.getElementById('end-msg').innerText = msg;
-        document.getElementById('end-msg').style.backgroundColor = isImpostorWin ? "#1a2a6c" : "#27ae60";
-    }
+function playAgain() {
+    const savedScores = { ...gameState.scores };
+    startGame();
+    gameState.scores = savedScores;
+    document.getElementById('score-row').style.display = 'none';
+}
 </script>
+
 </body>
 </html>
