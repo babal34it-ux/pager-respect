@@ -1,363 +1,252 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> 100 - </title>
+    <title>برا السالفة - النسخة الشاملة</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --primary: #fbbf24; --secondary: #60a5fa; --accent: #f87171;
-            --bg: #020617; --card-bg: rgba(15, 23, 42, 0.98);
-            --correct: #10b981; --wrong: #ef4444; --hint-color: #a855f7;
+            --bg-blue: #7d8cc4;
+            --bg-orange: #f39c12;
+            --card-bg: #ffffff;
+            --text-dark: #2d3436;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
-        body { background: var(--bg); color: #f8fafc; min-height: 100vh; display: flex; justify-content: center; padding: 10px; overflow-y: auto; }
-        .container { width: 100%; max-width: 800px; background: var(--card-bg); border-radius: 20px; box-shadow: 0 25px 50px rgba(0,0,0,0.8); margin: auto; overflow: hidden; position: relative; }
-        .timer-container { height: 6px; background: rgba(255,255,255,0.05); width: 100%; }
-        .timer-bar { height: 100%; background: linear-gradient(to left, var(--primary), #d97706); width: 0%; transition: width 1s linear; }
-        .header { display: none; grid-template-columns: 1fr 1fr; gap: 10px; padding: 15px; background: rgba(0, 0, 0, 0.4); border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .score-box { padding: 10px; border-radius: 12px; text-align: center; border: 2px solid transparent; background: rgba(255,255,255,0.02); }
-        .score-box.active { border-color: var(--primary); background: rgba(251, 191, 36, 0.1); }
-        .score-val { font-size: 2rem; font-weight: 900; }
-        .powers { display: flex; justify-content: center; gap: 5px; margin-top: 5px; }
-        .p-btn { flex: 1; height: 35px; border-radius: 6px; border: none; cursor: pointer; color: #fff; font-size: 0.7rem; font-weight: 900; }
-        .p-btn:disabled { opacity: 0.15; cursor: not-allowed; filter: grayscale(1); }
-        .screen { display: none; padding: 20px; text-align: center; width: 100%; min-height: 450px; }
-        .screen.active { display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .cat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-top: 15px; width: 100%; }
-        .cat-item { position: relative; height: 100px; border-radius: 15px; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); overflow: hidden; transition: 0.3s; }
-        .cat-item:hover { transform: translateY(-5px); border-color: var(--primary); }
-        .cat-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.3; }
-        .cat-content { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: center; background: rgba(0,0,0,0.4); }
-        .opt-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 15px; width: 100%; }
-        @media (min-width: 500px) { .opt-grid { grid-template-columns: 1fr 1fr; } }
-        .opt-btn { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: #f1f5f9; padding: 15px; border-radius: 12px; font-weight: 700; cursor: pointer; transition: 0.3s; }
-        .opt-btn.reveal-correct { background: var(--correct) !important; border: none; color: white; transform: scale(1.02); }
-        .opt-btn.clicked-wrong { background: var(--wrong) !important; border: none; color: white; }
-        .opt-btn.hidden { visibility: hidden; opacity: 0; }
-        .btn-main { background: var(--primary); color: #000; padding: 15px 40px; border-radius: 12px; border: none; font-weight: 900; cursor: pointer; margin-top: 10px;}
-        input { padding: 12px; border-radius: 8px; border: 1px solid #334155; background: #1e293b; color: white; margin-bottom: 10px; width: 250px; text-align: center; }
-        #qImage { width: 100%; max-width: 320px; height: 160px; object-fit: contain; background: #1e293b; border-radius: 15px; margin-bottom: 15px; }
-        #hint-box { background: rgba(168, 85, 247, 0.15); border: 1px solid var(--hint-color); padding: 10px; border-radius: 10px; margin-bottom: 10px; display: none; width: 100%; font-size: 0.9rem; animation: fadeIn 0.5s; }
-        #feedback-msg { margin-top: 15px; font-weight: 700; min-height: 25px; font-size: 1.2rem; }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg-blue);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 15px;
+        }
+
+        .container {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 30px;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        /* شبكة الفئات */
+        .categories-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .category-card {
+            border-radius: 15px;
+            padding: 20px 10px;
+            cursor: pointer;
+            transition: 0.3s;
+            border: 4px solid transparent;
+            color: white;
+            font-weight: 900;
+            font-size: 18px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .category-card i { font-size: 30px; }
+        .category-card:hover { transform: translateY(-3px); }
+        .category-card.selected { border-color: var(--text-dark); box-shadow: 0 0 15px rgba(0,0,0,0.2); }
+
+        /* ألوان الفئات */
+        .cat-animals { background: #333d31; border-bottom: 6px solid #f39c12; }
+        .cat-clothes { background: #d39e5e; border-bottom: 6px solid #8e6d45; }
+        .cat-sports { background: #2c3e50; border-bottom: 6px solid #2980b9; }
+        .cat-food { background: #f1c40f; border-bottom: 6px solid #e67e22; color: #2d3436; }
+        .cat-tech { background: #0984e3; border-bottom: 6px solid #74b9ff; }
+        .cat-places { background: #00b894; border-bottom: 6px solid #55efc4; }
+        .cat-movies { background: #d63031; border-bottom: 6px solid #ff7675; }
+        .cat-school { background: #6c5ce7; border-bottom: 6px solid #a29bfe; }
+        .cat-home { background: #e17055; border-bottom: 6px solid #fab1a0; }
+        .cat-jobs { background: #2d3436; border-bottom: 6px solid #636e72; }
+        .cat-travel { background: #fdb827; border-bottom: 6px solid #f39c12; color: #2d3436; }
+        .cat-brands { background: #a29bfe; border-bottom: 6px solid #6c5ce7; }
+
+        input {
+            width: 100%; padding: 12px; border-radius: 12px; border: 2px solid #eee;
+            margin-bottom: 10px; font-family: 'Cairo'; font-size: 16px; box-sizing: border-box;
+        }
+
+        button {
+            width: 100%; padding: 15px; border-radius: 15px; border: none;
+            font-weight: 700; font-size: 18px; cursor: pointer;
+            background-color: var(--bg-orange); color: white; transition: 0.2s;
+        }
+
+        button:active { transform: scale(0.98); }
+
+        .game-display {
+            padding: 30px; border-radius: 20px; color: white; min-height: 200px;
+            display: flex; flex-direction: column; justify-content: center; font-size: 22px;
+            font-weight: 700;
+        }
+
+        .player-tag {
+            background: #f0f2f5; padding: 5px 12px; border-radius: 20px;
+            margin: 3px; display: inline-block; font-size: 14px; color: var(--text-dark);
+        }
+
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="timer-container"><div id="timerBar" class="timer-bar"></div></div>
-    <div id="header" class="header">
-        <div id="box1" class="score-box">
-            <div id="n1">فريق 1</div>
-            <div id="s1" class="score-val">0</div>
-            <div class="powers">
-                <button id="p1_50" class="p-btn" style="background:var(--accent)" onclick="use5050()">½</button>
-                <button id="p1_x2" class="p-btn" style="background:var(--secondary)" onclick="useX2()">x2</button>
-                <button id="p1_hint" class="p-btn" style="background:var(--hint-color)" onclick="useHint()">تلميحه</button>
-            </div>
+    <div id="setup-screen">
+        <h1 style="margin-bottom: 0;">برا السالفة</h1>
+        <p style="color: #636e72; margin-bottom: 20px;">اختر فئة وابدأ اللعب</p>
+        
+        <div id="players-input">
+            <input type="text" id="player-name" placeholder="اسم اللاعب...">
+            <button onclick="addPlayer()" style="background: var(--bg-blue); margin-bottom: 10px;">إضافة لاعب</button>
         </div>
-        <div id="box2" class="score-box">
-            <div id="n2">فريق 2</div>
-            <div id="s2" class="score-val">0</div>
-            <div class="powers">
-                <button id="p2_50" class="p-btn" style="background:var(--accent)" onclick="use5050()">½</button>
-                <button id="p2_x2" class="p-btn" style="background:var(--secondary)" onclick="useX2()">x2</button>
-                <button id="p2_hint" class="p-btn" style="background:var(--hint-color)" onclick="useHint()">تلميحه</button>
-            </div>
+        <div id="player-list" style="margin-bottom: 20px; text-align: right;"></div>
+
+        <h3 style="border-top: 1px solid #eee; pt-15">اختر الباقة (الفئة):</h3>
+        <div class="categories-grid">
+            <div class="category-card cat-animals" onclick="selectCategory('حيوانات', this)"><i class="fa-solid fa-paw"></i> حيوانات</div>
+            <div class="category-card cat-food" onclick="selectCategory('أكلات', this)"><i class="fa-solid fa-utensils"></i> أكلات</div>
+            <div class="category-card cat-sports" onclick="selectCategory('رياضة', this)"><i class="fa-solid fa-soccer-ball"></i> رياضة</div>
+            <div class="category-card cat-clothes" onclick="selectCategory('ملابس', this)"><i class="fa-solid fa-shirt"></i> ملابس</div>
+            <div class="category-card cat-tech" onclick="selectCategory('تقنية', this)"><i class="fa-solid fa-laptop"></i> تقنية</div>
+            <div class="category-card cat-places" onclick="selectCategory('أماكن', this)"><i class="fa-solid fa-map-location-dot"></i> أماكن</div>
+            <div class="category-card cat-movies" onclick="selectCategory('ترفيه', this)"><i class="fa-solid fa-film"></i> ترفيه</div>
+            <div class="category-card cat-school" onclick="selectCategory('مدرسة', this)"><i class="fa-solid fa-graduation-cap"></i> مدرسة</div>
+            <div class="category-card cat-home" onclick="selectCategory('البيت', this)"><i class="fa-solid fa-house"></i> البيت</div>
+            <div class="category-card cat-jobs" onclick="selectCategory('مهن', this)"><i class="fa-solid fa-briefcase"></i> مهن</div>
+            <div class="category-card cat-travel" onclick="selectCategory('سفر', this)"><i class="fa-solid fa-plane"></i> سفر</div>
+            <div class="category-card cat-brands" onclick="selectCategory('ماركات', this)"><i class="fa-solid fa-bag-shopping"></i> ماركات</div>
+        </div>
+        
+        <button onclick="startGame()" style="margin-top: 25px; background: #2d3436;">ابدأ اللعب الآن</button>
+    </div>
+
+    <div id="game-screen" class="hidden">
+        <h2 id="current-player-name" style="color: var(--text-dark);"></h2>
+        <p>مرر الجوال لهذا الشخص ليضغط الزر</p>
+        <button id="reveal-btn" onclick="reveal()">اكشف دوري</button>
+        
+        <div id="role-result" class="hidden">
+            <div id="display-box" class="game-display"></div>
+            <button onclick="nextPlayer()" style="background: #2d3436; margin-top: 20px;">فهمت (إخفاء)</button>
         </div>
     </div>
 
-    <div id="sc-start" class="screen active">
-        <h1 style="color:var(--primary); margin-bottom:15px;"> (900) </h1>
-        <p style="margin-bottom:15px;">كل فئة تحتوي على 10 أسئلة بمستوى 10.</p>
-        <input type="text" id="in1" placeholder="اسم الفريق 1">
-        <input type="text" id="in2" placeholder="اسم الفريق 2">
-        <button class="btn-main" onclick="startGame()">ابدأ التحدي</button>
-    </div>
-
-    <div id="sc-cats" class="screen">
-        <h3 id="turn-hint" style="margin-bottom: 10px; color: var(--primary);"></h3>
-        <div id="catGrid" class="cat-grid"></div>
-    </div>
-
-    <div id="sc-quiz" class="screen">
-        <img id="qImage" src="">
-        <h2 id="qText" style="margin-bottom: 15px;"></h2>
-        <div id="hint-box"></div>
-        <div id="optGrid" class="opt-grid"></div>
-        <div id="feedback-msg"></div>
-    </div>
-
-    <div id="sc-end" class="screen">
-        <h1 id="winMsg" style="margin-bottom: 20px;"></h1>
-        <button class="btn-main" onclick="location.reload()">إعادة اللعبة</button>
+    <div id="end-screen" class="hidden">
+        <div class="game-display" style="background: var(--bg-orange); color: white;">
+            <i class="fa-solid fa-magnifying-glass" style="font-size: 50px; margin-bottom: 20px;"></i>
+            وقت السوالف! <br> كفشوا اللي برا السالفة
+        </div>
+        <p style="margin-top: 15px; color: #636e72;">آخر لاعب استلم الجوال يبدأ بالسؤال</p>
+        <button onclick="location.reload()" style="margin-top:15px; background: var(--bg-blue);">لعبة جديدة</button>
     </div>
 </div>
 
 <script>
-    const DATA = {
-        "c1": { t: "🌍 أعلام دول", img: "https://images.unsplash.com/photo-1526948531399-320e7e40f0ca?w=400", q: [
-            {q: "هذا علم أي دولة؟", img: "https://flagcdn.com/w320/bz.png", a: "بليز", w: ["غواتيمالا", "هندوراس", "السلفادور"], h: "العلم الوحيد الذي يحتوي على أشخاص في تصميمه."},
-            {q: "هذا علم أي دولة؟", img: "https://flagcdn.com/w320/bt.png", a: "بوتان", w: ["نيبال", "تبت", "سريلانكا"], h: "يحتوي على تنين أبيض."},
-            {q: "هذا علم أي دولة؟", img: "https://flagcdn.com/w320/sc.png", a: "سيشل", w: ["موريشيوس", "المالديف", "جزر القمر"], h: "يتميز بخطوط مائلة تنطلق من الزاوية."},
-            {q: "هذا علم أي دولة؟", img: "https://flagcdn.com/w320/ls.png", a: "ليسوتو", w: ["إسواتيني", "بوتسوانا", "ناميبيا"], h: "يتوسطه قبعة تقليدية تسمى موكوروتلو."},
-            {q: "هذا علم أي دولة؟", img: "https://flagcdn.com/w320/kn.png", a: "سانت كيتس ونيفيس", w: ["جامايكا", "باربادوس", "غرينادا"], h: "دولة في الكاريبي."},
-            {q: "هذا علم أي دولة؟", img: "https://flagcdn.com/w320/tj.png", a: "طاجيكستان", w: ["أوزبكستان", "إيران", "أفغانستان"], h: "دولة في آسيا الوسطى يتوسط علمها تاج."},
-            {q: "هذا علم أي دولة؟", img: "https://flagcdn.com/w320/sr.png", a: "سورينام", w: ["غويانا", "باراغواي", "بنما"], h: "دولة في أمريكا الجنوبية تتحدث الهولندية."},
-            {q: "هذا علم أي دولة؟", img: "https://flagcdn.com/w320/vu.png", a: "فانواتو", w: ["فيجي", "ناورو", "بالاو"], h: "جزيرة في المحيط الهادئ."},
-            {q: "هذا علم أي دولة؟", img: "https://flagcdn.com/w320/gw.png", a: "غينيا بيساو", w: ["بنين", "توغو", "غينيا"], h: "دولة أفريقية لغتها الرسمية البرتغالية."},
-            {q: "هذا علم أي دولة؟", img: "https://flagcdn.com/w320/ad.png", a: "أندورا", w: ["مولدوفا", "رومانيا", "تشاد"], h: "تقع بين فرنسا وإسبانيا."}
-        ]},
-        "c_stars": { t: "🇸🇦 مشاهير السعودية", img: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400", q: [
-            {q: "من هو أول وزير صحة في تاريخ المملكة؟", a: "الأمير عبدالله الفيصل", w: ["غازي القصيبي", "حسن آل الشيخ", "رشاد فرعون"], h: "تولى المنصب عام 1370هـ."},
-            {q: "من هو الفنان الذي صمم شعار الخطوط السعودية القديم (الخمسينات)؟", a: "محمد صيام", w: ["عبدالجبار اليحيى", "ضياء عزيز", "أحمد فيلمبان"], h: "فنان تشكيلي قدير."},
-            {q: "من هو أول سعودي يحصل على درجة الدكتوراه؟", a: "عبدالعزيز الخويطر", w: ["عبدالله نصيف", "محمد عبده يماني", "عبدالعزيز التركي"], h: "عاشر الملوك وكان وزيراً لعدة وزارات."},
-            {q: "أول امرأة سعودية تعين في مجلس الشورى كانت؟", a: "ثريا عبيد", w: ["لبنى العليان", "هيا المنيع", "دلال النمري"], h: "كانت تعمل في الأمم المتحدة."},
-            {q: "من هو الملقب بـ 'شاعر المفاجأة' في الأدب السعودي؟", a: "محمد حسن فقي", w: ["حمزة شحاتة", "غازي القصيبي", "أحمد قنديل"], h: "أديب حجازي راحل."},
-            {q: "من هو أول سعودي فاز بجائزة الملك فيصل العالمية؟", a: "فؤاد سزكين", w: ["حمد الجاسر", "مصطفى الأعظمي", "خالد الفيصل"], h: "عالم في تاريخ العلوم العربية."},
-            {q: "أول شخصية سعودية تظهر على غلاف مجلة 'تايم' الأمريكية؟", a: "الملك فيصل", w: ["الملك عبدالعزيز", "الملك فهد", "الأمير سعود الفيصل"], h: "ظهر كشخصية العام."},
-            {q: "من هو 'عميد الصحافة السعودية'؟", a: "عثمان حافظ", w: ["تركي السديري", "خالد المالك", "عبدالله دحلان"], h: "مؤسس جريدة المدينة."},
-            {q: "من هو أول لاعب سعودي سجل في أولمبياد لوس أنجلوس 1984؟", a: "ماجد عبدالله", w: ["محيسن الجمعان", "شايع النفيسة", "فهد المصيبيح"], h: "الأسطورة رقم 9 ضد البرازيل."},
-            {q: "من هو المخرج السعودي لفيلم 'وجدة'؟", a: "هيفاء المنصور", w: ["محمود صباغ", "علي الكلثمي", "توفيق الزايدي"], h: "أول فيلم سعودي يصل للأوسكار."}
-        ]},
-        "c3": { t: "🔫 أسلحة PUBG", img: "https://images.unsplash.com/photo-1595590424283-b8f17842773f?w=400", q: [
-            {q: "ما هو السلاح الذي يملك أقل سرعة رصاصة في اللعبة؟", a: "Crossbow", w: ["VSS", "Thompson", "Win94"], h: "سلاحه عبارة عن سهم."},
-            {q: "كم عدد الطلقات في مخزن M249 بعد إضافة 'Extended Mag'؟", a: "160 طلقة", w: ["150 طلقة", "120 طلقة", "200 طلقة"], h: "سلاح المنشار المطور."},
-            {q: "أي سلاح يملك أسرع وقت لإطلاق الرصاص (Time Between Shots)؟", a: "P90", w: ["Vector", "Uzi", "M762"], h: "سلاح دروب فتاك."},
-            {q: "ما هو السلاح الذي لا يمكن تركيب 'Muzzle' عليه أبداً؟", a: "DP-28", w: ["M16A4", "AKM", "SKS"], h: "سلاح روسي بقرص دائري."},
-            {q: "سلاح הـ ACE32 يستخدم أي نوع من الذخيرة؟", a: "7.62mm", w: ["5.56mm", "9mm", ".45 ACP"], h: "سلاح AR حديث."},
-            {q: "كم يبلغ الضرر الأساسي (Base Damage) لسلاح الـ SLR؟", a: "58", w: ["56", "60", "53"], h: "أعلى قليلاً من الـ SKS."},
-            {q: "أي مسدس يملك خاصية 'Full Auto'؟", a: "P18C", w: ["P1911", "P92", "R45"], h: "يستخدم رصاص 9mm."},
-            {q: "ما هي القطعة التي تسمى 'Duckbill' تركب على أي سلاح؟", a: "Shotguns", w: ["SMGs", "ARs", "DMRs"], h: "تزيد من انتشار الرصاص الأفقي."},
-            {q: "كم ثانية يستغرق الـ Kar98k للتعشيق (Reload) الكامل؟", a: "4.0s", w: ["3.5s", "4.5s", "3.0s"], h: "بدون إضافات."},
-            {q: "ما هو السلاح الذي يلقب بـ 'Poison' في بعض نسخ اللعبة؟", a: "VSS", w: ["Mini-14", "QBU", "Mutant"], h: "لأنه صامت وفتاك."}
-        ]},
-        "c0": { t: "🧩 أكمل الكلمة", img: "https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=400", q: [
-            {q: "أكمل: 'إذا لم تستحِ فاصنع ما ____'", a: "شئت", w: ["أردت", "هويت", "ظننت"], h: "حديث نبوي."},
-            {q: "أكمل المثل: 'بيدي لا بيد ____'", a: "عمرو", w: ["زيد", "عدوي", "أخي"], h: "قالته الزباء ملكة تدمر."},
-            {q: "أكمل: 'لكل صارم نبوة ولكل جواد ____'", a: "كبوة", w: ["هفوة", "زلة", "وقعة"], h: "بمعنى أن العبقري قد يخطئ."},
-            {q: "أكمل: 'لا تنهَ عن خلق وتأتي مثله، عار عليك إذا فعلت ____'", a: "عظيم", w: ["كبير", "وخيم", "ذميم"], h: "بيت شعر مشهور."},
-            {q: "أكمل: 'من مأمنه يؤتى ____'", a: "الحذر", w: ["الخائف", "الرجل", "العدو"], h: "يضرب عند وقوع الخطر من حيث لا نتوقع."},
-            {q: "أكمل: 'مصارع الرجال تحت بروق ____'", a: "الطمع", w: ["السيوف", "الأمل", "الذهب"], h: "تحذير من الجشع."},
-            {q: "أكمل: 'إنك لا تجني من الشوك ____'", a: "العنب", w: ["الورد", "الثمر", "التين"], h: "الجزاء من جنس العمل."},
-            {q: "أكمل: 'السيف أصدق أنباء من ____'", a: "الكتب", w: ["القول", "الحكي", "الرسل"], h: "لأبو تمام في معركة عمورية."},
-            {q: "أكمل: 'لو كان الفقر رجلاً لـ____'", a: "قتلته", w: ["هزمته", "أكرمته", "عرفته"], h: "مقولة تنسب للإمام علي."},
-            {q: "أكمل: 'بلغ السيل ____'", a: "الزبى", w: ["المدى", "المنتهى", "الثرى"], h: "بمعنى طفح الكيل."}
-        ]},
-        "c2": { t: "🗣️ اللهجة الجازانية", img: "https://images.unsplash.com/photo-1522199670076-2852f80289c3?w=400", q: [
-            {q: "ما معنى 'المخلاف' في تاريخ جازان؟", a: "إقليم أو منطقة", w: ["نوع سيف", "قبيلة", "بئر"], h: "كان يطلق عليها المخلاف السليماني."},
-            {q: "ماذا يسمى 'الخبز الجازاني' المصنوع في الميفا؟", a: "خمير", w: ["تميس", "مراصيع", "قرصان"], h: "يصنع من الذرة الرفيعة."},
-            {q: "ما معنى كلمة 'متهبّد'؟", a: "ساقط أو منهار", w: ["مسرع", "نائم", "غاضب"], h: "تقال للجدار أو الشخص المتعثر."},
-            {q: "ما هو 'المطحن' الجازاني القديم؟", a: "حجر لطحن الحبوب", w: ["مطحنة كهرباء", "سكين", "وعاء"], h: "يتكون من قطعتين حجريتين."},
-            {q: "ماذا يعني فعل 'بهرر'؟", a: "فتح عينيه بقوة (حدق)", w: ["تكلم كثيراً", "ضحك بصوت عالٍ", "هرب"], h: "تقال عند الغضب أو التعجب."},
-            {q: "ما هو 'العُصيد' الجازاني؟", a: "أكلة شعبية من الدقيق", w: ["نوع من الشجر", "ملابس", "لعبة"], h: "تؤكل مع المرق واللحم."},
-            {q: "ما معنى كلمة 'شنق'؟", a: "جانب أو ناحية", w: ["خنق", "ضرب", "رفع"], h: "تقال: اجلس في هذا الشنق."},
-            {q: "ما هي 'المظلة' في اللهجة القديمة؟", a: "قبعة من الخوص", w: ["شمسية المطر", "خيمة", "شرفة"], h: "يلبسها المزارعون لحماية رؤوسهم."},
-            {q: "ما معنى 'يتلجلج'؟", a: "يتردد أو يضطرب", w: ["يسبح", "يأكل ببطء", "ينادي"], h: "تقال للماء في الوعاء أو الكلام غير المفهوم."},
-            {q: "ما هو 'القعود' في الإبل الجازانية؟", a: "الجمل الصغير", w: ["مكان الجلوس", "الناقة الكبيرة", "السرج"], h: "مفرد قعدان."}
-        ]},
-        "c4": { t: "🗺️ خرائط PUBG", img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400", q: [
-            {q: "ما هي الخريطة التي تحتوي على 'قنبلة لاصقة' (Sticky Bomb)؟", a: "Karakin", w: ["Sanhok", "Miramar", "Vikendi"], h: "خريطة 2x2 صحراوية."},
-            {q: "منطقة 'Cosmodrome' (قاعدة الصواريخ) تقع في؟", a: "Vikendi", w: ["Erangel", "Taego", "Deston"], h: "خريطة الثلج."},
-            {q: "ما اسم الخريطة التي تشتهر بوجود 'العواصف الرملية' المتحركة؟", a: "Miramar", w: ["Karakin", "Erangel", "Nusa"], h: "خريطة 8x8 الصحراوية."},
-            {q: "منطقة 'Paradise Resort' تقع في أي خريطة؟", a: "Sanhok", w: ["Livik", "Taego", "Vikendi"], h: "خريطة الغابات المطيرة."},
-            {q: "خريطة 'Deston' تحتوي على وسيلة تنقل فريدة هي؟", a: "المنطاد (Ascender)", w: ["التلفريك", "القطار", "الدراجة المائية"], h: "للتسلق السريع للمباني."},
-            {q: "منطقة 'Mylta Power' في Erangel مستوحاة من أي مفاعل حقيقي؟", a: "تشيرنوبل", w: ["فوكوشيما", "تري مايل", "مفاعل ديمونة"], h: "كارثة نووية شهيرة."},
-            {q: "أي خريطة تحتوي على 'البركان' النشط؟", a: "Paramo", w: ["Karakin", "Sanhok", "Nusa"], h: "خريطة متغيرة المعالم."},
-            {q: "ما اسم المدينة التي تقع في مركز خريطة Miramar؟", a: "Pecado", w: ["Hacienda", "Los Leones", "Chumacera"], h: "مدينة الكازينو الشهيرة."},
-            {q: "خريطة 'Nusa' هي تعاون بين PUBG وأي دولة؟", a: "إندونيسيا", w: ["تايلاند", "الفلبين", "ماليزيا"], h: "جزيرة استوائية."},
-            {q: "منطقة 'Shipyard' (حوض السفن) تقع في أي خريطة؟", a: "Livik", w: ["Erangel", "Sanhok", "Vikendi"], h: "خريطة 2x2 مختلطة المعالم."}
-        ]},
-        "c5": { t: "🐪 ثقافة الإبل", img: "https://images.unsplash.com/photo-1589182373726-e4f658ab50f0?w=400", q: [
-            {q: "ماذا تسمى الناقة التي تدر الحليب دون وجود حوارها؟", a: "منوح", w: ["خلفة", "لقحة", "مسيّرة"], h: "تدل على كرمها وهدوئها."},
-            {q: "ما هي 'العطايا' في وصف الإبل؟", a: "الإبل الأصيلة", w: ["هدايا الزواج", "وسم الإبل", "طعام الإبل"], h: "عطايا الله."},
-            {q: "ما هو 'الوسم'؟", a: "كيّ بالنار للتمييز بين القبائل", w: ["صبغ الوبر", "قص الأذن", "قلادة حول الرقبة"], h: "علامة ملكية لا تُمحى."},
-            {q: "ماذا يسمى الجمل الذي بلغ سن 'السديس'؟", a: "جمل نبتت له السن السادسة", w: ["جمل صغير", "جمل هرم", "جمل للركوب"], h: "في عمر 8 سنوات تقريباً."},
-            {q: "ما هي 'الخزامى' في زينة الإبل؟", a: "حلقة توضع في أنف الناقة", w: ["نوع وبر", "عشب تأكله", "قلادة"], h: "للقيادة والتحكم."},
-            {q: "ماذا يسمى قطيع الإبل الذي يتراوح عدده بين 10 إلى 40؟", a: "ذود", w: ["هجمة", "رعية", "صرمة"], h: "كلمة قرآنية."},
-            {q: "ما هو 'الشنوف'؟", a: "الناقة التي ترفع رأسها كبراً", w: ["الناقة المريضة", "سريعة الجري", "كثيرة الحليب"], h: "وصف لجمال مشيتها."},
-            {q: "ماذا تسمى الناقة التي تحب شرب الماء بكثرة؟", a: "هيام", w: ["عطشى", "ريانة", "نهل"], h: "وهو اسم مرض أيضاً."},
-            {q: "ما هو 'الوبر'؟", a: "شعر الإبل", w: ["صوف الغنم", "ريش الطير", "جلد الجمل"], h: "يستخدم في المنسوجات."},
-            {q: "ماذا يسمى الشخص الذي يقود الإبل ويغني لها؟", a: "حادي", w: ["سائق", "راعي", "مربي"], h: "يستخدم 'الحداء'."}
-        ]},
-        "c6": { t: "🌿 نباتات جازان", img: "https://images.unsplash.com/photo-1596073413908-4482cee8821d?w=400", q: [
-            {q: "ما هو 'الخوع'؟", a: "نبات بري يؤكل", w: ["نوع شجر", "آفة زراعية", "أداة حفر"], h: "ينبت بعد الأمطار."},
-            {q: "شجرة 'السيال' تنتمي لأي فصيلة؟", a: "الأكاسيا (الطلحيات)", w: ["النخيليات", "الصنوبريات", "الحمضيات"], h: "شجرة شوكية معمرة."},
-            {q: "ما هو نبات 'الشّار'؟", a: "نبات عطري طبي", w: ["نوع من النخيل", "فاكهة جبلية", "حشائش مضرة"], h: "يستخدم لعلاج بعض الأمراض."},
-            {q: "ما هي 'العشر'؟", a: "شجرة برية لبنها سام", w: ["نبتة عطرية", "شجرة فاكهة", "علف للماشية"], h: "تنتج ثماراً كروية فارغة."},
-            {q: "نبات 'المرخ' يشتهر باستخدامه في طبخة؟", a: "الحنيذ", w: ["المغش", "العصيد", "الخمير"], h: "يوضع تحت اللحم ليعطي نكهة."},
-            {q: "ما هو 'الضّرم'؟", a: "نبات عطري جبلي (لافندر بري)", w: ["نوع من الشوك", "خشب للبناء", "فاكهة"], h: "رائحته تشبه الخزامى."},
-            {q: "شجرة 'العبري' هي مسمى آخر لشجرة؟", a: "السدر", w: ["الأراك", "المانجو", "الدوم"], h: "تنتج ثمار النبق."},
-            {q: "ما هو 'البشام'؟", a: "شجرة يستخرج منها البخور والزيت", w: ["نوع من الفطر", "عشب مائي", "شجر الزيتون"], h: "تسمى بيلسان الجبل."},
-            {q: "ما هي 'السنا' (السنا مكي)؟", a: "نبتة طبية مسهلة", w: ["نبتة زينة", "شجرة ظل", "علف"], h: "مشهورة في الطب النبوي وتكثر بجازان."},
-            {q: "ما هو 'الطلخ'؟", a: "الموز بلغة بعض أهل الجبل", w: ["نوع من الذرة", "خشب سدر", "تمر"], h: "ورد ذكره في القرآن."}
-        ]},
-        "c7": { t: "🏡 التراث الجازاني", img: "https://images.unsplash.com/photo-1518780664697-55e3ad937233?w=400", q: [
-            {q: "ما هو 'المحجان'؟", a: "عصا معقوفة للراعي", w: ["سكين", "وعاء حليب", "قبعة"], h: "تستخدم لجر أغصان الشجر."},
-            {q: "ما هي 'الخسفة'؟", a: "سجادة مصنوعة من الخوص", w: ["حفرة في الأرض", "نوع من الأكل", "ملابس"], h: "تفرش في العشة."},
-            {q: "ما هو 'الجُدية'؟", a: "خصلة من الوبر أو الصوف للزينة", w: ["آلة موسيقية", "رقصة", "اسم قبيلة"], h: "توضع على رأس الجمل أو الخيل."},
-            {q: "ما هي 'المعزبة' في البيت القديم؟", a: "المرأة صاحبة البيت", w: ["مكان النوم", "المطبخ", "المجلس"], h: "لقب تكريمي لربة المنزل."},
-            {q: "ما هو 'المركود'؟", a: "قدر فخاري كبير", w: ["سرير خشبي", "نوع رقص", "بئر"], h: "يستخدم لتخزين الماء أو الطبخ الكبير."},
-            {q: "ما معنى 'التهلية' في المناسبات؟", a: "أناشيد ترحيبية بالضيوف", w: ["طريقة طبخ", "لباس تنكري", "سباق خيل"], h: "من الكرم الجازاني."},
-            {q: "ما هو 'الموفى'؟", a: "فتحة في سقف العشة للتهوية", w: ["فرن الأرض", "باب صغير", "كرسي"], h: "يسمح بخروج الدخان."},
-            {q: "ما هي 'القطارة'؟", a: "إناء فخاري لتصفية الماء", w: ["قطرة عين", "لعبة أطفال", "أداة زراعة"], h: "تجعل الماء بارداً ونقياً."},
-            {q: "ما هو 'الميزب'؟", a: "مهد الطفل المصنوع من الجلد", w: ["ميزاب المطر", "حقيبة سفر", "حذاء"], h: "يحمل فيه الطفل على الظهر."},
-            {q: "ما معنى 'الفلكة' في التراث الزراعي؟", a: "قطعة خشبية لربط الثيران", w: ["كوكب", "ضربة سوط", "عملة"], h: "توضع في رقبة الثور."}
-        ]},
-        "c8": { t: "🍋 الزراعة", img: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400", q: [
-            {q: "ما هو 'العزير' في الزراعة؟", a: "حرث الأرض للمرة الثانية", w: ["حصاد", "سقي", "تسميد"], h: "للتأكد من نظافة التربة."},
-            {q: "ماذا يسمى 'الجراد' في مراحله الأولى قبل الطيران؟", a: "دبى", w: ["نطاط", "خفاش", "هبوش"], h: "يكون خطراً جداً على الزرع."},
-            {q: "ما هي 'الصرة' في حصاد الذرة؟", a: "مجموعة من السنابل المربوطة", w: ["عملة ذهبية", "حقيبة بذور", "آفة زراعية"], h: "تجمع لتنقل للجرين."},
-            {q: "ما معنى 'البلاد' في عرف أهل جازان القديم؟", a: "المزرعة", w: ["المدينة", "الدولة", "السوق"], h: "يقول: أنا ذاهب للبلاد."},
-            {q: "ما هو 'الظمد'؟", a: "زوج من الثيران للحراثة", w: ["نوع بذور", "وقت الفجر", "حبل"], h: "يقرنان معاً."},
-            {q: "ماذا يعني 'شراوة' الأرض؟", a: "رطوبة الأرض بعد السيل", w: ["بيع الأرض", "جفاف الأرض", "حرثها"], h: "أفضل وقت للبذر."},
-            {q: "ما هو 'المدم'؟", a: "لوح خشبي لتسوية الأرض", w: ["محراث", "فأس", "مقص"], h: "يجر خلف الثيران بعد الحرث."},
-            {q: "ما هي 'الكدادة'؟", a: "بقايا المحصول بعد الحصاد", w: ["آلة حصد", "مرأة تعمل", "طعام طيور"], h: "يسمح للفقراء بأخذها."},
-            {q: "ما هو 'الوصر'؟", a: "تنقية الحبوب من القشور", w: ["سقي", "بذر", "تخزين"], h: "عملية يدوية شاقة."},
-            {q: "ما معنى 'العينة' في حساب الدرور؟", a: "موسم هطول الأمطار", w: ["بذرة جيدة", "جزء من الأرض", "مرض نباتي"], h: "تأتي في وقت محدد من السنة."}
-        ]},
-        "c9": { t: "🎲 منوعات", img: "https://images.unsplash.com/photo-1509228468518-180dd482180c?w=400", q: [
-            {q: "ما هي الدولة التي تملك أكبر عدد من الأهرامات في العالم؟", a: "السودان", w: ["مصر", "المكسيك", "بيرو"], h: "أهرامات مروي ونبتة."},
-            {q: "ما هو الكوكب الذي يمطر ألماساً حسب نظريات العلماء؟", a: "نبتون", w: ["المريخ", "الزهرة", "عطارد"], h: "بسبب الضغط الهائل والحرارة."},
-            {q: "من هو مخترع لغة البرمجة 'بايثون'؟", a: "غيدو فان روسم", w: ["بيل غيتس", "ستيف جوبز", "مارك زوكربيرج"], h: "مبرمج هولندي."},
-            {q: "ما هو الحيوان الذي لا ينام أبداً؟", a: "سمك القرش", w: ["الزرافة", "الفيل", "النمل"], h: "يجب أن يستمر في الحركة ليتنفس."},
-            {q: "ما هو العضو الوحيد في جسم الإنسان الذي يمكنه إعادة النمو؟", a: "الكبد", w: ["القلب", "الرئة", "الدماغ"], h: "يكفي جزء صغير منه لينمو ثانية."},
-            {q: "في أي سنة اندلعت الحرب العالمية الأولى؟", a: "1914", w: ["1918", "1939", "1912"], h: "بعد اغتيال ولي عهد النمسا."},
-            {q: "ما هي أصغر دولة في العالم من حيث المساحة؟", a: "الفاتيكان", w: ["موناكو", "سان مارينو", "ناورو"], h: "تقع داخل مدينة روما."},
-            {q: "ما هو الغاز الذي يسمى 'غاز الضحك'؟", a: "أكسيد النيتروز", w: ["ثاني أكسيد الكربون", "الأكسجين", "الهيدروجين"], h: "يستخدم في التخدير."},
-            {q: "ما هو أطول نهر في العالم؟", a: "النيل", w: ["الأمازون", "المسيسيبي", "الدانوب"], h: "يجري في أفريقيا."},
-            {q: "كم عدد أسنان الإنسان البالغ؟", a: "32 سن", w: ["28 سن", "30 سن", "34 سن"], h: "بما فيها أضراس العقل."}
-        ]}
+    const data = {
+        "حيوانات": ["أسد", "فيل", "زرافة", "نمر", "قرد", "تمساح", "بطريق", "جمل", "ذئب", "ثعلب"],
+        "أكلات": ["كبسة", "شاورما", "برجر", "بيتزا", "كنافة", "سوشي", "منسف", "مكرونة", "سمبوسة"],
+        "رياضة": ["هدف", "كرة قدم", "سلة", "تسلل", "حارس", "مدرج", "حكم", "تنس", "ملاكمة"],
+        "ملابس": ["ثوب", "شماغ", "فستان", "قميص", "بشت", "قبعة", "جاكيت", "جزمة", "تنورة"],
+        "تقنية": ["آيفون", "قوقل", "واتساب", "لابتوب", "واي فاي", "شاحن", "تطبيق", "سناب شات"],
+        "أماكن": ["مطار", "مستشفى", "حديقة", "مدرسة", "مول", "مسجد", "شاطئ", "فندق", "متحف"],
+        "ترفيه": ["سينما", "مسلسل", "لعبة", "فشار", "بلاستيشن", "يوتيوب", "نتفلكس", "تيك توك"],
+        "مدرسة": ["قلم", "دفتر", "سبورة", "فسحة", "اختبار", "مدير", "طاولة", "مقصف", "شنطة"],
+        "البيت": ["ثلاجة", "تلفزيون", "كنبة", "مطبخ", "سرير", "مكيف", "ستارة", "مراية", "ساعة"],
+        "مهن": ["طيار", "دكتور", "مهندس", "شرطي", "طباخ", "نجار", "محامي", "مدرس", "حلاق"],
+        "سفر": ["جواز", "تذكرة", "شنطة سفر", "فندق", "قطار", "خريطة", "سياحة", "بحر", "طائرة"],
+        "ماركات": ["نايك", "أديداس", "شانيل", "رولكس", "أبل", "سامسونج", "تويوتا", "زارا", "لكزس"]
     };
 
-    let t1 = { s: 0, p50: true, px2: true, ph: true };
-    let t2 = { s: 0, p50: true, px2: true, ph: true };
-    let turn = 1, x2Act = false, selCat = "", timer, currentScreen = 'sc-start';
+    let players = [];
+    let selectedCat = "";
+    let chosenWord = "";
+    let impostorIndex = -1;
+    let currentIndex = 0;
+
+    function addPlayer() {
+        const input = document.getElementById('player-name');
+        const name = input.value.trim();
+        if(name) {
+            players.push(name);
+            const list = document.getElementById('player-list');
+            list.innerHTML += `<span class="player-tag"><i class="fa-solid fa-user"></i> ${name}</span>`;
+            input.value = "";
+            input.focus();
+        }
+    }
+
+    function selectCategory(cat, el) {
+        selectedCat = cat;
+        document.querySelectorAll('.category-card').forEach(c => c.classList.remove('selected'));
+        el.classList.add('selected');
+    }
 
     function startGame() {
-        t1.n = document.getElementById('in1').value || "الفريق الأول";
-        t2.n = document.getElementById('in2').value || "الفريق الثاني";
-        document.getElementById('n1').innerText = t1.n;
-        document.getElementById('n2').innerText = t2.n;
-        document.getElementById('header').style.display = 'grid';
-        nav('sc-cats'); drawCats();
+        if(players.length < 3) return alert("سجل 3 لاعبين على الأقل!");
+        if(!selectedCat) return alert("اختر باقة (فئة) للعب!");
+        
+        const words = data[selectedCat];
+        chosenWord = words[Math.floor(Math.random() * words.length)];
+        impostorIndex = Math.floor(Math.random() * players.length);
+        
+        document.getElementById('setup-screen').classList.add('hidden');
+        document.getElementById('game-screen').classList.remove('hidden');
+        updateTurn();
     }
 
-    function nav(id) {
-        currentScreen = id;
-        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        updateUI();
+    function updateTurn() {
+        document.getElementById('current-player-name').innerText = "دور: " + players[currentIndex];
+        document.getElementById('reveal-btn').classList.remove('hidden');
+        document.getElementById('role-result').classList.add('hidden');
     }
 
-    function drawCats() {
-        const grid = document.getElementById('catGrid'); grid.innerHTML = '';
-        for (let k in DATA) {
-            let d = document.createElement('div'); d.className = 'cat-item';
-            d.innerHTML = `<img src="${DATA[k].img}" class="cat-img"><div class="cat-content"><b>${DATA[k].t}</b><small>${DATA[k].q.length} سؤال</small></div>`;
-            if(DATA[k].q.length > 0) d.onclick = () => loadQ(k); else d.style.opacity = '0.3';
-            grid.appendChild(d);
+    function reveal() {
+        document.getElementById('reveal-btn').classList.add('hidden');
+        const resultDiv = document.getElementById('role-result');
+        const box = document.getElementById('display-box');
+        resultDiv.classList.remove('hidden');
+        
+        if(currentIndex === impostorIndex) {
+            box.parentElement.style.backgroundColor = "#7d8cc4";
+            box.innerHTML = `
+                <div style="font-size: 18px; opacity: 0.9;">أنت اللي برا السالفة!</div>
+                <div style="margin: 15px 0;">حاول تعرف وش السالفة من كلامهم أو اقنعهم يصوتون غلط!</div>
+                <div style="font-size: 16px; border-top: 1px solid rgba(255,255,255,0.3); pt-10">تلميح السالفة عن: ${selectedCat}</div>
+            `;
+        } else {
+            box.parentElement.style.backgroundColor = "#f39c12";
+            box.innerHTML = `
+                <div style="font-size: 16px; opacity: 0.9;">اختار السالفة '${selectedCat}' والعب مع اللي جنبك!</div>
+                <div style="margin: 15px 0;">هل راح تكتشف مين برا السالفة؟</div>
+                <div style="font-size: 28px; font-weight: 900; background: rgba(0,0,0,0.1); padding: 10px; border-radius: 10px;">${chosenWord}</div>
+            `;
         }
     }
 
-    function loadQ(k) {
-        selCat = k; const q = DATA[k].q[0];
-        document.getElementById('qImage').src = q.img || DATA[k].img;
-        document.getElementById('qText').innerText = q.q;
-        document.getElementById('hint-box').style.display = 'none';
-        document.getElementById('feedback-msg').innerText = '';
-        
-        let opts = [{t: q.a, c: true}, {t: q.w[0], c: false}, {t: q.w[1], c: false}, {t: q.w[2], c: false}].sort(() => Math.random() - 0.5);
-        const grid = document.getElementById('optGrid'); grid.innerHTML = '';
-        opts.forEach(o => {
-            let b = document.createElement('button'); b.className = 'opt-btn'; b.innerText = o.t; b.dataset.correct = o.c;
-            b.onclick = () => check(o.c, b);
-            grid.appendChild(b);
-        });
-        nav('sc-quiz'); startTimer();
-    }
-
-    function startTimer() {
-        let cur = 20; clearInterval(timer);
-        document.getElementById('timerBar').style.width = "100%";
-        timer = setInterval(() => {
-            cur--; document.getElementById('timerBar').style.width = (cur/20*100) + "%";
-            if(cur<=0) { clearInterval(timer); check(false); }
-        }, 1000);
-    }
-
-    function check(isC, btn) {
-        clearInterval(timer);
-        const fb = document.getElementById('feedback-msg');
-        document.querySelectorAll('.opt-btn').forEach(b => {
-            b.onclick = null;
-            if(b.dataset.correct === "true") b.classList.add('reveal-correct');
-        });
-
-        if(isC) { 
-            if(btn) btn.classList.add('reveal-correct'); 
-            fb.innerText = "✨ إجابة صحيحة!"; fb.style.color = "var(--correct)";
-            (turn===1?t1:t2).s += (x2Act?20:10); 
-        } else { 
-            if(btn) btn.classList.add('clicked-wrong'); 
-            fb.innerText = "❌ إجابة خاطئة!"; fb.style.color = "var(--wrong)";
+    function nextPlayer() {
+        currentIndex++;
+        if(currentIndex < players.length) updateTurn();
+        else {
+            document.getElementById('game-screen').classList.add('hidden');
+            document.getElementById('end-screen').classList.remove('hidden');
         }
-
-        setTimeout(() => {
-            DATA[selCat].q.shift(); 
-            x2Act = false; 
-            turn = turn===1?2:1;
-            let rem = 0; for(let k in DATA) rem += DATA[k].q.length;
-            if(rem===0) { 
-                let winner = t1.s > t2.s ? t1.n : (t2.s > t1.s ? t2.n : "تعادل الفريقان!");
-                document.getElementById('winMsg').innerText = "🏆 الفائز: " + winner; 
-                nav('sc-end'); 
-            } else nav('sc-cats'); 
-            drawCats();
-        }, 2000);
-    }
-
-    function use5050() {
-        if(currentScreen !== 'sc-quiz') return;
-        let b = Array.from(document.querySelectorAll('.opt-btn')).filter(x => x.dataset.correct === "false");
-        b.sort(() => Math.random() - 0.5).slice(0, 2).forEach(x => x.classList.add('hidden'));
-        if(turn===1) t1.p50 = false; else t2.p50 = false; 
-        updateUI();
-    }
-
-    function useX2() { 
-        if(currentScreen !== 'sc-quiz') return;
-        x2Act = true; 
-        if(turn===1) t1.px2 = false; else t2.px2 = false; 
-        updateUI(); 
-    }
-
-    function useHint() { 
-        if(currentScreen !== 'sc-quiz') return;
-        const box = document.getElementById('hint-box');
-        box.innerText = "💡 تلميح: " + DATA[selCat].q[0].h;
-        box.style.display = 'block';
-        if(turn===1) t1.ph = false; else t2.ph = false; 
-        updateUI(); 
-    }
-
-    function updateUI() {
-        document.getElementById('s1').innerText = t1.s; 
-        document.getElementById('s2').innerText = t2.s;
-        document.getElementById('turn-hint').innerText = "دور: " + (turn===1?t1.n:t2.n);
-        document.getElementById('box1').classList.toggle('active', turn===1);
-        document.getElementById('box2').classList.toggle('active', turn===2);
-        
-        const isQuiz = (currentScreen === 'sc-quiz');
-        document.getElementById('p1_50').disabled = !t1.p50 || turn!==1 || !isQuiz;
-        document.getElementById('p1_x2').disabled = !t1.px2 || turn!==1 || !isQuiz;
-        document.getElementById('p1_hint').disabled = !t1.ph || turn!==1 || !isQuiz;
-        
-        document.getElementById('p2_50').disabled = !t2.p50 || turn!==2 || !isQuiz;
-        document.getElementById('p2_x2').disabled = !t2.px2 || turn!==2 || !isQuiz;
-        document.getElementById('p2_hint').disabled = !t2.ph || turn!==2 || !isQuiz;
     }
 </script>
 </body>
