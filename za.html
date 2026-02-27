@@ -3,192 +3,160 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>برا السالفة - النسخة الشاملة</title>
+    <title>برا السالفة - النسخة الشاملة الرمضانية</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --bg-blue: #7d8cc4;
+            --bg-blue: #1a2a6c;
             --bg-orange: #f39c12;
             --card-bg: #ffffff;
             --text-dark: #2d3436;
+            --ramadan-gold: #ffd700;
         }
 
         body {
             font-family: 'Cairo', sans-serif;
-            background-color: var(--bg-blue);
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 15px;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            margin: 0; display: flex; justify-content: center; align-items: center;
+            min-height: 100vh; padding: 15px; overflow-x: hidden;
         }
+
+        .lantern {
+            position: fixed; top: -10px; font-size: 35px; color: var(--ramadan-gold);
+            animation: swing 3s ease-in-out infinite; transform-origin: top center; z-index: 1000;
+        }
+        .lantern-left { left: 15px; } .lantern-right { right: 15px; }
+        @keyframes swing { 0%, 100% { transform: rotate(-10deg); } 50% { transform: rotate(10deg); } }
 
         .container {
-            background: var(--card-bg);
-            padding: 25px;
-            border-radius: 30px;
-            width: 100%;
-            max-width: 500px;
-            text-align: center;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-            max-height: 90vh;
-            overflow-y: auto;
+            background: var(--card-bg); padding: 25px; border-radius: 30px;
+            width: 100%; max-width: 500px; text-align: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4); max-height: 90vh; overflow-y: auto;
+            position: relative; border: 3px solid var(--ramadan-gold);
         }
 
-        /* شبكة الفئات */
-        .categories-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-top: 20px;
-        }
-
+        .categories-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
         .category-card {
-            border-radius: 15px;
-            padding: 20px 10px;
-            cursor: pointer;
-            transition: 0.3s;
-            border: 4px solid transparent;
-            color: white;
-            font-weight: 900;
-            font-size: 18px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
+            border-radius: 12px; padding: 15px; cursor: pointer; transition: 0.2s;
+            border: 3px solid transparent; color: white; font-weight: 700; font-size: 15px;
+            display: flex; flex-direction: column; align-items: center; gap: 5px;
         }
+        .category-card i { font-size: 22px; }
+        .category-card.selected { border-color: #2d3436; transform: scale(0.95); box-shadow: inset 0 0 10px rgba(0,0,0,0.2); }
 
-        .category-card i { font-size: 30px; }
-        .category-card:hover { transform: translateY(-3px); }
-        .category-card.selected { border-color: var(--text-dark); box-shadow: 0 0 15px rgba(0,0,0,0.2); }
-
-        /* ألوان الفئات */
-        .cat-animals { background: #333d31; border-bottom: 6px solid #f39c12; }
-        .cat-clothes { background: #d39e5e; border-bottom: 6px solid #8e6d45; }
-        .cat-sports { background: #2c3e50; border-bottom: 6px solid #2980b9; }
-        .cat-food { background: #f1c40f; border-bottom: 6px solid #e67e22; color: #2d3436; }
-        .cat-tech { background: #0984e3; border-bottom: 6px solid #74b9ff; }
-        .cat-places { background: #00b894; border-bottom: 6px solid #55efc4; }
-        .cat-movies { background: #d63031; border-bottom: 6px solid #ff7675; }
-        .cat-school { background: #6c5ce7; border-bottom: 6px solid #a29bfe; }
-        .cat-home { background: #e17055; border-bottom: 6px solid #fab1a0; }
-        .cat-jobs { background: #2d3436; border-bottom: 6px solid #636e72; }
-        .cat-travel { background: #fdb827; border-bottom: 6px solid #f39c12; color: #2d3436; }
-        .cat-brands { background: #a29bfe; border-bottom: 6px solid #6c5ce7; }
-
-        input {
-            width: 100%; padding: 12px; border-radius: 12px; border: 2px solid #eee;
-            margin-bottom: 10px; font-family: 'Cairo'; font-size: 16px; box-sizing: border-box;
-        }
-
-        button {
-            width: 100%; padding: 15px; border-radius: 15px; border: none;
-            font-weight: 700; font-size: 18px; cursor: pointer;
-            background-color: var(--bg-orange); color: white; transition: 0.2s;
-        }
-
-        button:active { transform: scale(0.98); }
-
-        .game-display {
-            padding: 30px; border-radius: 20px; color: white; min-height: 200px;
-            display: flex; flex-direction: column; justify-content: center; font-size: 22px;
-            font-weight: 700;
-        }
-
-        .player-tag {
-            background: #f0f2f5; padding: 5px 12px; border-radius: 20px;
-            margin: 3px; display: inline-block; font-size: 14px; color: var(--text-dark);
-        }
-
+        input { width: 100%; padding: 12px; border-radius: 12px; border: 2px solid #eee; margin-bottom: 10px; font-family: 'Cairo'; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; border-radius: 15px; border: none; font-weight: 700; font-size: 18px; cursor: pointer; background-color: var(--bg-orange); color: white; margin-top: 10px; }
+        
+        .game-display { padding: 25px; border-radius: 20px; color: white; min-height: 150px; display: flex; flex-direction: column; justify-content: center; margin-bottom: 15px; }
+        .player-tag { background: #f0f2f5; padding: 5px 12px; border-radius: 20px; margin: 3px; display: inline-block; font-size: 13px; border: 1px solid #ddd; }
+        
+        .vote-btn { background: #f8f9fa; color: #2d3436; margin-bottom: 8px; border: 2px solid #eee; }
+        .option-btn { background: #6c5ce7; color: white; font-size: 16px; margin: 5px 0; border-bottom: 4px solid #4834d4; }
+        
         .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
+<div class="lantern lantern-left"><i class="fa-solid fa-lightbulb"></i></div>
+<div class="lantern lantern-right"><i class="fa-solid fa-lightbulb"></i></div>
+
 <div class="container">
     <div id="setup-screen">
-        <h1 style="margin-bottom: 0;">برا السالفة</h1>
-        <p style="color: #636e72; margin-bottom: 20px;">اختر فئة وابدأ اللعب</p>
+        <h2 style="color: var(--bg-blue); margin-bottom: 5px;"><i class="fa-solid fa-moon"></i> برا السالفة</h2>
+        <p style="font-size: 13px; color: #666; margin-bottom: 15px;">النسخة الشاملة | خلك ذيب لا يكفشونك!</p>
         
-        <div id="players-input">
-            <input type="text" id="player-name" placeholder="اسم اللاعب...">
-            <button onclick="addPlayer()" style="background: var(--bg-blue); margin-bottom: 10px;">إضافة لاعب</button>
-        </div>
-        <div id="player-list" style="margin-bottom: 20px; text-align: right;"></div>
-
-        <h3 style="border-top: 1px solid #eee; pt-15">اختر الباقة (الفئة):</h3>
-        <div class="categories-grid">
-            <div class="category-card cat-animals" onclick="selectCategory('حيوانات', this)"><i class="fa-solid fa-paw"></i> حيوانات</div>
-            <div class="category-card cat-food" onclick="selectCategory('أكلات', this)"><i class="fa-solid fa-utensils"></i> أكلات</div>
-            <div class="category-card cat-sports" onclick="selectCategory('رياضة', this)"><i class="fa-solid fa-soccer-ball"></i> رياضة</div>
-            <div class="category-card cat-clothes" onclick="selectCategory('ملابس', this)"><i class="fa-solid fa-shirt"></i> ملابس</div>
-            <div class="category-card cat-tech" onclick="selectCategory('تقنية', this)"><i class="fa-solid fa-laptop"></i> تقنية</div>
-            <div class="category-card cat-places" onclick="selectCategory('أماكن', this)"><i class="fa-solid fa-map-location-dot"></i> أماكن</div>
-            <div class="category-card cat-movies" onclick="selectCategory('ترفيه', this)"><i class="fa-solid fa-film"></i> ترفيه</div>
-            <div class="category-card cat-school" onclick="selectCategory('مدرسة', this)"><i class="fa-solid fa-graduation-cap"></i> مدرسة</div>
-            <div class="category-card cat-home" onclick="selectCategory('البيت', this)"><i class="fa-solid fa-house"></i> البيت</div>
-            <div class="category-card cat-jobs" onclick="selectCategory('مهن', this)"><i class="fa-solid fa-briefcase"></i> مهن</div>
-            <div class="category-card cat-travel" onclick="selectCategory('سفر', this)"><i class="fa-solid fa-plane"></i> سفر</div>
-            <div class="category-card cat-brands" onclick="selectCategory('ماركات', this)"><i class="fa-solid fa-bag-shopping"></i> ماركات</div>
-        </div>
+        <input type="text" id="player-name" placeholder="اسم اللاعب...">
+        <button onclick="addPlayer()" style="background: var(--bg-blue);">إضافة لاعب +</button>
+        <div id="player-list" style="margin: 15px 0;"></div>
         
-        <button onclick="startGame()" style="margin-top: 25px; background: #2d3436;">ابدأ اللعب الآن</button>
+        <h3 style="border-top: 1px solid #eee; padding-top: 10px;">اختر الباقة:</h3>
+        <div class="categories-grid" id="cats-grid">
+            </div>
+        <button onclick="startGame()" style="background: #2d3436; margin-top:20px; font-size: 22px;">ابدأ اللعب 🚀</button>
     </div>
 
     <div id="game-screen" class="hidden">
-        <h2 id="current-player-name" style="color: var(--text-dark);"></h2>
-        <p>مرر الجوال لهذا الشخص ليضغط الزر</p>
-        <button id="reveal-btn" onclick="reveal()">اكشف دوري</button>
-        
+        <h2 id="current-player-name"></h2>
+        <p>مرر الجوال لهذا الشخص</p>
+        <button id="reveal-btn" onclick="reveal()">اكشف دوري 👀</button>
         <div id="role-result" class="hidden">
             <div id="display-box" class="game-display"></div>
-            <button onclick="nextPlayer()" style="background: #2d3436; margin-top: 20px;">فهمت (إخفاء)</button>
+            <button onclick="nextPlayer()" style="background: #2d3436;">فهمت، خبيت الكلمة</button>
         </div>
     </div>
 
+    <div id="vote-screen" class="hidden">
+        <h2>مين اللي برا السالفة؟ <i class="fa-solid fa-gavel"></i></h2>
+        <div id="vote-options"></div>
+    </div>
+
+    <div id="guess-screen" class="hidden">
+        <h2 style="color: #e67e22;">كفشوك! وش الكلمة؟</h2>
+        <div id="word-options"></div>
+    </div>
+
     <div id="end-screen" class="hidden">
-        <div class="game-display" style="background: var(--bg-orange); color: white;">
-            <i class="fa-solid fa-magnifying-glass" style="font-size: 50px; margin-bottom: 20px;"></i>
-            وقت السوالف! <br> كفشوا اللي برا السالفة
-        </div>
-        <p style="margin-top: 15px; color: #636e72;">آخر لاعب استلم الجوال يبدأ بالسؤال</p>
-        <button onclick="location.reload()" style="margin-top:15px; background: var(--bg-blue);">لعبة جديدة</button>
+        <h1 id="end-title"></h1>
+        <div id="end-msg" class="game-display"></div>
+        <button onclick="location.reload()" style="background: var(--bg-blue);">لعبة جديدة 🔄</button>
     </div>
 </div>
 
 <script>
     const data = {
+        "جازان": ["مرسة", "مغش", "خمير", "حنيذ", "فل جازاني", "جبل فيفا", "فرسان", "لحوح", "وفد"],
+        "أكلات رمضان": ["سمبوسة", "فيمتو", "لقيمات", "شوربة شوفان", "تمر", "قطايف", "هريس", "جريش"],
         "حيوانات": ["أسد", "فيل", "زرافة", "نمر", "قرد", "تمساح", "بطريق", "جمل", "ذئب", "ثعلب"],
-        "أكلات": ["كبسة", "شاورما", "برجر", "بيتزا", "كنافة", "سوشي", "منسف", "مكرونة", "سمبوسة"],
-        "رياضة": ["هدف", "كرة قدم", "سلة", "تسلل", "حارس", "مدرج", "حكم", "تنس", "ملاكمة"],
-        "ملابس": ["ثوب", "شماغ", "فستان", "قميص", "بشت", "قبعة", "جاكيت", "جزمة", "تنورة"],
+        "أكلات": ["كبسة", "شاورما", "برجر", "بيتزا", "كنافة", "سوشي", "منسف", "مكرونة"],
+        "رياضة": ["هدف", "كرة قدم", "سلة", "تسلل", "حارس", "مدرج", "حكم", "تنس"],
+        "ملابس": ["ثوب", "شماغ", "فستان", "قميص", "بشت", "قبعة", "جاكيت", "جزمة"],
         "تقنية": ["آيفون", "قوقل", "واتساب", "لابتوب", "واي فاي", "شاحن", "تطبيق", "سناب شات"],
-        "أماكن": ["مطار", "مستشفى", "حديقة", "مدرسة", "مول", "مسجد", "شاطئ", "فندق", "متحف"],
+        "أماكن": ["مطار", "مستشفى", "حديقة", "مدرسة", "مول", "مسجد", "شاطئ", "فندق"],
         "ترفيه": ["سينما", "مسلسل", "لعبة", "فشار", "بلاستيشن", "يوتيوب", "نتفلكس", "تيك توك"],
-        "مدرسة": ["قلم", "دفتر", "سبورة", "فسحة", "اختبار", "مدير", "طاولة", "مقصف", "شنطة"],
-        "البيت": ["ثلاجة", "تلفزيون", "كنبة", "مطبخ", "سرير", "مكيف", "ستارة", "مراية", "ساعة"],
-        "مهن": ["طيار", "دكتور", "مهندس", "شرطي", "طباخ", "نجار", "محامي", "مدرس", "حلاق"],
-        "سفر": ["جواز", "تذكرة", "شنطة سفر", "فندق", "قطار", "خريطة", "سياحة", "بحر", "طائرة"],
-        "ماركات": ["نايك", "أديداس", "شانيل", "رولكس", "أبل", "سامسونج", "تويوتا", "زارا", "لكزس"]
+        "مدرسة": ["قلم", "دفتر", "سبورة", "فسحة", "اختبار", "مدير", "طاولة", "مقصف"],
+        "البيت": ["ثلاجة", "تلفزيون", "كنبة", "مطبخ", "سرير", "مكيف", "ستارة", "ساعة"],
+        "مهن": ["طيار", "دكتور", "مهندس", "شرطي", "طباخ", "نجار", "محامي", "مدرس"],
+        "سفر": ["جواز", "تذكرة", "شنطة سفر", "فندق", "قطار", "خريطة", "سياحة", "بحر"],
+        "ماركات": ["نايك", "أديداس", "شانيل", "رولكس", "أبل", "سامسونج", "تويوتا", "زارا"]
+    };
+
+    const icons = {
+        "جازان": "fa-mountain-sun", "أكلات رمضان": "fa-moon", "حيوانات": "fa-paw", 
+        "أكلات": "fa-utensils", "رياضة": "fa-soccer-ball", "ملابس": "fa-shirt",
+        "تقنية": "fa-laptop", "أماكن": "fa-map-location-dot", "ترفيه": "fa-film",
+        "مدرسة": "fa-graduation-cap", "البيت": "fa-house", "مهن": "fa-briefcase",
+        "سفر": "fa-plane", "ماركات": "fa-bag-shopping"
     };
 
     let players = [];
+    let gameOrder = [];
     let selectedCat = "";
     let chosenWord = "";
     let impostorIndex = -1;
-    let currentIndex = 0;
+    let currentStep = 0;
+
+    // توليد مربعات الفئات
+    const grid = document.getElementById('cats-grid');
+    Object.keys(data).forEach(cat => {
+        const card = document.createElement('div');
+        card.className = 'category-card';
+        card.style.backgroundColor = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0'); // لون عشوائي
+        if(cat === "جازان") card.style.backgroundColor = "#27ae60";
+        if(cat === "أكلات رمضان") card.style.backgroundColor = "#e67e22";
+        
+        card.innerHTML = `<i class="fa-solid ${icons[cat] || 'fa-star'}"></i> ${cat}`;
+        card.onclick = () => selectCategory(cat, card);
+        grid.appendChild(card);
+    });
 
     function addPlayer() {
         const input = document.getElementById('player-name');
-        const name = input.value.trim();
-        if(name) {
-            players.push(name);
-            const list = document.getElementById('player-list');
-            list.innerHTML += `<span class="player-tag"><i class="fa-solid fa-user"></i> ${name}</span>`;
+        if(input.value.trim()) {
+            players.push(input.value.trim());
+            document.getElementById('player-list').innerHTML += `<span class="player-tag">${input.value}</span>`;
             input.value = "";
-            input.focus();
         }
     }
 
@@ -200,53 +168,92 @@
 
     function startGame() {
         if(players.length < 3) return alert("سجل 3 لاعبين على الأقل!");
-        if(!selectedCat) return alert("اختر باقة (فئة) للعب!");
+        if(!selectedCat) return alert("اختر باقة للعب!");
         
-        const words = data[selectedCat];
-        chosenWord = words[Math.floor(Math.random() * words.length)];
+        chosenWord = data[selectedCat][Math.floor(Math.random() * data[selectedCat].length)];
         impostorIndex = Math.floor(Math.random() * players.length);
         
+        // خلط الترتيب
+        gameOrder = [...Array(players.length).keys()];
+        gameOrder.sort(() => Math.random() - 0.5);
+        
+        currentStep = 0;
         document.getElementById('setup-screen').classList.add('hidden');
         document.getElementById('game-screen').classList.remove('hidden');
         updateTurn();
     }
 
     function updateTurn() {
-        document.getElementById('current-player-name').innerText = "دور: " + players[currentIndex];
+        let pIdx = gameOrder[currentStep];
+        document.getElementById('current-player-name').innerText = "دور: " + players[pIdx];
         document.getElementById('reveal-btn').classList.remove('hidden');
         document.getElementById('role-result').classList.add('hidden');
     }
 
     function reveal() {
         document.getElementById('reveal-btn').classList.add('hidden');
-        const resultDiv = document.getElementById('role-result');
+        const res = document.getElementById('role-result');
         const box = document.getElementById('display-box');
-        resultDiv.classList.remove('hidden');
+        res.classList.remove('hidden');
         
-        if(currentIndex === impostorIndex) {
-            box.parentElement.style.backgroundColor = "#7d8cc4";
-            box.innerHTML = `
-                <div style="font-size: 18px; opacity: 0.9;">أنت اللي برا السالفة!</div>
-                <div style="margin: 15px 0;">حاول تعرف وش السالفة من كلامهم أو اقنعهم يصوتون غلط!</div>
-                <div style="font-size: 16px; border-top: 1px solid rgba(255,255,255,0.3); pt-10">تلميح السالفة عن: ${selectedCat}</div>
-            `;
+        let pIdx = gameOrder[currentStep];
+        if(pIdx === impostorIndex) {
+            box.parentElement.style.backgroundColor = "#1a2a6c";
+            box.innerHTML = `<div>أنت اللي برا السالفة! 🤫</div><div style="font-size:14px; margin-top:10px;">التصنيف: ${selectedCat}</div>`;
         } else {
             box.parentElement.style.backgroundColor = "#f39c12";
-            box.innerHTML = `
-                <div style="font-size: 16px; opacity: 0.9;">اختار السالفة '${selectedCat}' والعب مع اللي جنبك!</div>
-                <div style="margin: 15px 0;">هل راح تكتشف مين برا السالفة؟</div>
-                <div style="font-size: 28px; font-weight: 900; background: rgba(0,0,0,0.1); padding: 10px; border-radius: 10px;">${chosenWord}</div>
-            `;
+            box.innerHTML = `<div style="font-size:14px;">الكلمة هي:</div><div style="font-size:28px; font-weight:900;">${chosenWord}</div>`;
         }
     }
 
     function nextPlayer() {
-        currentIndex++;
-        if(currentIndex < players.length) updateTurn();
-        else {
-            document.getElementById('game-screen').classList.add('hidden');
-            document.getElementById('end-screen').classList.remove('hidden');
+        currentStep++;
+        if(currentStep < players.length) updateTurn();
+        else startVote();
+    }
+
+    function startVote() {
+        document.getElementById('game-screen').classList.add('hidden');
+        document.getElementById('vote-screen').classList.remove('hidden');
+        const container = document.getElementById('vote-options');
+        container.innerHTML = "";
+        players.forEach((p, idx) => {
+            container.innerHTML += `<button class="vote-btn" onclick="checkVote(${idx})">${p}</button>`;
+        });
+    }
+
+    function checkVote(idx) {
+        document.getElementById('vote-screen').classList.add('hidden');
+        if(idx === impostorIndex) showGuessOptions();
+        else finishGame(false, `خسرتوا! اللي كان برا السالفة هو "${players[impostorIndex]}".. جحفلكم!`);
+    }
+
+    function showGuessOptions() {
+        document.getElementById('guess-screen').classList.remove('hidden');
+        const container = document.getElementById('word-options');
+        let options = [chosenWord];
+        let others = [...data[selectedCat]].filter(w => w !== chosenWord);
+        for(let i=0; i<3; i++) {
+            if(others.length > 0) options.push(others.splice(Math.floor(Math.random()*others.length), 1)[0]);
         }
+        options.sort(() => Math.random() - 0.5);
+        container.innerHTML = "";
+        options.forEach(opt => {
+            container.innerHTML += `<button class="option-btn" onclick="checkGuess('${opt}')">${opt}</button>`;
+        });
+    }
+
+    function checkGuess(word) {
+        document.getElementById('guess-screen').classList.add('hidden');
+        if(word === chosenWord) finishGame(true, `فاز اللي برا السالفة! حزر الكلمة ذيب: ${chosenWord}`);
+        else finishGame(false, `كفشتوه وما عرف الكلمة! الكلمة كانت: ${chosenWord}`);
+    }
+
+    function finishGame(isImpostorWin, msg) {
+        document.getElementById('end-screen').classList.remove('hidden');
+        document.getElementById('end-title').innerText = isImpostorWin ? "فوز اللي برا السالفة! 😎" : "فوز الجماعة! 🏆";
+        document.getElementById('end-msg').innerText = msg;
+        document.getElementById('end-msg').style.backgroundColor = isImpostorWin ? "#1a2a6c" : "#27ae60";
     }
 </script>
 </body>
