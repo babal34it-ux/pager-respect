@@ -1,1254 +1,838 @@
-<!DOCTYPE html>
+‏<!DOCTYPE html>
 
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>برا السالفة 🌙</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --night: #0a0e1a;
-            --deep: #111827;
-            --card: #1a2235;
-            --gold: #f5c518;
-            --orange: #ff6b35;
-            --teal: #00d4aa;
-            --purple: #7c3aed;
-            --text: #f0f4ff;
-            --muted: #8892a4;
-            --border: rgba(245, 197, 24, 0.25);
+‏<html lang="ar" dir="rtl">
+‏<head>
+‏  <meta charset="UTF-8"/>
+‏  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+‏  <title>Hook — خالد</title>
+‏  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+‏  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Bebas+Neue&display=swap" rel="stylesheet"/>
+‏  <style>
+‏    :root {
+‏      --green:   #7C3AED;
+‏      --green2:  #5B21B6;
+‏      --green3:  #A78BFA;
+‏      --dark:    #05080F;
+‏      --dark2:   #080C14;
+‏      --card:    #0D1018;
+‏      --card2:   #10141C;
+‏      --border:  #1A1F2E;
+‏      --border2: #1E2635;
+‏      --muted:   #4A5268;
+‏      --text:    #C8D0E0;
+‏      --nav-h:   64px;
+    }
+
+```
+‏*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+‏html { scroll-behavior: smooth; }
+
+‏body {
+‏  background: var(--dark);
+‏  color: var(--text);
+‏  font-family: 'Cairo', sans-serif;
+‏  min-height: 100vh;
+‏  overflow-x: hidden;
+}
+
+‏body::after {
+‏  content: '';
+‏  position: fixed; inset: 0;
+‏  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+‏  pointer-events: none; z-index: 999;
+}
+
+‏/* NAV */
+‏nav {
+‏  position: fixed; top: 0; left: 0; right: 0;
+‏  height: var(--nav-h);
+‏  background: rgba(5,8,15,0.92);
+‏  backdrop-filter: blur(20px);
+‏  border-bottom: 1px solid var(--border);
+‏  z-index: 100;
+‏  display: flex; align-items: center;
+‏  justify-content: space-between;
+‏  padding: 0 32px;
+}
+
+‏.nav-logo {
+‏  font-family: 'Bebas Neue', sans-serif;
+‏  font-size: 22px; letter-spacing: 3px;
+‏  color: var(--green); display: flex;
+‏  align-items: center; gap: 11px; cursor: pointer;
+}
+
+‏.nav-logo .logo-icon {
+‏  width: 36px; height: 36px; border-radius: 50%;
+‏  border: 2px solid var(--green);
+‏  background: rgba(124,58,237,0.1);
+‏  display: flex; align-items: center; justify-content: center;
+‏  font-size: 16px;
+}
+
+‏.nav-links { display: flex; gap: 2px; list-style: none; }
+
+‏.nav-links a {
+‏  text-decoration: none; color: var(--muted);
+‏  font-size: 13px; font-weight: 700;
+‏  padding: 8px 14px; border-radius: 8px;
+‏  transition: all 0.2s; cursor: pointer; letter-spacing: 0.3px;
+}
+
+‏.nav-links a:hover, .nav-links a.active {
+‏  color: var(--green); background: rgba(124,58,237,0.08);
+}
+
+‏.nav-cta {
+‏  background: var(--green) !important;
+‏  color: #ffffff !important; font-weight: 900 !important;
+}
+‏.nav-cta:hover { background: var(--green2) !important; color: #050a02 !important; }
+
+‏/* PAGES */
+‏.page { display: none; padding-top: var(--nav-h); min-height: 100vh; }
+‏.page.active { display: block; }
+
+‏/* ======= HOME ======= */
+‏.hero-section {
+‏  position: relative;
+‏  min-height: calc(100vh - var(--nav-h));
+‏  display: flex; flex-direction: column;
+‏  align-items: center; justify-content: center;
+‏  text-align: center; padding: 60px 20px;
+‏  overflow: hidden;
+}
+
+‏.grid-bg {
+‏  position: absolute; inset: 0;
+‏  background-image:
+‏    linear-gradient(rgba(124,58,237,0.025) 1px, transparent 1px),
+‏    linear-gradient(90deg, rgba(124,58,237,0.025) 1px, transparent 1px);
+‏  background-size: 64px 64px;
+‏  mask-image: radial-gradient(ellipse at center, black 25%, transparent 72%);
+}
+
+‏.hero-glow {
+‏  position: absolute;
+‏  width: 900px; height: 900px;
+‏  background: radial-gradient(circle,
+‏    rgba(124,58,237,0.07) 0%,
+‏    rgba(91,33,182,0.03) 40%,
+‏    transparent 70%);
+‏  top: 50%; left: 50%;
+‏  transform: translate(-50%, -50%);
+‏  pointer-events: none;
+}
+
+‏.hero-glow2 {
+‏  position: absolute;
+‏  width: 350px; height: 350px;
+‏  background: radial-gradient(circle, rgba(124,58,237,0.04) 0%, transparent 70%);
+‏  bottom: -60px; left: 10%;
+‏  pointer-events: none;
+}
+
+‏.hero-content { position: relative; z-index: 1; }
+
+‏/* Avatar spinning ring */
+‏.avatar-ring {
+‏  position: relative;
+‏  display: inline-block;
+‏  margin-bottom: 32px;
+}
+
+‏.avatar-ring::before {
+‏  content: ''; position: absolute; inset: -6px;
+‏  border-radius: 50%;
+‏  background: conic-gradient(
+‏    var(--green) 0deg, #3b0764 60deg,
+‏    transparent 130deg,
+‏    var(--green3) 200deg, var(--green) 260deg,
+‏    transparent 320deg, var(--green) 360deg
+  );
+‏  animation: spin 5s linear infinite;
+‏  z-index: -1;
+}
+
+‏.avatar-ring::after {
+‏  content: ''; position: absolute; inset: -12px;
+‏  border-radius: 50%;
+‏  background: radial-gradient(circle, rgba(124,58,237,0.12), transparent 70%);
+‏  animation: pulse-ring 3s ease-in-out infinite;
+‏  z-index: -2;
+}
+
+‏@keyframes spin { to { transform: rotate(360deg); } }
+‏@keyframes pulse-ring {
+‏  0%, 100% { opacity: 0.5; transform: scale(1); }
+‏  50% { opacity: 1; transform: scale(1.05); }
+}
+
+‏.avatar-ring .av-img {
+‏  width: 152px; height: 152px;
+‏  border-radius: 50%;
+‏  display: flex; align-items: center; justify-content: center;
+‏  border: 4px solid var(--dark);
+‏  background: linear-gradient(135deg, #1a0d2e, #2d1052);
+‏  font-size: 64px;
+‏  overflow: hidden;
+}
+
+‏.status-badge {
+‏  position: absolute; bottom: 8px; left: 8px;
+‏  background: var(--dark2);
+‏  border: 1.5px solid var(--border2);
+‏  border-radius: 20px; padding: 4px 12px;
+‏  font-size: 11px; font-weight: 700; color: var(--muted);
+‏  display: flex; align-items: center; gap: 5px;
+}
+‏.status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); }
+‏.status-dot.live { background: var(--green); box-shadow: 0 0 6px var(--green); animation: blink 1.5s ease-in-out infinite; }
+‏@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+‏.hero-name {
+‏  font-family: 'Bebas Neue', sans-serif;
+‏  font-size: clamp(64px, 13vw, 110px);
+‏  letter-spacing: 6px; line-height: 1; color: #fff;
+‏  text-shadow: 0 0 60px rgba(124,58,237,0.15);
+}
+
+‏.hero-name span { color: var(--green); }
+
+‏.hero-handle {
+‏  font-size: 13px; font-weight: 700;
+‏  color: var(--green); letter-spacing: 3px;
+‏  margin-top: 8px; opacity: 0.8;
+}
+
+‏.hero-bio {
+‏  color: #5A6280; font-size: 16px;
+‏  max-width: 480px; margin: 22px auto 0; line-height: 1.9;
+}
+‏.hero-bio strong { color: var(--green3); }
+
+‏.hero-actions {
+‏  display: flex; gap: 12px;
+‏  justify-content: center;
+‏  margin-top: 36px; flex-wrap: wrap;
+}
+
+‏.btn-primary {
+‏  background: linear-gradient(135deg, var(--green), var(--green2));
+‏  color: #ffffff; font-family: 'Cairo', sans-serif;
+‏  font-weight: 900; font-size: 15px;
+‏  padding: 14px 32px; border-radius: 12px;
+‏  text-decoration: none; transition: all 0.2s;
+‏  display: inline-flex; align-items: center; gap: 8px;
+‏  border: none; cursor: pointer;
+‏  box-shadow: 0 4px 20px rgba(124,58,237,0.2);
+}
+‏.btn-primary:hover {
+‏  transform: translateY(-2px);
+‏  box-shadow: 0 8px 32px rgba(124,58,237,0.4);
+}
+
+‏.btn-secondary {
+‏  background: transparent; color: var(--text);
+‏  font-family: 'Cairo', sans-serif;
+‏  font-weight: 700; font-size: 15px;
+‏  padding: 14px 32px; border-radius: 12px;
+‏  text-decoration: none; border: 1px solid var(--border2);
+‏  transition: all 0.2s;
+‏  display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+}
+‏.btn-secondary:hover { border-color: var(--green); color: var(--green); }
+
+‏/* Stats strip */
+‏.stats-strip {
+‏  display: flex;
+‏  border: 1px solid var(--border2); border-radius: 20px;
+‏  overflow: hidden; margin: 60px auto 0;
+‏  max-width: 720px; width: 100%;
+‏  background: var(--card);
+}
+
+‏.ss {
+‏  flex: 1; padding: 28px 16px; text-align: center;
+‏  border-left: 1px solid var(--border2); transition: background 0.2s;
+}
+‏.ss:last-child { border-left: none; }
+‏.ss:hover { background: var(--card2); }
+
+‏.ss-num {
+‏  font-family: 'Bebas Neue', sans-serif;
+‏  font-size: 38px; color: var(--green); line-height: 1;
+}
+
+‏.ss-label {
+‏  font-size: 11px; color: var(--muted);
+‏  margin-top: 5px; letter-spacing: 0.5px; font-weight: 600;
+}
+
+‏/* Platform grid */
+‏.platforms-wrap {
+‏  max-width: 860px; margin: 60px auto 0;
+‏  padding: 0 20px 80px;
+}
+
+‏.section-label {
+‏  font-size: 11px; letter-spacing: 3px; color: var(--muted);
+‏  font-weight: 700; margin-bottom: 20px; text-align: center;
+}
+
+‏.plat-grid {
+‏  display: grid;
+‏  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+‏  gap: 12px;
+}
+
+‏.plat {
+‏  background: var(--card); border: 1px solid var(--border2);
+‏  border-radius: 18px; padding: 24px 18px;
+‏  text-decoration: none; color: var(--text);
+‏  transition: all 0.25s;
+‏  display: flex; flex-direction: column;
+‏  align-items: center; gap: 10px; text-align: center;
+}
+‏.plat:hover {
+‏  border-color: var(--green); transform: translateY(-4px);
+‏  box-shadow: 0 12px 40px rgba(0,0,0,0.6), 0 0 20px rgba(124,58,237,0.08);
+}
+
+‏.plat-icon {
+‏  width: 52px; height: 52px; border-radius: 14px;
+‏  display: flex; align-items: center; justify-content: center;
+}
+
+‏.plat-name { font-weight: 700; font-size: 14px; }
+‏.plat-handle { font-size: 12px; color: var(--muted); }
+
+‏/* ======= ABOUT ======= */
+‏.about-wrap { max-width: 860px; margin: 0 auto; padding: 60px 20px 80px; }
+
+‏.page-hero { text-align: center; margin-bottom: 52px; }
+
+‏.page-tag {
+‏  display: inline-block;
+‏  background: rgba(124,58,237,0.08);
+‏  color: var(--green); font-size: 11px; font-weight: 700;
+‏  letter-spacing: 2px; padding: 6px 18px;
+‏  border-radius: 20px;
+‏  border: 1px solid rgba(124,58,237,0.15);
+‏  margin-bottom: 14px;
+}
+
+‏.page-title {
+‏  font-family: 'Bebas Neue', sans-serif;
+‏  font-size: clamp(42px, 8vw, 72px);
+‏  letter-spacing: 4px; color: #fff;
+}
+
+‏.page-sub { color: var(--muted); font-size: 15px; margin-top: 8px; }
+
+‏.about-grid {
+‏  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+}
+‏@media (max-width: 620px) { .about-grid { grid-template-columns: 1fr; } }
+
+‏.info-card {
+‏  background: var(--card); border: 1px solid var(--border2);
+‏  border-radius: 20px; padding: 30px;
+}
+‏.info-card.full { grid-column: 1 / -1; }
+
+‏.ic-label {
+‏  font-size: 11px; letter-spacing: 2px;
+‏  color: var(--green); font-weight: 700; margin-bottom: 16px;
+}
+
+‏.ic-text { font-size: 15px; color: #5A6280; line-height: 1.9; }
+‏.ic-text strong { color: var(--text); font-weight: 700; }
+
+‏.timeline { position: relative; padding-right: 30px; }
+‏.timeline::before {
+‏  content: ''; position: absolute;
+‏  right: 0; top: 8px; bottom: 8px; width: 2px;
+‏  background: linear-gradient(to bottom, var(--green), rgba(124,58,237,0.03));
+}
+
+‏.tl-item { position: relative; padding-bottom: 28px; }
+‏.tl-item:last-child { padding-bottom: 0; }
+‏.tl-item::before {
+‏  content: ''; position: absolute;
+‏  right: -36px; top: 7px;
+‏  width: 12px; height: 12px; border-radius: 50%;
+‏  background: var(--green); border: 3px solid var(--dark);
+‏  box-shadow: 0 0 12px rgba(124,58,237,0.5);
+}
+
+‏.tl-year {
+‏  font-family: 'Bebas Neue', sans-serif;
+‏  font-size: 22px; color: var(--green); letter-spacing: 2px;
+}
+‏.tl-text { font-size: 14px; color: #4A5268; margin-top: 4px; line-height: 1.6; }
+
+‏/* ======= SOCIAL ======= */
+‏.social-wrap { max-width: 680px; margin: 0 auto; padding: 60px 20px 80px; }
+
+‏.social-list { display: flex; flex-direction: column; gap: 12px; margin-top: 40px; }
+
+‏.social-card {
+‏  background: var(--card); border: 1px solid var(--border2);
+‏  border-radius: 18px; padding: 22px 26px;
+‏  text-decoration: none; color: var(--text);
+‏  display: flex; align-items: center; gap: 18px;
+‏  transition: all 0.25s; position: relative; overflow: hidden;
+}
+
+‏.social-card::before {
+‏  content: ''; position: absolute; inset: 0;
+‏  background: linear-gradient(135deg, rgba(124,58,237,0.04), transparent);
+‏  opacity: 0; transition: opacity 0.25s;
+}
+
+‏.social-card:hover { border-color: var(--green); transform: translateX(-5px); }
+‏.social-card:hover::before { opacity: 1; }
+
+‏.sc-icon {
+‏  width: 52px; height: 52px; border-radius: 14px;
+‏  display: flex; align-items: center; justify-content: center;
+‏  flex-shrink: 0;
+}
+
+‏.sc-info { flex: 1; }
+‏.sc-name { font-weight: 700; font-size: 16px; }
+‏.sc-handle { font-size: 12px; color: var(--muted); margin-top: 3px; }
+
+‏.sc-stat {
+‏  font-family: 'Bebas Neue', sans-serif;
+‏  font-size: 30px; color: var(--green); letter-spacing: 1px; text-align: left;
+}
+‏.sc-stat-label { font-size: 10px; color: var(--muted); text-align: left; letter-spacing: 1px; }
+
+‏.sc-arrow { color: var(--muted); font-size: 20px; transition: color 0.2s; }
+‏.social-card:hover .sc-arrow { color: var(--green); }
+
+‏/* ======= CONTACT ======= */
+‏.contact-wrap { max-width: 600px; margin: 0 auto; padding: 60px 20px 80px; }
+
+‏.contact-info { display: flex; flex-direction: column; gap: 12px; margin-top: 40px; }
+
+‏.ci {
+‏  display: flex; align-items: center; gap: 16px;
+‏  background: var(--card); border: 1px solid var(--border2);
+‏  border-radius: 14px; padding: 18px 22px;
+}
+
+‏.ci-icon {
+‏  width: 38px; height: 38px;
+‏  background: rgba(124,58,237,0.08); border-radius: 10px;
+‏  display: flex; align-items: center; justify-content: center;
+‏  color: var(--green); font-size: 17px; flex-shrink: 0;
+}
+
+‏.ci-label { font-size: 11px; color: var(--muted); font-weight: 600; letter-spacing: 1px; margin-bottom: 2px; }
+‏.ci-value { font-size: 14px; font-weight: 600; }
+
+‏.contact-box {
+‏  background: var(--card); border: 1px solid var(--border2);
+‏  border-radius: 22px; padding: 36px; margin-top: 20px;
+}
+
+‏.field { margin-bottom: 18px; }
+‏.field label {
+‏  display: block; font-size: 11px; font-weight: 700;
+‏  letter-spacing: 1.5px; color: var(--muted); margin-bottom: 8px;
+}
+‏.field input, .field textarea {
+‏  width: 100%; background: var(--dark);
+‏  border: 1px solid var(--border2); border-radius: 10px;
+‏  padding: 13px 15px; color: var(--text);
+‏  font-family: 'Cairo', sans-serif; font-size: 14px;
+‏  outline: none; transition: border-color 0.2s; direction: rtl;
+}
+‏.field input:focus, .field textarea:focus { border-color: var(--green); }
+‏.field textarea { resize: vertical; min-height: 110px; }
+
+‏/* ANIMATIONS */
+‏.fade-in {
+‏  opacity: 0; transform: translateY(20px);
+‏  animation: fadeUp 0.55s ease forwards;
+}
+‏.fade-in:nth-child(1) { animation-delay: 0s; }
+‏.fade-in:nth-child(2) { animation-delay: 0.08s; }
+‏.fade-in:nth-child(3) { animation-delay: 0.16s; }
+‏.fade-in:nth-child(4) { animation-delay: 0.24s; }
+‏.fade-in:nth-child(5) { animation-delay: 0.32s; }
+
+‏@keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+‏/* Kick logo SVG special */
+‏.kick-svg { width: 28px; height: 28px; }
+
+‏@media (max-width: 600px) {
+‏  nav { padding: 0 16px; }
+‏  .nav-links a { padding: 6px 9px; font-size: 12px; }
+‏  .nav-logo span { display: none; }
+‏  .ss-num { font-size: 26px; }
+‏  .ss { padding: 18px 8px; }
+}
+```
+
+‏  </style>
+‏</head>
+‏<body>
+
+‏<!-- NAV -->
+
+‏<nav>
+‏  <div class="nav-logo" onclick="showPage('home')">
+‏    <img src="https://static.kick.com/images/channel/hook/profile-image" style="width:36px;height:36px;border-radius:50%;border:2px solid var(--green);object-fit:cover;"/>
+‏    <span>HOOK</span>
+‏  </div>
+‏  <ul class="nav-links">
+‏    <li><a onclick="showPage('home')" id="nav-home" class="active">الرئيسية</a></li>
+‏    <li><a onclick="showPage('about')" id="nav-about">عني</a></li>
+‏    <li><a onclick="showPage('social')" id="nav-social">المنصات</a></li>
+‏    <li><a onclick="showPage('contact')" id="nav-contact">التواصل</a></li>
+‏    <li><a href="https://kick.com/hook" target="_blank" class="nav-cta">بث مباشر <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="margin-right:2px"><path d="M5 3h16v16h-2V6.414L4.707 20.707l-1.414-1.414L17.586 5H5V3z"/></svg></a></li>
+‏  </ul>
+‏</nav>
+
+‏<!-- ====== HOME ====== -->
+
+‏<div class="page active" id="page-home">
+‏  <div class="hero-section">
+‏    <div class="grid-bg"></div>
+‏    <div class="hero-glow"></div>
+‏    <div class="hero-glow2"></div>
+‏    <div class="hero-content">
+
+```
+‏  <div class="avatar-ring fade-in">
+‏    <img class="av-img" src="https://static.kick.com/images/channel/hook/profile-image" alt="hook" style="width:152px;height:152px;border-radius:50%;object-fit:cover;border:4px solid var(--dark);"/>
+‏    <div class="status-badge">
+‏      <div class="status-dot"></div>
+‏      Offline
+‏    </div>
+‏  </div>
+
+‏  <div class="hero-name fade-in">H<span>OO</span>K</div>
+‏  <div class="hero-handle fade-in">خالد — ستريمر قراند & صانع محتوى</div>
+‏  <div class="stream-title fade-in" style="display:none; background:rgba(124,58,237,0.15); border:1px solid rgba(124,58,237,0.3); border-radius:20px; padding:6px 18px; font-size:13px; color:#A78BFA; margin-top:10px; letter-spacing:0.5px;"></div>
+‏  <div class="hero-bio fade-in">
+    خالد من السعودية — يلعب <strong>قراند</strong> في سيرفر Resspect فقط، وألعاب ثانية على حسب المزاج
+‏  </div>
+
+‏  <div class="hero-actions fade-in">
+‏    <a href="https://kick.com/hook" target="_blank" class="btn-primary">
+‏      <img src="https://assets.kick.com/images/kick-logo-green.png" style="width:22px;height:22px;border-radius:5px;object-fit:cover;"/>
+      تابع على Kick
+‏    </a>
+‏    <button class="btn-secondary" onclick="showPage('about')">اعرف أكثر</button>
+‏  </div>
+
+‏  <div class="stats-strip fade-in">
+‏    <div class="ss"><div class="ss-num kick-followers">174K</div><div class="ss-label">متابع Kick</div></div>
+‏    <div class="ss"><div class="ss-num">71.6K</div><div class="ss-label">متابع X</div></div>
+‏    <div class="ss"><div class="ss-num">GTA RP</div><div class="ss-label">المحتوى الرئيسي</div></div>
+‏    <div class="ss"><div class="ss-num">🇸🇦</div><div class="ss-label">السعودية</div></div>
+‏  </div>
+‏</div>
+```
+
+‏  </div>
+
+‏  <div class="platforms-wrap">
+‏    <div class="section-label">تابعني على المنصات</div>
+‏    <div class="plat-grid">
+‏      <a href="https://kick.com/hook" target="_blank" class="plat">
+‏        <div class="plat-icon" style="background:rgba(124,58,237,0.1);">
+‏          <svg width="26" height="26" viewBox="0 0 24 24" fill="#7C3AED"><path d="M2 5.5A3.5 3.5 0 015.5 2h13A3.5 3.5 0 0122 5.5v13a3.5 3.5 0 01-3.5 3.5h-13A3.5 3.5 0 012 18.5zM9 8v8l7-4z"/></svg>
+‏        </div>
+‏        <div class="plat-name">Kick</div>
+‏        <div class="plat-handle">@hook</div>
+‏      </a>
+‏      <a href="https://x.com/1hoook_7" target="_blank" class="plat">
+‏        <div class="plat-icon" style="background:rgba(255,255,255,0.07);">
+‏          <svg width="26" height="26" viewBox="0 0 24 24" fill="#fff"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+‏        </div>
+‏        <div class="plat-name">X (Twitter)</div>
+‏        <div class="plat-handle">@1hoook_7</div>
+‏      </a>
+‏      <a href="https://www.youtube.com/@hoook7" target="_blank" class="plat">
+‏        <div class="plat-icon" style="background:rgba(255,0,0,0.1);">
+‏          <svg width="26" height="26" viewBox="0 0 24 24" fill="#FF0000"><path d="M23.495 6.205a3.007 3.007 0 00-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 00.527 6.205a31.247 31.247 0 00-.522 5.805 31.247 31.247 0 00.522 5.783 3.007 3.007 0 002.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 002.088-2.088 31.247 31.247 0 00.5-5.783 31.247 31.247 0 00-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+‏        </div>
+‏        <div class="plat-name">YouTube</div>
+‏        <div class="plat-handle">@hoook7</div>
+‏      </a>
+‏      <a href="https://kick.com/hook" target="_blank" class="plat" style="opacity:0.6; pointer-events:none;">
+‏        <div class="plat-icon" style="background:rgba(124,58,237,0.06);">
+‏          <span style="font-size:26px;">🎮</span>
+‏        </div>
+‏        <div class="plat-name">Resspect RP</div>
+‏        <div class="plat-handle">سيرفر قراند</div>
+‏      </a>
+‏    </div>
+‏  </div>
+‏</div>
+
+‏<!-- ====== ABOUT ====== -->
+
+‏<div class="page" id="page-about">
+‏  <div class="about-wrap">
+‏    <div class="page-hero fade-in">
+‏      <div class="page-tag">من أنا</div>
+‏      <div class="page-title">عن Hook</div>
+‏      <div class="page-sub">قصتي ومشواري في عالم البث المباشر</div>
+‏    </div>
+‏    <div class="about-grid">
+‏      <div class="info-card fade-in">
+‏        <div class="ic-label">الهوية</div>
+‏        <div class="ic-text">
+‏          <strong>الاسم:</strong> خالد<br/>
+‏          <strong>الكنية:</strong> Hook / hoook_7<br/>
+‏          <strong>الدولة:</strong> المملكة العربية السعودية 🇸🇦<br/>
+‏          <strong>التخصص:</strong> ستريمر GTA RP & صانع محتوى
+‏        </div>
+‏      </div>
+‏      <div class="info-card fade-in">
+‏        <div class="ic-label">البيو الرسمي</div>
+‏        <div class="ic-text">
+          "خالد من السعودية — يلعب قراند في سيرفر Resspect فقط، ويلعب ألعاب ثانية على حسب المزاج."
+‏        </div>
+‏      </div>
+‏      <div class="info-card full fade-in">
+‏        <div class="ic-label">المسيرة</div>
+‏        <div class="timeline">
+‏          <div class="tl-item">
+‏            <div class="tl-year">البداية</div>
+‏            <div class="tl-text">بدأ رحلة البث المباشر وصناعة المحتوى في عالم الجيمينج</div>
+‏          </div>
+‏          <div class="tl-item">
+‏            <div class="tl-year">Resspect RP</div>
+‏            <div class="tl-text">انضم لسيرفر Resspect وأصبح أحد أبرز وجوهه في عالم قراند</div>
+‏          </div>
+‏          <div class="tl-item">
+‏            <div class="tl-year">Kick — 174K+</div>
+‏            <div class="tl-text">بنى مجتمعًا يتجاوز 174,000 متابع على منصة Kick</div>
+‏          </div>
+‏          <div class="tl-item">
+‏            <div class="tl-year">X — 71.6K+</div>
+‏            <div class="tl-text">حضور قوي على منصة X بأكثر من 71,600 متابع</div>
+‏          </div>
+‏        </div>
+‏      </div>
+‏    </div>
+‏  </div>
+‏</div>
+
+‏<!-- ====== SOCIAL ====== -->
+
+‏<div class="page" id="page-social">
+‏  <div class="social-wrap">
+‏    <div class="page-hero fade-in">
+‏      <div class="page-tag">تابعني</div>
+‏      <div class="page-title">المنصات</div>
+‏      <div class="page-sub">كل حساباتي في مكان واحد</div>
+‏    </div>
+‏    <div class="social-list">
+‏      <a href="https://kick.com/hook" target="_blank" class="social-card fade-in">
+‏        <div class="sc-icon" style="background:#000;border-radius:14px;overflow:hidden;padding:0;"><img src="https://assets.kick.com/images/kick-logo-green.png" style="width:52px;height:52px;object-fit:cover;"/></div>
+‏        <div class="sc-info"><div class="sc-name">Kick</div><div class="sc-handle">kick.com/hook</div></div>
+‏        <div style="text-align:left"><div class="sc-stat kick-followers">174K+</div><div class="sc-stat-label">متابع</div></div>
+‏        <div class="sc-arrow">←</div>
+‏      </a>
+‏      <a href="https://x.com/1hoook_7" target="_blank" class="social-card fade-in">
+‏        <div class="sc-icon" style="background:rgba(255,255,255,0.07);">
+‏          <svg width="28" height="28" viewBox="0 0 24 24" fill="#fff"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+‏        </div>
+‏        <div class="sc-info"><div class="sc-name">X (Twitter)</div><div class="sc-handle">@1hoook_7</div></div>
+‏        <div style="text-align:left"><div class="sc-stat">71.6K</div><div class="sc-stat-label">متابع</div></div>
+‏        <div class="sc-arrow">←</div>
+‏      </a>
+‏      <a href="https://www.snapchat.com/add/hoook_1" target="_blank" class="social-card fade-in">
+‏        <div class="sc-icon" style="padding:0;overflow:hidden;border-radius:14px;">
+‏          <img src="https://assets.kick.com/images/kick-logo-green.png" style="width:52px;height:52px;object-fit:cover;border-radius:14px;" onerror="this.style.display='none'"/>
+‏        </div>
+‏        <div class="sc-info"><div class="sc-name">Snapchat</div><div class="sc-handle">@hoook_1</div></div>
+‏        <div style="text-align:left"><div class="sc-stat" style="font-size:16px;margin-top:7px;">سناب</div><div class="sc-stat-label">تابعني</div></div>
+‏        <div class="sc-arrow">←</div>
+‏      </a>
+‏      <a href="https://www.youtube.com/@hoook7" target="_blank" class="social-card fade-in">
+‏        <div class="sc-icon" style="background:rgba(255,0,0,0.1);">
+‏          <svg width="28" height="28" viewBox="0 0 24 24" fill="#FF0000"><path d="M23.495 6.205a3.007 3.007 0 00-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 00.527 6.205a31.247 31.247 0 00-.522 5.805 31.247 31.247 0 00.522 5.783 3.007 3.007 0 002.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 002.088-2.088 31.247 31.247 0 00.5-5.783 31.247 31.247 0 00-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+‏        </div>
+‏        <div class="sc-info"><div class="sc-name">YouTube</div><div class="sc-handle">@hoook7</div></div>
+‏        <div style="text-align:left"><div class="sc-stat" style="font-size:16px;margin-top:7px;">قناة</div><div class="sc-stat-label">يوتيوب</div></div>
+‏        <div class="sc-arrow">←</div>
+‏      </a>
+‏      <a href="https://www.youtube.com/@1hoook" target="_blank" class="social-card fade-in">
+‏        <div class="sc-icon" style="background:rgba(255,0,0,0.08);">
+‏          <svg width="28" height="28" viewBox="0 0 24 24" fill="#FF4444"><path d="M23.495 6.205a3.007 3.007 0 00-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 00.527 6.205a31.247 31.247 0 00-.522 5.805 31.247 31.247 0 00.522 5.783 3.007 3.007 0 002.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 002.088-2.088 31.247 31.247 0 00.5-5.783 31.247 31.247 0 00-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+‏        </div>
+‏        <div class="sc-info"><div class="sc-name">YouTube Gaming</div><div class="sc-handle">@1hoook</div></div>
+‏        <div style="text-align:left"><div class="sc-stat" style="font-size:16px;margin-top:7px;">قناة</div><div class="sc-stat-label">جيمينج</div></div>
+‏        <div class="sc-arrow">←</div>
+‏      </a>
+‏      <a href="https://discord.gg/8983qKCSpu" target="_blank" class="social-card fade-in">
+‏        <div class="sc-icon" style="background:rgba(88,101,242,0.12);">
+‏          <svg width="28" height="28" viewBox="0 0 24 24" fill="#5865F2"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+‏        </div>
+‏        <div class="sc-info"><div class="sc-name">Discord</div><div class="sc-handle">discord.gg/8983qKCSpu</div></div>
+‏        <div style="text-align:left"><div class="sc-stat" style="font-size:16px;margin-top:7px;">سيرفر</div><div class="sc-stat-label">انضم الحين</div></div>
+‏        <div class="sc-arrow">←</div>
+‏      </a>
+‏      <a href="https://tiktok.com/@hoook_7" target="_blank" class="social-card fade-in">
+‏        <div class="sc-icon" style="background:rgba(255,0,80,0.1);">
+‏          <svg width="28" height="28" viewBox="0 0 24 24" fill="#fff"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.32 6.32 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg>
+‏        </div>
+‏        <div class="sc-info"><div class="sc-name">TikTok</div><div class="sc-handle">@hoook_7</div></div>
+‏        <div style="text-align:left"><div class="sc-stat" style="font-size:16px;margin-top:7px;">تيك توك</div><div class="sc-stat-label">تابعني</div></div>
+‏        <div class="sc-arrow">←</div>
+‏      </a>
+‏      <a href="https://whatsapp.com/channel/0029Vb207gOCXC3TPeGv9m1X" target="_blank" class="social-card fade-in">
+‏        <div class="sc-icon" style="background:rgba(37,211,102,0.1);">
+‏          <svg width="28" height="28" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+‏        </div>
+‏        <div class="sc-info"><div class="sc-name">WhatsApp Channel</div><div class="sc-handle">اوقات البثوث</div></div>
+‏        <div style="text-align:left"><div class="sc-stat">16K</div><div class="sc-stat-label">متابع</div></div>
+‏        <div class="sc-arrow">←</div>
+‏      </a>
+‏      <a href="https://jaco.live/@1hook?uid=3023014542" target="_blank" class="social-card fade-in">
+‏        <div class="sc-icon" style="background:rgba(124,58,237,0.1);">
+‏          <span style="font-size:24px;">🎙️</span>
+‏        </div>
+‏        <div class="sc-info"><div class="sc-name">JACO</div><div class="sc-handle">@1hook</div></div>
+‏        <div style="text-align:left"><div class="sc-stat" style="font-size:16px;margin-top:7px;">جاكو</div><div class="sc-stat-label">تابعني</div></div>
+‏        <div class="sc-arrow">←</div>
+‏      </a>
+‏    </div>
+‏  </div>
+‏</div>
+
+‏<!-- ====== CONTACT ====== -->
+
+‏<div class="page" id="page-contact">
+‏  <div class="contact-wrap">
+‏    <div class="page-hero fade-in">
+‏      <div class="page-tag">تواصل معي</div>
+‏      <div class="page-title">التواصل</div>
+‏      <div class="page-sub">للأعمال والتعاون التجاري</div>
+‏    </div>
+‏    <div class="contact-info fade-in">
+‏      <div class="ci">
+‏        <div class="ci-icon">
+‏          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+‏        </div>
+‏        <div><div class="ci-label">للتواصل عبر X</div><div class="ci-value">@1hoook_7</div></div>
+‏      </div>
+‏      <div class="ci">
+‏        <div class="ci-icon">
+‏          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+‏        </div>
+‏        <div><div class="ci-label">الموقع</div><div class="ci-value">المملكة العربية السعودية 🇸🇦</div></div>
+‏      </div>
+‏      <div class="ci">
+‏        <div class="ci-icon" style="padding:0;overflow:hidden;border-radius:8px;background:#000;">
+‏          <img src="https://assets.kick.com/images/kick-logo-green.png" style="width:38px;height:38px;object-fit:cover;"/>
+‏        </div>
+‏        <div><div class="ci-label">Kick</div><div class="ci-value">kick.com/hook</div></div>
+‏      </div>
+‏    </div>
+‏    <div class="contact-box fade-in">
+‏      <div class="ic-label" style="margin-bottom:24px;">أرسل رسالة</div>
+‏      <div class="field"><label>الاسم</label><input type="text" placeholder="اسمك"/></div>
+‏      <div class="field"><label>البريد الإلكتروني</label><input type="email" placeholder="بريدك الإلكتروني"/></div>
+‏      <div class="field"><label>الرسالة</label><textarea placeholder="اكتب رسالتك هنا..."></textarea></div>
+‏      <button class="btn-primary" style="width:100%;justify-content:center;" onclick="sendMsg(this)">إرسال الرسالة</button>
+‏    </div>
+‏  </div>
+‏</div>
+
+‏<script>
+‏  function showPage(id) {
+‏    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+‏    document.querySelectorAll('.nav-links a[id^="nav-"]').forEach(a => a.classList.remove('active'));
+‏    const pg = document.getElementById('page-' + id);
+‏    const navEl = document.getElementById('nav-' + id);
+‏    if (pg) pg.classList.add('active');
+‏    if (navEl) navEl.classList.add('active');
+‏    window.scrollTo({ top: 0, behavior: 'smooth' });
+‏    setTimeout(() => {
+‏      if (pg) {
+‏        pg.querySelectorAll('.fade-in').forEach((el, i) => {
+‏          el.style.animation = 'none';
+‏          void el.offsetHeight;
+‏          el.style.animation = 'fadeUp 0.5s ease ' + (i * 0.09) + 's forwards';
+        });
+      }
+    }, 10);
+‏    return false;
+  }
+
+‏  function sendMsg(btn) {
+‏    btn.textContent = '✓ تم الإرسال!';
+‏    btn.style.background = '#5B21B6';
+‏    setTimeout(() => {
+‏      btn.textContent = 'إرسال الرسالة';
+‏      btn.style.background = '';
+    }, 3000);
+  }
+‏</script>
+
+‏<script>
+‏// Kick API - تحديث تلقائي لبيانات القناة
+‏async function fetchKickData() {
+‏  try {
+    // نستخدم proxy عشان نتجاوز CORS
+‏    const proxyUrl = 'https://api.allorigins.win/get?url=';
+‏    const kickUrl = encodeURIComponent('https://kick.com/api/v2/channels/hook');
+    
+‏    const res = await fetch(proxyUrl + kickUrl);
+‏    const json = await res.json();
+‏    const data = JSON.parse(json.contents);
+
+    // عدد المتابعين
+‏    if (data && data.followersCount !== undefined) {
+‏      const followers = data.followersCount;
+‏      const formatted = followers >= 1000 ? (followers/1000).toFixed(1) + 'K' : followers;
+‏      document.querySelectorAll('.kick-followers').forEach(el => el.textContent = formatted);
+    }
+
+    // حالة البث
+‏    if (data && data.livestream !== null && data.livestream !== undefined) {
+‏      const isLive = data.livestream !== null;
+‏      document.querySelectorAll('.status-dot').forEach(dot => {
+‏        if (isLive) {
+‏          dot.classList.add('live');
+‏        } else {
+‏          dot.classList.remove('live');
         }
-
-```
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-        font-family: 'Cairo', sans-serif;
-        background: var(--night);
-        min-height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 15px;
-        overflow-x: hidden;
-        position: relative;
-    }
-
-    /* Starry background */
-    body::before {
-        content: '';
-        position: fixed;
-        inset: 0;
-        background-image: 
-            radial-gradient(1px 1px at 10% 15%, rgba(255,255,255,0.7) 0%, transparent 100%),
-            radial-gradient(1px 1px at 25% 40%, rgba(255,255,255,0.5) 0%, transparent 100%),
-            radial-gradient(1.5px 1.5px at 50% 10%, rgba(255,255,255,0.8) 0%, transparent 100%),
-            radial-gradient(1px 1px at 70% 30%, rgba(255,255,255,0.6) 0%, transparent 100%),
-            radial-gradient(1px 1px at 85% 60%, rgba(255,255,255,0.4) 0%, transparent 100%),
-            radial-gradient(1.5px 1.5px at 15% 70%, rgba(255,255,255,0.7) 0%, transparent 100%),
-            radial-gradient(1px 1px at 90% 80%, rgba(255,255,255,0.5) 0%, transparent 100%),
-            radial-gradient(1px 1px at 40% 85%, rgba(255,255,255,0.6) 0%, transparent 100%),
-            radial-gradient(1px 1px at 60% 55%, rgba(255,255,255,0.4) 0%, transparent 100%),
-            radial-gradient(1.5px 1.5px at 35% 25%, rgba(255,255,255,0.8) 0%, transparent 100%);
-        pointer-events: none;
-        z-index: 0;
-    }
-
-    /* Moon decoration */
-    .moon {
-        position: fixed;
-        top: 20px;
-        left: 30px;
-        font-size: 50px;
-        opacity: 0.15;
-        animation: moonFloat 8s ease-in-out infinite;
-        z-index: 0;
-    }
-
-    @keyframes moonFloat {
-        0%, 100% { transform: translateY(0px) rotate(-5deg); }
-        50% { transform: translateY(-15px) rotate(5deg); }
-    }
-
-    /* Lanterns */
-    .lanterns {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        display: flex;
-        justify-content: space-between;
-        padding: 0 20px;
-        z-index: 10;
-        pointer-events: none;
-    }
-
-    .lantern {
-        font-size: 32px;
-        animation: swing 4s ease-in-out infinite;
-        transform-origin: top center;
-        filter: drop-shadow(0 0 8px rgba(245,197,24,0.6));
-    }
-
-    .lantern:nth-child(2) { animation-delay: -2s; animation-duration: 5s; }
-
-    @keyframes swing {
-        0%, 100% { transform: rotate(-12deg); }
-        50% { transform: rotate(12deg); }
-    }
-
-    .container {
-        background: var(--card);
-        border-radius: 28px;
-        width: 100%;
-        max-width: 480px;
-        border: 1px solid var(--border);
-        box-shadow: 
-            0 0 0 1px rgba(245,197,24,0.1),
-            0 25px 50px rgba(0,0,0,0.7),
-            0 0 80px rgba(245,197,24,0.05);
-        position: relative;
-        z-index: 1;
-        overflow: hidden;
-    }
-
-    /* Gold top bar */
-    .container::before {
-        content: '';
-        position: absolute;
-        top: 0; left: 0; right: 0;
-        height: 3px;
-        background: linear-gradient(90deg, transparent, var(--gold), var(--orange), var(--gold), transparent);
-    }
-
-    .screen { padding: 28px 24px; display: none; }
-    .screen.active { display: block; }
-
-    /* Header */
-    .game-logo {
-        text-align: center;
-        margin-bottom: 24px;
-    }
-
-    .game-logo .title {
-        font-size: 32px;
-        font-weight: 900;
-        background: linear-gradient(135deg, var(--gold), var(--orange));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        letter-spacing: -1px;
-    }
-
-    .game-logo .subtitle {
-        font-size: 12px;
-        color: var(--muted);
-        margin-top: 4px;
-        letter-spacing: 1px;
-    }
-
-    /* Tabs for category filter */
-    .section-label {
-        font-size: 12px;
-        color: var(--muted);
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        margin-bottom: 10px;
-        margin-top: 20px;
-    }
-
-    /* Player Input */
-    .input-row {
-        display: flex;
-        gap: 8px;
-        margin-bottom: 12px;
-    }
-
-    .input-field {
-        flex: 1;
-        background: rgba(255,255,255,0.05);
-        border: 1.5px solid rgba(255,255,255,0.1);
-        border-radius: 14px;
-        padding: 12px 16px;
-        color: var(--text);
-        font-family: 'Cairo', sans-serif;
-        font-size: 15px;
-        outline: none;
-        transition: border-color 0.2s;
-    }
-
-    .input-field::placeholder { color: var(--muted); }
-    .input-field:focus { border-color: var(--gold); }
-
-    .add-btn {
-        background: var(--gold);
-        color: #0a0e1a;
-        border: none;
-        border-radius: 14px;
-        padding: 12px 18px;
-        font-family: 'Cairo', sans-serif;
-        font-weight: 700;
-        font-size: 20px;
-        cursor: pointer;
-        transition: transform 0.15s, box-shadow 0.15s;
-    }
-
-    .add-btn:hover { transform: scale(1.05); box-shadow: 0 4px 15px rgba(245,197,24,0.4); }
-    .add-btn:active { transform: scale(0.95); }
-
-    /* Player chips */
-    .players-grid {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        min-height: 40px;
-        padding: 10px;
-        background: rgba(0,0,0,0.2);
-        border-radius: 14px;
-        border: 1px dashed rgba(255,255,255,0.1);
-    }
-
-    .player-chip {
-        background: rgba(255,255,255,0.08);
-        border: 1px solid rgba(255,255,255,0.15);
-        color: var(--text);
-        padding: 5px 12px;
-        border-radius: 30px;
-        font-size: 13px;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        cursor: pointer;
-        transition: background 0.2s;
-    }
-
-    .player-chip:hover { background: rgba(255,50,50,0.2); border-color: rgba(255,50,50,0.4); }
-    .player-chip .remove-x { font-size: 10px; opacity: 0.6; }
-
-    .player-count {
-        font-size: 12px;
-        color: var(--muted);
-        text-align: center;
-        margin-top: 6px;
-    }
-
-    /* Categories */
-    .cats-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 8px;
-    }
-
-    .cat-card {
-        background: rgba(255,255,255,0.04);
-        border: 1.5px solid rgba(255,255,255,0.08);
-        border-radius: 14px;
-        padding: 14px 10px;
-        cursor: pointer;
-        transition: all 0.2s;
-        text-align: center;
-        color: var(--muted);
-    }
-
-    .cat-card:hover {
-        border-color: rgba(255,255,255,0.2);
-        background: rgba(255,255,255,0.07);
-        color: var(--text);
-    }
-
-    .cat-card.selected {
-        border-color: var(--gold);
-        background: rgba(245,197,24,0.12);
-        color: var(--gold);
-        box-shadow: 0 0 20px rgba(245,197,24,0.15);
-    }
-
-    .cat-icon {
-        font-size: 24px;
-        display: block;
-        margin-bottom: 6px;
-    }
-
-    .cat-name {
-        font-size: 13px;
-        font-weight: 700;
-    }
-
-    /* Difficulty selector */
-    .diff-row {
-        display: flex;
-        gap: 6px;
-    }
-
-    .diff-btn {
-        flex: 1;
-        background: rgba(255,255,255,0.04);
-        border: 1.5px solid rgba(255,255,255,0.08);
-        border-radius: 10px;
-        padding: 8px;
-        color: var(--muted);
-        font-family: 'Cairo', sans-serif;
-        font-size: 12px;
-        cursor: pointer;
-        transition: all 0.2s;
-    }
-
-    .diff-btn.active { border-color: var(--teal); color: var(--teal); background: rgba(0,212,170,0.1); }
-
-    /* Main action button */
-    .primary-btn {
-        width: 100%;
-        padding: 16px;
-        border-radius: 16px;
-        border: none;
-        font-family: 'Cairo', sans-serif;
-        font-weight: 900;
-        font-size: 18px;
-        cursor: pointer;
-        transition: all 0.2s;
-        background: linear-gradient(135deg, var(--gold), var(--orange));
-        color: #0a0e1a;
-        margin-top: 20px;
-        letter-spacing: 0.5px;
-        box-shadow: 0 8px 25px rgba(245,197,24,0.3);
-    }
-
-    .primary-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(245,197,24,0.4); }
-    .primary-btn:active { transform: translateY(0); }
-
-    /* Game screen */
-    .turn-header {
-        text-align: center;
-        margin-bottom: 20px;
-    }
-
-    .progress-dots {
-        display: flex;
-        justify-content: center;
-        gap: 6px;
-        margin-bottom: 16px;
-    }
-
-    .dot {
-        width: 8px; height: 8px;
-        border-radius: 50%;
-        background: rgba(255,255,255,0.1);
-        transition: background 0.3s;
-    }
-
-    .dot.done { background: var(--teal); }
-    .dot.current { background: var(--gold); transform: scale(1.3); }
-
-    .turn-name {
-        font-size: 26px;
-        font-weight: 900;
-        color: var(--text);
-    }
-
-    .turn-instruction {
-        font-size: 13px;
-        color: var(--muted);
-        margin-top: 4px;
-    }
-
-    .phone-pass {
-        background: rgba(255,255,255,0.04);
-        border: 1px dashed rgba(255,255,255,0.15);
-        border-radius: 16px;
-        padding: 20px;
-        text-align: center;
-        margin: 16px 0;
-    }
-
-    .phone-icon {
-        font-size: 40px;
-        display: block;
-        margin-bottom: 8px;
-        animation: phoneShake 2s ease-in-out infinite;
-    }
-
-    @keyframes phoneShake {
-        0%, 100% { transform: rotate(0deg); }
-        25% { transform: rotate(-5deg); }
-        75% { transform: rotate(5deg); }
-    }
-
-    .reveal-btn {
-        width: 100%;
-        padding: 18px;
-        border-radius: 16px;
-        border: none;
-        font-family: 'Cairo', sans-serif;
-        font-weight: 900;
-        font-size: 20px;
-        cursor: pointer;
-        background: linear-gradient(135deg, #7c3aed, #4f46e5);
-        color: white;
-        box-shadow: 0 8px 25px rgba(124,58,237,0.35);
-        transition: all 0.2s;
-    }
-
-    .reveal-btn:hover { transform: translateY(-2px); }
-
-    /* Role card */
-    .role-card {
-        border-radius: 20px;
-        padding: 28px 20px;
-        text-align: center;
-        margin: 16px 0;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .role-card.insider {
-        background: linear-gradient(135deg, #1a3a2a, #0d2318);
-        border: 1px solid rgba(0,212,170,0.3);
-    }
-
-    .role-card.outsider {
-        background: linear-gradient(135deg, #2a1a3a, #150d23);
-        border: 1px solid rgba(124,58,237,0.3);
-    }
-
-    .role-badge {
-        display: inline-block;
-        padding: 4px 14px;
-        border-radius: 30px;
-        font-size: 11px;
-        font-weight: 700;
-        letter-spacing: 2px;
-        margin-bottom: 12px;
-    }
-
-    .insider .role-badge { background: rgba(0,212,170,0.2); color: var(--teal); }
-    .outsider .role-badge { background: rgba(245,197,24,0.2); color: var(--gold); }
-
-    .role-main {
-        font-size: 15px;
-        color: rgba(255,255,255,0.6);
-        margin-bottom: 8px;
-    }
-
-    .role-word {
-        font-size: 36px;
-        font-weight: 900;
-        letter-spacing: -1px;
-    }
-
-    .insider .role-word { color: var(--teal); }
-    .outsider .role-word { color: var(--gold); }
-
-    .role-hint {
-        font-size: 12px;
-        margin-top: 10px;
-        opacity: 0.6;
-    }
-
-    /* Timer */
-    .timer-ring {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 10px 0;
-    }
-
-    .timer-display {
-        background: rgba(0,0,0,0.3);
-        border: 2px solid var(--gold);
-        border-radius: 50%;
-        width: 70px;
-        height: 70px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 22px;
-        font-weight: 900;
-        color: var(--gold);
-    }
-
-    .timer-display.warning { border-color: var(--orange); color: var(--orange); animation: pulse 0.5s ease-in-out infinite; }
-
-    @keyframes pulse {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.05); }
-    }
-
-    /* Vote screen */
-    .vote-grid {
-        display: grid;
-        gap: 10px;
-        margin-top: 16px;
-    }
-
-    .vote-card {
-        background: rgba(255,255,255,0.04);
-        border: 1.5px solid rgba(255,255,255,0.08);
-        border-radius: 14px;
-        padding: 16px 20px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        transition: all 0.2s;
-        color: var(--text);
-        font-size: 16px;
-        font-weight: 700;
-    }
-
-    .vote-card:hover {
-        border-color: var(--orange);
-        background: rgba(255,107,53,0.1);
-        transform: translateX(-4px);
-    }
-
-    .vote-number {
-        width: 32px; height: 32px;
-        background: rgba(255,255,255,0.08);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 13px;
-        color: var(--muted);
-    }
-
-    /* Guess screen */
-    .guess-options {
-        display: grid;
-        gap: 10px;
-        margin-top: 16px;
-    }
-
-    .guess-btn {
-        background: rgba(255,255,255,0.05);
-        border: 1.5px solid rgba(255,255,255,0.1);
-        border-radius: 14px;
-        padding: 16px 20px;
-        cursor: pointer;
-        color: var(--text);
-        font-family: 'Cairo', sans-serif;
-        font-size: 16px;
-        font-weight: 700;
-        transition: all 0.2s;
-        text-align: right;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .guess-btn:hover {
-        border-color: var(--purple);
-        background: rgba(124,58,237,0.15);
-        transform: translateX(-4px);
-    }
-
-    .guess-letter {
-        background: rgba(124,58,237,0.3);
-        color: var(--text);
-        width: 30px; height: 30px;
-        border-radius: 8px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 13px;
-        flex-shrink: 0;
-    }
-
-    /* End screen */
-    .end-result {
-        text-align: center;
-        padding: 10px 0;
-    }
-
-    .trophy-anim {
-        font-size: 70px;
-        display: block;
-        margin-bottom: 10px;
-        animation: trophyBounce 0.6s ease-out;
-    }
-
-    @keyframes trophyBounce {
-        0% { transform: scale(0) rotate(-10deg); }
-        60% { transform: scale(1.2) rotate(5deg); }
-        100% { transform: scale(1) rotate(0deg); }
-    }
-
-    .end-title {
-        font-size: 28px;
-        font-weight: 900;
-        color: var(--text);
-        margin-bottom: 6px;
-    }
-
-    .end-card {
-        background: rgba(255,255,255,0.04);
-        border: 1px solid rgba(255,255,255,0.08);
-        border-radius: 16px;
-        padding: 20px;
-        margin: 16px 0;
-        text-align: right;
-    }
-
-    .end-detail {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 8px 0;
-        border-bottom: 1px solid rgba(255,255,255,0.06);
-        font-size: 14px;
-    }
-
-    .end-detail:last-child { border-bottom: none; }
-    .end-detail .label { color: var(--muted); }
-    .end-detail .value { color: var(--text); font-weight: 700; }
-
-    .restart-btn {
-        width: 100%;
-        padding: 16px;
-        border-radius: 16px;
-        border: 1px solid var(--gold);
-        font-family: 'Cairo', sans-serif;
-        font-weight: 900;
-        font-size: 17px;
-        cursor: pointer;
-        background: transparent;
-        color: var(--gold);
-        margin-top: 8px;
-        transition: all 0.2s;
-    }
-
-    .restart-btn:hover { background: rgba(245,197,24,0.1); }
-
-    /* Notification toast */
-    .toast {
-        position: fixed;
-        bottom: 30px;
-        left: 50%;
-        transform: translateX(-50%) translateY(80px);
-        background: #1a2235;
-        border: 1px solid var(--gold);
-        color: var(--text);
-        padding: 12px 24px;
-        border-radius: 30px;
-        font-size: 14px;
-        font-weight: 600;
-        z-index: 1000;
-        transition: transform 0.3s ease;
-        white-space: nowrap;
-    }
-
-    .toast.show { transform: translateX(-50%) translateY(0); }
-
-    /* Settings toggle */
-    .settings-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 12px;
-    }
-
-    .toggle-label {
-        font-size: 13px;
-        color: var(--muted);
-        display: flex;
-        align-items: center;
-        gap: 6px;
-    }
-
-    .toggle {
-        width: 42px;
-        height: 22px;
-        background: rgba(255,255,255,0.1);
-        border-radius: 11px;
-        cursor: pointer;
-        position: relative;
-        transition: background 0.2s;
-        border: none;
-    }
-
-    .toggle.on { background: var(--teal); }
-
-    .toggle::after {
-        content: '';
-        position: absolute;
-        width: 18px; height: 18px;
-        background: white;
-        border-radius: 50%;
-        top: 2px; right: 2px;
-        transition: right 0.2s;
-    }
-
-    .toggle.on::after { right: 22px; }
-
-    .divider {
-        height: 1px;
-        background: rgba(255,255,255,0.06);
-        margin: 20px 0;
-    }
-
-    /* Score tracking */
-    .score-row {
-        display: flex;
-        gap: 8px;
-        margin-top: 16px;
-    }
-
-    .score-card {
-        flex: 1;
-        background: rgba(0,0,0,0.2);
-        border: 1px solid rgba(255,255,255,0.06);
-        border-radius: 12px;
-        padding: 12px;
-        text-align: center;
-    }
-
-    .score-label { font-size: 11px; color: var(--muted); }
-    .score-val { font-size: 24px; font-weight: 900; color: var(--text); }
-
-    .cat-display {
-        background: rgba(245,197,24,0.1);
-        border: 1px solid rgba(245,197,24,0.2);
-        border-radius: 10px;
-        padding: 8px 14px;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 13px;
-        color: var(--gold);
-        margin-top: 10px;
-    }
-
-    h3 {
-        font-size: 18px;
-        color: var(--text);
-        font-weight: 700;
-    }
-
-    .instructions {
-        background: rgba(0,0,0,0.2);
-        border-right: 3px solid var(--gold);
-        padding: 12px 16px;
-        border-radius: 8px;
-        font-size: 12px;
-        color: var(--muted);
-        line-height: 1.8;
-        margin-top: 10px;
-    }
-
-</style>
-```
-
-</head>
-<body>
-
-<div class="moon">🌙</div>
-
-<div class="lanterns">
-    <div class="lantern">🏮</div>
-    <div class="lantern">🏮</div>
-</div>
-
-<div class="toast" id="toast"></div>
-
-<div class="container">
-
-```
-<!-- SETUP SCREEN -->
-<div class="screen active" id="setup-screen">
-    <div class="game-logo">
-        <div class="title">🌙 برا السالفة</div>
-        <div class="subtitle">اللعبة الشاملة | خلك ذيب لا يكفشونك!</div>
-    </div>
-
-    <div class="section-label"><i class="fa fa-users"></i> اللاعبين</div>
-    <div class="input-row">
-        <input type="text" id="player-name" class="input-field" placeholder="اسم اللاعب..." maxlength="20" onkeypress="if(event.key==='Enter') addPlayer()">
-        <button class="add-btn" onclick="addPlayer()">+</button>
-    </div>
-    <div class="players-grid" id="player-list">
-        <span style="color: var(--muted); font-size:12px; margin: auto; padding: 5px;">ما في لاعبين بعد...</span>
-    </div>
-    <div class="player-count" id="player-count">0 لاعبين</div>
-
-    <div class="divider"></div>
-
-    <div class="section-label"><i class="fa fa-gamepad"></i> اختر الباقة</div>
-    <div class="cats-grid" id="cats-grid"></div>
-
-    <div class="divider"></div>
-
-    <div class="section-label"><i class="fa fa-sliders"></i> الإعدادات</div>
-    <div class="section-label" style="margin-top:5px; margin-bottom:5px; font-size: 11px;">مستوى الصعوبة:</div>
-    <div class="diff-row">
-        <button class="diff-btn active" id="diff-easy" onclick="setDiff('easy')">🟢 سهل</button>
-        <button class="diff-btn" id="diff-medium" onclick="setDiff('medium')">🟡 متوسط</button>
-        <button class="diff-btn" id="diff-hard" onclick="setDiff('hard')">🔴 صعب</button>
-    </div>
-    <div class="settings-row">
-        <span class="toggle-label"><i class="fa fa-clock"></i> تفعيل العداد (3 دقايق)</span>
-        <button class="toggle" id="timer-toggle" onclick="toggleTimer()"></button>
-    </div>
-    <div class="settings-row">
-        <span class="toggle-label"><i class="fa fa-user-secret"></i> لاعبين جواسيس أكثر (2 جاسوس)</span>
-        <button class="toggle" id="multi-toggle" onclick="toggleMulti()"></button>
-    </div>
-
-    <div class="instructions">
-        📌 كيف تلعب: كل لاعب يشوف كلمته، اللي "برا السالفة" ما يعرفها. تقدرون تحاشون وتسألون ولازم تكشفونه! إذا كفشوه يحاول يحزر الكلمة.
-    </div>
-
-    <button class="primary-btn" onclick="startGame()">ابدأ اللعب 🚀</button>
-</div>
-
-<!-- GAME SCREEN -->
-<div class="screen" id="game-screen">
-    <div class="turn-header">
-        <div class="progress-dots" id="progress-dots"></div>
-        <div class="turn-name" id="current-player-name">—</div>
-        <div class="turn-instruction">مرر الجوال بدون ما تعرض الشاشة لأي أحد</div>
-    </div>
-
-    <div class="phone-pass">
-        <span class="phone-icon">📱</span>
-        <div style="font-size: 13px; color: var(--muted);">بس أنت تقدر تشوف الشاشة</div>
-    </div>
-
-    <div id="reveal-section">
-        <button class="reveal-btn" onclick="reveal()">👁 اكشف دوري</button>
-    </div>
-
-    <div id="role-section" style="display:none;">
-        <div id="role-card-el"></div>
-        <button class="primary-btn" onclick="nextPlayer()">فهمت، خبيت الكلمة ✅</button>
-    </div>
-</div>
-
-<!-- DISCUSSION SCREEN -->
-<div class="screen" id="discuss-screen">
-    <div style="text-align:center; margin-bottom: 16px;">
-        <div style="font-size: 40px; margin-bottom:8px;">💬</div>
-        <h3>وقت النقاش!</h3>
-        <div style="font-size: 13px; color: var(--muted); margin-top: 4px;">تناقشوا بينكم وحاولوا تكشفون اللي برا السالفة</div>
-    </div>
-
-    <div id="timer-section" style="display:none;">
-        <div class="timer-ring">
-            <div class="timer-display" id="timer-display">3:00</div>
-        </div>
-    </div>
-
-    <div class="cat-display">
-        <i class="fa fa-tag"></i>
-        <span id="discuss-category">—</span>
-    </div>
-
-    <div style="margin-top: 20px; font-size: 13px; color: var(--muted);">
-        اللاعبين:
-    </div>
-    <div id="discuss-players" style="margin-top: 8px; display: flex; flex-wrap: wrap; gap: 8px;"></div>
-
-    <button class="primary-btn" onclick="startVote()" style="margin-top: 20px;">التصويت الآن 🗳</button>
-</div>
-
-<!-- VOTE SCREEN -->
-<div class="screen" id="vote-screen">
-    <div style="text-align:center; margin-bottom: 8px;">
-        <div style="font-size: 36px; margin-bottom:6px;">🗳</div>
-        <h3>مين اللي برا السالفة؟</h3>
-        <div style="font-size: 13px; color: var(--muted); margin-top: 4px;">صوتوا لأكثر شخص مشبوه</div>
-    </div>
-    <div class="vote-grid" id="vote-options"></div>
-</div>
-
-<!-- GUESS SCREEN -->
-<div class="screen" id="guess-screen">
-    <div style="text-align:center; margin-bottom: 16px;">
-        <div style="font-size: 36px; margin-bottom:6px;">🤔</div>
-        <h3 style="color: var(--orange);">كفشوك! وش الكلمة؟</h3>
-        <div style="font-size: 13px; color: var(--muted); margin-top: 4px;">الجاسوس يقدر ينقذ نفسه إذا حزر صح</div>
-    </div>
-    <div class="guess-options" id="word-options"></div>
-</div>
-
-<!-- END SCREEN -->
-<div class="screen" id="end-screen">
-    <div class="end-result">
-        <span class="trophy-anim" id="end-emoji">🏆</span>
-        <div class="end-title" id="end-title">—</div>
-        <div style="font-size: 14px; color: var(--muted); margin-top: 6px;" id="end-subtitle">—</div>
-    </div>
-
-    <div class="end-card" id="end-details"></div>
-
-    <div class="score-row" id="score-row" style="display:none;">
-        <div class="score-card">
-            <div class="score-label">فوز الجماعة</div>
-            <div class="score-val" id="team-score">0</div>
-        </div>
-        <div class="score-card">
-            <div class="score-label">فوز الجاسوس</div>
-            <div class="score-val" id="spy-score">0</div>
-        </div>
-    </div>
-
-    <button class="primary-btn" onclick="playAgain()">العب مرة ثانية 🔄</button>
-    <button class="restart-btn" onclick="location.reload()">ابدأ من الأول 🏠</button>
-</div>
-```
-
-</div>
-
-<script>
-const data = {
-    "جازان 🌿": ["مرسة", "مغش", "خمير", "حنيذ", "فل جازاني", "جبل فيفا", "فرسان", "لحوح", "وفد", "بصل أخضر", "ضمد", "جيزان"],
-    "أكلات رمضان 🌙": ["سمبوسة", "فيمتو", "لقيمات", "شوربة شوفان", "تمر", "قطايف", "هريس", "جريش", "عصيدة", "خبيصة", "منقلة", "مطبق"],
-    "حيوانات 🐾": ["أسد", "فيل", "زرافة", "نمر", "قرد", "تمساح", "بطريق", "جمل", "ذئب", "ثعلب", "كنغر", "بطة"],
-    "أكلات 🍔": ["كبسة", "شاورما", "برجر", "بيتزا", "كنافة", "سوشي", "منسف", "مكرونة", "مجبوس", "مضغوط", "مندي", "كشري"],
-    "رياضة ⚽": ["هدف", "كرة قدم", "سلة", "تسلل", "حارس", "مدرج", "حكم", "تنس", "سباحة", "ملاكمة", "كريكيت", "طائرة"],
-    "ملابس 👕": ["ثوب", "شماغ", "فستان", "قميص", "بشت", "قبعة", "جاكيت", "جزمة", "صديري", "شورت", "تنورة", "كمة"],
-    "تقنية 📱": ["آيفون", "قوقل", "واتساب", "لابتوب", "واي فاي", "شاحن", "تطبيق", "سناب شات", "تغريدة", "كلاود", "برمجة", "إيميل"],
-    "أماكن 📍": ["مطار", "مستشفى", "حديقة", "مدرسة", "مول", "مسجد", "شاطئ", "فندق", "متحف", "مزرعة", "ملعب", "مكتبة"],
-    "ترفيه 🎬": ["سينما", "مسلسل", "لعبة", "فشار", "بلاستيشن", "يوتيوب", "نتفلكس", "تيك توك", "بودكاست", "رواية", "مسرح", "مهرجان"],
-    "مدرسة 📚": ["قلم", "دفتر", "سبورة", "فسحة", "اختبار", "مدير", "طاولة", "مقصف", "معلم", "حقيبة", "ممحاة", "مبراة"],
-    "البيت 🏠": ["ثلاجة", "تلفزيون", "كنبة", "مطبخ", "سرير", "مكيف", "ستارة", "ساعة", "غسالة", "دولاب", "مرآة", "باب"],
-    "مهن 👔": ["طيار", "دكتور", "مهندس", "شرطي", "طباخ", "نجار", "محامي", "مدرس", "فنان", "مصور", "ممرض", "سائق"],
-    "سفر ✈️": ["جواز", "تذكرة", "شنطة سفر", "فندق", "قطار", "خريطة", "سياحة", "بحر", "فيزا", "جمارك", "رحلة", "برنامج"],
-    "ماركات 🛍️": ["نايك", "أديداس", "شانيل", "رولكس", "أبل", "سامسونج", "تويوتا", "زارا", "لويس", "غوتشي", "ايكيا", "H&M"]
-};
-
-const catColors = {
-    "جازان 🌿": "#27ae60",
-    "أكلات رمضان 🌙": "#e67e22",
-    "حيوانات 🐾": "#e74c3c",
-    "أكلات 🍔": "#f39c12",
-    "رياضة ⚽": "#2980b9",
-    "ملابس 👕": "#8e44ad",
-    "تقنية 📱": "#16a085",
-    "أماكن 📍": "#2c3e50",
-    "ترفيه 🎬": "#c0392b",
-    "مدرسة 📚": "#1a5276",
-    "البيت 🏠": "#6c7a89",
-    "مهن 👔": "#d35400",
-    "سفر ✈️": "#1abc9c",
-    "ماركات 🛍️": "#9b59b6"
-};
-
-// State
-let players = [];
-let selectedCat = "";
-let difficulty = "easy";
-let useTimer = false;
-let multiSpy = false;
-let timerInterval = null;
-
-let gameState = {
-    chosenWord: "",
-    impostors: [],
-    gameOrder: [],
-    currentStep: 0,
-    scores: { team: 0, spy: 0 }
-};
-
-// Build categories grid
-const grid = document.getElementById('cats-grid');
-Object.keys(data).forEach(cat => {
-    const card = document.createElement('div');
-    card.className = 'category-card cat-card';
-    card.setAttribute('data-cat', cat);
-    card.innerHTML = `<span class="cat-icon">${cat.split(' ').pop()}</span><span class="cat-name">${cat.split(' ')[0]}</span>`;
-    card.style.borderColor = 'rgba(255,255,255,0.08)';
-    card.onclick = () => selectCategory(cat, card);
-    grid.appendChild(card);
-});
-
-function addPlayer() {
-    const input = document.getElementById('player-name');
-    const name = input.value.trim();
-    if (!name) return;
-    if (players.includes(name)) return showToast('اللاعب موجود بالفعل!');
-    if (players.length >= 12) return showToast('الحد الأقصى 12 لاعب!');
-    players.push(name);
-    updatePlayerList();
-    input.value = "";
-    input.focus();
+      });
+‏      document.querySelectorAll('.status-text').forEach(el => {
+‏        el.textContent = isLive ? '🔴 LIVE' : 'Offline';
+      });
+      // عنوان البث
+‏      if (isLive && data.livestream.session_title) {
+‏        document.querySelectorAll('.stream-title').forEach(el => {
+‏          el.textContent = data.livestream.session_title;
+‏          el.style.display = 'block';
+        });
+      }
+    }
+‏  } catch (e) {
+‏    // fallback - silent fail
+‏    console.log('Kick API unavailable, using static data');
+  }
 }
 
-function removePlayer(idx) {
-    players.splice(idx, 1);
-    updatePlayerList();
-}
+// تشغيل عند تحميل الصفحة
+‏fetchKickData();
+// تحديث كل دقيقتين
+‏setInterval(fetchKickData, 120000);
+‏</script>
 
-function updatePlayerList() {
-    const list = document.getElementById('player-list');
-    if (players.length === 0) {
-        list.innerHTML = '<span style="color: var(--muted); font-size:12px; margin: auto; padding: 5px;">ما في لاعبين بعد...</span>';
-    } else {
-        list.innerHTML = players.map((p, i) => 
-            `<div class="player-chip" onclick="removePlayer(${i})">
-                <span>${p}</span>
-                <span class="remove-x">✕</span>
-            </div>`
-        ).join('');
-    }
-    const count = players.length;
-    document.getElementById('player-count').textContent = `${count} لاعب${count === 1 ? '' : 'ين'}`;
-}
-
-function selectCategory(cat, el) {
-    selectedCat = cat;
-    document.querySelectorAll('.cat-card').forEach(c => {
-        c.classList.remove('selected');
-        c.style.borderColor = 'rgba(255,255,255,0.08)';
-    });
-    el.classList.add('selected');
-}
-
-function setDiff(d) {
-    difficulty = d;
-    ['easy','medium','hard'].forEach(x => document.getElementById('diff-'+x).classList.remove('active'));
-    document.getElementById('diff-'+d).classList.add('active');
-}
-
-function toggleTimer() {
-    useTimer = !useTimer;
-    const btn = document.getElementById('timer-toggle');
-    btn.classList.toggle('on', useTimer);
-}
-
-function toggleMulti() {
-    multiSpy = !multiSpy;
-    const btn = document.getElementById('multi-toggle');
-    btn.classList.toggle('on', multiSpy);
-}
-
-function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2500);
-}
-
-function showScreen(id) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    // Scroll to top
-    document.querySelector('.container').scrollTop = 0;
-}
-
-function startGame() {
-    if (players.length < 3) return showToast('سجل 3 لاعبين على الأقل! 👥');
-    if (!selectedCat) return showToast('اختر باقة للعب! 🎮');
-
-    const words = [...data[selectedCat]];
-    gameState.chosenWord = words[Math.floor(Math.random() * words.length)];
-
-    const numSpies = (multiSpy && players.length >= 6) ? 2 : 1;
-    gameState.impostors = [];
-    while (gameState.impostors.length < numSpies) {
-        const idx = Math.floor(Math.random() * players.length);
-        if (!gameState.impostors.includes(idx)) gameState.impostors.push(idx);
-    }
-
-    gameState.gameOrder = [...Array(players.length).keys()].sort(() => Math.random() - 0.5);
-    gameState.currentStep = 0;
-
-    buildProgressDots();
-    showScreen('game-screen');
-    updateTurn();
-}
-
-function buildProgressDots() {
-    const el = document.getElementById('progress-dots');
-    el.innerHTML = players.map((_, i) => `<div class="dot" id="dot-${i}"></div>`).join('');
-}
-
-function updateProgressDots() {
-    players.forEach((_, i) => {
-        const dot = document.getElementById('dot-' + i);
-        if (!dot) return;
-        if (i < gameState.currentStep) dot.className = 'dot done';
-        else if (i === gameState.currentStep) dot.className = 'dot current';
-        else dot.className = 'dot';
-    });
-}
-
-function updateTurn() {
-    const pIdx = gameState.gameOrder[gameState.currentStep];
-    document.getElementById('current-player-name').textContent = '👤 ' + players[pIdx];
-    document.getElementById('reveal-section').style.display = 'block';
-    document.getElementById('role-section').style.display = 'none';
-    updateProgressDots();
-}
-
-function reveal() {
-    document.getElementById('reveal-section').style.display = 'none';
-    document.getElementById('role-section').style.display = 'block';
-
-    const pIdx = gameState.gameOrder[gameState.currentStep];
-    const isSpy = gameState.impostors.includes(pIdx);
-    const el = document.getElementById('role-card-el');
-
-    if (isSpy) {
-        const catName = selectedCat.split(' ')[0];
-        el.innerHTML = `
-            <div class="role-card outsider">
-                <div class="role-badge">🤫 أنت الجاسوس</div>
-                <div class="role-main">التصنيف:</div>
-                <div class="role-word">${catName}</div>
-                <div class="role-hint">ما تعرف الكلمة — ادمج وما تنكشف!</div>
-            </div>`;
-    } else {
-        const hintText = difficulty === 'hard' ? 'لا تقول الكلمة مباشرة' : difficulty === 'medium' ? 'دور حول الكلمة' : 'الكلمة ظاهرة فوق';
-        el.innerHTML = `
-            <div class="role-card insider">
-                <div class="role-badge">✅ أنت من الجماعة</div>
-                <div class="role-main">الكلمة هي:</div>
-                <div class="role-word">${gameState.chosenWord}</div>
-                <div class="role-hint">${hintText}</div>
-            </div>`;
-    }
-}
-
-function nextPlayer() {
-    gameState.currentStep++;
-    if (gameState.currentStep < players.length) {
-        updateTurn();
-    } else {
-        startDiscussion();
-    }
-}
-
-function startDiscussion() {
-    showScreen('discuss-screen');
-    document.getElementById('discuss-category').textContent = selectedCat;
-
-    const dp = document.getElementById('discuss-players');
-    dp.innerHTML = players.map(p => `<div class="player-chip">${p}</div>`).join('');
-
-    if (useTimer) {
-        document.getElementById('timer-section').style.display = 'block';
-        let seconds = 180;
-        const timerEl = document.getElementById('timer-display');
-        clearInterval(timerInterval);
-        timerInterval = setInterval(() => {
-            seconds--;
-            const m = Math.floor(seconds / 60);
-            const s = seconds % 60;
-            timerEl.textContent = `${m}:${s.toString().padStart(2,'0')}`;
-            if (seconds <= 30) timerEl.classList.add('warning');
-            if (seconds <= 0) {
-                clearInterval(timerInterval);
-                startVote();
-            }
-        }, 1000);
-    } else {
-        document.getElementById('timer-section').style.display = 'none';
-    }
-}
-
-function startVote() {
-    clearInterval(timerInterval);
-    showScreen('vote-screen');
-    const container = document.getElementById('vote-options');
-    container.innerHTML = players.map((p, idx) => `
-        <div class="vote-card" onclick="checkVote(${idx})">
-            <span>${p}</span>
-            <div class="vote-number">${idx + 1}</div>
-        </div>`
-    ).join('');
-}
-
-function checkVote(idx) {
-    if (gameState.impostors.includes(idx)) {
-        showGuessOptions(idx);
-    } else {
-        finishGame(false, players[idx], false);
-    }
-}
-
-function showGuessOptions(spyIdx) {
-    showScreen('guess-screen');
-    const container = document.getElementById('word-options');
-    let options = [gameState.chosenWord];
-    let others = [...data[selectedCat]].filter(w => w !== gameState.chosenWord);
-
-    const numFake = difficulty === 'easy' ? 2 : difficulty === 'medium' ? 3 : 4;
-    for (let i = 0; i < numFake && others.length > 0; i++) {
-        const r = Math.floor(Math.random() * others.length);
-        options.push(others.splice(r, 1)[0]);
-    }
-
-    options.sort(() => Math.random() - 0.5);
-    const letters = ['أ', 'ب', 'ج', 'د', 'هـ'];
-    container.innerHTML = options.map((opt, i) => `
-        <button class="guess-btn" onclick="checkGuess('${opt}')">
-            <div class="guess-letter">${letters[i]}</div>
-            <span>${opt}</span>
-        </button>`
-    ).join('');
-}
-
-function checkGuess(word) {
-    if (word === gameState.chosenWord) {
-        gameState.scores.spy++;
-        finishGame(true, null, true);
-    } else {
-        gameState.scores.team++;
-        finishGame(false, null, false);
-    }
-}
-
-function finishGame(spyWin, wrongVoted, spyGuessed) {
-    showScreen('end-screen');
-
-    const spyNames = gameState.impostors.map(i => players[i]).join(' و ');
-
-    if (spyWin) {
-        document.getElementById('end-emoji').textContent = '😎';
-        document.getElementById('end-title').textContent = 'فاز الجاسوس!';
-        document.getElementById('end-subtitle').textContent = 'خلص عليكم وحزر الكلمة!';
-    } else if (wrongVoted) {
-        document.getElementById('end-emoji').textContent = '😅';
-        document.getElementById('end-title').textContent = 'كفشتوا غلط!';
-        document.getElementById('end-subtitle').textContent = `اللي كوفش: ${wrongVoted} — فاز الجاسوس`;
-    } else {
-        document.getElementById('end-emoji').textContent = '🏆';
-        document.getElementById('end-title').textContent = 'فاز الفريق!';
-        document.getElementById('end-subtitle').textContent = 'كفشوا الجاسوس وعرفوا الكلمة!';
-    }
-
-    document.getElementById('end-details').innerHTML = `
-        <div class="end-detail">
-            <span class="label">الجاسوس</span>
-            <span class="value">${spyNames}</span>
-        </div>
-        <div class="end-detail">
-            <span class="label">الكلمة</span>
-            <span class="value">${gameState.chosenWord}</span>
-        </div>
-        <div class="end-detail">
-            <span class="label">الباقة</span>
-            <span class="value">${selectedCat}</span>
-        </div>
-        <div class="end-detail">
-            <span class="label">عدد اللاعبين</span>
-            <span class="value">${players.length}</span>
-        </div>`;
-
-    document.getElementById('score-row').style.display = 'flex';
-    document.getElementById('team-score').textContent = gameState.scores.team;
-    document.getElementById('spy-score').textContent = gameState.scores.spy;
-}
-
-function playAgain() {
-    const savedScores = { ...gameState.scores };
-    startGame();
-    gameState.scores = savedScores;
-    document.getElementById('score-row').style.display = 'none';
-}
-</script>
-
-</body>
-</html>
+‏</body>
+‏</html>
