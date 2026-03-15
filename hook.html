@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+  <meta name="theme-color" content="#05080F"/>
+  <meta name="description" content="Hook — خالد، ستريمر قراند و صانع محتوى سعودي على Kick"/>
+  <meta property="og:title" content="Hook — خالد"/>
+  <meta property="og:description" content="ستريمر قراند و صانع محتوى سعودي على Kick"/>
+  <meta property="og:image" content="https://static.kick.com/images/channel/hook/profile-image"/>
+  <title>Hook — خالد</title>
+
+  <!-- Favicon SVG inline -->
+
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230A0D16'/%3E%3Crect width='64' height='64' rx='14' fill='url(%23g)'/%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='64' y2='64' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0' stop-color='%237C3AED' stop-opacity='0.8'/%3E%3Cstop offset='1' stop-color='%235B21B6' stop-opacity='0.4'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ctext x='32' y='46' font-family='Arial Black,sans-serif' font-size='32' font-weight='900' fill='white' text-anchor='middle' letter-spacing='-1'%3EH%3C/text%3E%3C/svg%3E"/>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Bebas+Neue&display=swap" rel="stylesheet"/>
+
+  <style>
+    :root {
+      --p:     #7C3AED;
+      --p2:    #5B21B6;
+      --p3:    #A78BFA;
+      --p4:    #EDE9FE;
+      --dark:  #04060D;
+      --dark2: #070A12;
+      --card:  #0A0D16;
+      --card2: #0E1220;
+      --b:     #161C2E;
+      --b2:    #1C2338;
+      --muted: #3D4560;
+      --text:  #B8C4DC;
+      --nav-h: 64px;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+    body{background:var(--dark);color:var(--text);font-family:'Cairo',sans-serif;min-height:100dvh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+    /* ── Loading Screen ── */
+    #loader{position:fixed;inset:0;background:var(--dark);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;transition:opacity 0.5s ease,visibility 0.5s ease}
+    #loader.hidden{opacity:0;visibility:hidden}
+    .loader-name{font-family:'Bebas Neue',sans-serif;font-size:52px;letter-spacing:10px;color:#fff;animation:loader-pulse 1.2s ease-in-out infinite}
+    .loader-name span{color:var(--p)}
+    @keyframes loader-pulse{0%,100%{opacity:0.4;text-shadow:0 0 20px rgba(124,58,237,0.2)}50%{opacity:1;text-shadow:0 0 40px rgba(124,58,237,0.7)}}
+    .loader-bar{width:180px;height:2px;background:var(--b2);border-radius:2px;overflow:hidden}
+    .loader-fill{height:100%;background:linear-gradient(90deg,var(--p),var(--p3));border-radius:2px;animation:loader-fill 1.4s ease forwards}
+    @keyframes loader-fill{from{width:0}to{width:100%}}
+    .loader-sub{font-size:12px;color:var(--muted);letter-spacing:2px;font-weight:600}
+
+    /* noise overlay */
+    body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");pointer-events:none;z-index:1000}
+
+    /* ═══════════ NAV ═══════════ */
+    nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);background:rgba(4,6,13,0.88);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid rgba(124,58,237,0.12);z-index:200;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(14px,4vw,36px);gap:8px}
+    nav::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(124,58,237,0.4),rgba(167,139,250,0.3),rgba(124,58,237,0.4),transparent)}
+
+    .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:21px;letter-spacing:4px;color:var(--p);display:flex;align-items:center;gap:10px;cursor:pointer;flex-shrink:0;-webkit-tap-highlight-color:transparent;transition:opacity 0.2s}
+    .nav-logo:hover{opacity:0.8}
+    .nav-logo img{width:36px;height:36px;border-radius:50%;border:2px solid var(--p);object-fit:cover;flex-shrink:0;transition:box-shadow 0.3s;animation:nav-glow 4.5s ease-in-out infinite}
+    .nav-logo span{display:none}
+    @media(min-width:480px){.nav-logo span{display:inline}}
+
+    .nav-links{display:none;gap:2px;list-style:none;align-items:center}
+    @media(min-width:768px){.nav-links{display:flex}}
+    .nav-links a{text-decoration:none;color:var(--muted);font-size:13px;font-weight:700;padding:7px 13px;border-radius:9px;transition:all 0.2s;cursor:pointer;letter-spacing:0.4px;white-space:nowrap;-webkit-tap-highlight-color:transparent;position:relative}
+    .nav-links a::after{content:'';position:absolute;bottom:2px;left:50%;right:50%;height:1px;background:var(--p);transition:all 0.25s}
+    .nav-links a:hover,.nav-links a.active{color:var(--p);background:rgba(124,58,237,0.08)}
+    .nav-links a:hover::after,.nav-links a.active::after{left:13px;right:13px}
+    .nav-cta{background:linear-gradient(135deg,var(--p),var(--p2)) !important;color:#fff !important;font-weight:900 !important;box-shadow:0 0 20px rgba(124,58,237,0.25) !important}
+    .nav-cta:hover{box-shadow:0 0 32px rgba(124,58,237,0.5) !important;transform:translateY(-1px)}
+    .nav-cta::after{display:none !important}
+
+    .hamburger{display:flex;flex-direction:column;gap:5px;cursor:pointer;padding:9px;border-radius:9px;background:transparent;border:none;-webkit-tap-highlight-color:transparent;transition:background 0.2s}
+    .hamburger:hover{background:rgba(124,58,237,0.1)}
+    .hamburger span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px;transition:all 0.3s}
+    .hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+    .hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+    .hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+    @media(min-width:768px){.hamburger{display:none}}
+
+    .mobile-menu{position:fixed;top:var(--nav-h);left:0;right:0;background:rgba(4,6,13,0.98);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--b);z-index:190;padding:14px 16px 22px;display:flex;flex-direction:column;gap:7px;transform:translateY(-110%);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1)}
+    .mobile-menu.open{transform:translateY(0)}
+    .mobile-menu a{text-decoration:none;color:var(--text);font-size:15px;font-weight:700;padding:14px 18px;border-radius:13px;border:1px solid var(--b);display:flex;align-items:center;justify-content:space-between;transition:all 0.2s;-webkit-tap-highlight-color:transparent}
+    .mobile-menu a:hover,.mobile-menu a.active{border-color:var(--p);color:var(--p);background:rgba(124,58,237,0.06)}
+    .mobile-menu a.nav-cta-mobile{background:linear-gradient(135deg,var(--p),var(--p2));color:#fff !important;border-color:transparent;margin-top:4px;box-shadow:0 4px 20px rgba(124,58,237,0.3)}
+
+    /* ═══════════ PAGES ═══════════ */
+    .page{display:none;padding-top:var(--nav-h);min-height:100dvh}
+    .page.active{display:block}
+
+    /* ═══════════ HERO ═══════════ */
+    .hero-section{position:relative;min-height:calc(100dvh - var(--nav-h));display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:clamp(40px,7vw,80px) clamp(16px,4vw,24px);overflow:hidden}
+
+    .grid-bg{position:absolute;inset:-80px;background-image:linear-gradient(rgba(124,58,237,0.035) 1px,transparent 1px),linear-gradient(90deg,rgba(124,58,237,0.035) 1px,transparent 1px);background-size:56px 56px;mask-image:radial-gradient(ellipse 80% 80% at center,black 20%,transparent 75%);-webkit-mask-image:radial-gradient(ellipse 80% 80% at center,black 20%,transparent 75%);animation:grid-drift 20s linear infinite}
+    @keyframes grid-drift{0%{transform:translate(0,0)}25%{transform:translate(28px,-14px)}50%{transform:translate(0,28px)}75%{transform:translate(-28px,-14px)}100%{transform:translate(0,0)}}
+
+    .hero-glow{position:absolute;width:min(1100px,160vw);height:min(1100px,160vw);background:radial-gradient(circle,rgba(124,58,237,0.11) 0%,rgba(91,33,182,0.05) 38%,transparent 68%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;animation:breathe 5s ease-in-out infinite}
+    @keyframes breathe{0%,100%{opacity:0.7;transform:translate(-50%,-50%) scale(1)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.15)}}
+
+    .orb{position:absolute;border-radius:50%;pointer-events:none;filter:blur(60px)}
+    .orb1{width:280px;height:280px;background:rgba(124,58,237,0.09);top:10%;left:2%;animation:orb1 11s ease-in-out infinite}
+    .orb2{width:200px;height:200px;background:rgba(167,139,250,0.07);top:55%;right:3%;animation:orb2 14s ease-in-out infinite}
+    .orb3{width:160px;height:160px;background:rgba(91,33,182,0.08);bottom:8%;left:38%;animation:orb3 8s ease-in-out infinite}
+    .orb4{width:120px;height:120px;background:rgba(124,58,237,0.06);top:30%;right:20%;animation:orb2 9s ease-in-out infinite reverse}
+    @keyframes orb1{0%,100%{transform:translate(0,0)}33%{transform:translate(40px,-50px)}66%{transform:translate(-25px,25px)}}
+    @keyframes orb2{0%,100%{transform:translate(0,0)}40%{transform:translate(-45px,35px)}70%{transform:translate(25px,-25px)}}
+    @keyframes orb3{0%,100%{transform:translate(0,0)}50%{transform:translate(30px,-40px)}}
+
+    .scan-line{position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(124,58,237,0.5),rgba(167,139,250,0.7),rgba(124,58,237,0.5),transparent);top:-1px;animation:scan 8s linear infinite;pointer-events:none;z-index:2}
+    @keyframes scan{0%{top:-1px;opacity:0}3%{opacity:1}96%{opacity:0.7}100%{top:100%;opacity:0}}
+
+    .corner-brackets{position:absolute;inset:20px;pointer-events:none;z-index:2}
+    .corner-brackets::before,.corner-brackets::after,.cb-inner::before,.cb-inner::after{content:'';position:absolute;width:28px;height:28px;border-color:rgba(124,58,237,0.35);border-style:solid}
+    .corner-brackets::before{top:0;right:0;border-width:2px 2px 0 0;border-radius:0 6px 0 0}
+    .corner-brackets::after{top:0;left:0;border-width:2px 0 0 2px;border-radius:6px 0 0 0}
+    .cb-inner::before{bottom:0;right:0;border-width:0 2px 2px 0;border-radius:0 0 6px 0}
+    .cb-inner::after{bottom:0;left:0;border-width:0 0 2px 2px;border-radius:0 0 0 6px}
+
+    .particle{position:absolute;border-radius:50%;pointer-events:none;animation:pfloat 10s ease-in-out infinite}
+    .p1{width:3px;height:3px;background:rgba(124,58,237,0.6);top:22%;left:14%;animation-duration:9s}
+    .p2{width:2px;height:2px;background:rgba(167,139,250,0.5);top:68%;left:78%;animation-duration:12s;animation-delay:-3s}
+    .p3{width:4px;height:4px;background:rgba(91,33,182,0.4);top:42%;left:88%;animation-duration:7s;animation-delay:-5s}
+    .p4{width:2px;height:2px;background:rgba(124,58,237,0.5);top:83%;left:22%;animation-duration:10s;animation-delay:-2s}
+    .p5{width:3px;height:3px;background:rgba(167,139,250,0.4);top:12%;left:58%;animation-duration:8s;animation-delay:-4s}
+    .p6{width:2px;height:2px;background:rgba(124,58,237,0.7);top:55%;left:5%;animation-duration:11s;animation-delay:-7s}
+    @keyframes pfloat{0%,100%{transform:translate(0,0);opacity:0.5}25%{transform:translate(20px,-35px);opacity:1}50%{transform:translate(-15px,-15px);opacity:0.3}75%{transform:translate(10px,-45px);opacity:0.8}}
+
+    .hero-content{position:relative;z-index:1;width:100%;max-width:720px}
+
+    /* Avatar */
+    .avatar-ring{position:relative;display:inline-block;margin-bottom:clamp(22px,4vw,36px)}
+    .avatar-ring::before{content:'';position:absolute;inset:-7px;border-radius:50%;background:conic-gradient(var(--p) 0deg,#2e0763 55deg,transparent 120deg,var(--p3) 195deg,var(--p) 255deg,transparent 315deg,var(--p) 360deg);animation:spin 5s linear infinite;z-index:-1}
+    .avatar-ring::after{content:'';position:absolute;inset:-14px;border-radius:50%;background:conic-gradient(transparent 0deg,rgba(167,139,250,0.3) 80deg,transparent 160deg,rgba(124,58,237,0.2) 240deg,transparent 320deg,rgba(167,139,250,0.15) 360deg);animation:shimmer-ring 4s linear infinite;z-index:-2}
+    .avatar-pulse{position:absolute;inset:-28px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,0.16),transparent 65%);animation:pulse-halo 3.5s ease-in-out infinite;z-index:-3;pointer-events:none}
+    .avatar-glow{position:absolute;inset:-40px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,0.06),transparent 60%);animation:pulse-halo 3.5s ease-in-out 0.8s infinite;z-index:-4;pointer-events:none}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    @keyframes shimmer-ring{to{transform:rotate(-360deg)}}
+    @keyframes pulse-halo{0%,100%{opacity:0.5;transform:scale(1)}50%{opacity:1;transform:scale(1.1)}}
+
+    .av-img{width:clamp(120px,23vw,160px);height:clamp(120px,23vw,160px);border-radius:50%;display:block;border:4px solid var(--dark);object-fit:cover}
+
+    .status-badge{position:absolute;bottom:6px;left:50%;transform:translateX(-50%);background:rgba(7,10,18,0.95);border:1px solid var(--b2);border-radius:20px;padding:4px 13px;font-size:10px;font-weight:700;color:var(--muted);display:flex;align-items:center;gap:5px;white-space:nowrap;backdrop-filter:blur(8px)}
+    .status-dot{width:8px;height:8px;border-radius:50%;background:#FF3B3B;box-shadow:0 0 5px rgba(255,59,59,0.7);flex-shrink:0;transition:all 0.4s}
+    .status-dot.live{background:#53FC18;box-shadow:0 0 8px #53FC18,0 0 18px rgba(83,252,24,0.6);animation:live-pulse 1.4s ease-in-out infinite}
+    @keyframes live-pulse{0%,100%{box-shadow:0 0 6px #53FC18,0 0 14px rgba(83,252,24,0.4);transform:scale(1)}50%{box-shadow:0 0 12px #53FC18,0 0 28px rgba(83,252,24,0.8);transform:scale(1.3)}}
+
+    /* Hero Name GLITCH */
+    .hero-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(72px,17vw,136px);letter-spacing:clamp(4px,1.5vw,10px);line-height:1;color:#fff;text-shadow:0 0 80px rgba(124,58,237,0.25);position:relative;display:inline-block;animation:glitch 7s infinite;cursor:default}
+    .hero-name span{color:var(--p)}
+    .hero-name::before{content:'HOOK';position:absolute;top:0;left:0;right:0;color:var(--p3);clip-path:polygon(0 30%,100% 30%,100% 50%,0 50%);animation:glitch-top 7s infinite;opacity:0}
+    .hero-name::after{content:'HOOK';position:absolute;top:0;left:0;right:0;color:var(--p);clip-path:polygon(0 60%,100% 60%,100% 75%,0 75%);animation:glitch-bot 7s infinite;opacity:0}
+    @keyframes glitch{0%,82%,100%{text-shadow:0 0 80px rgba(124,58,237,0.25);transform:none}83%{transform:translate(-3px,0) skewX(-3deg);text-shadow:4px 0 var(--p),-4px 0 var(--p3)}84%{transform:translate(3px,0) skewX(2deg);text-shadow:-4px 0 var(--p2),4px 0 var(--p3)}85%{transform:none;text-shadow:0 0 80px rgba(124,58,237,0.25)}88%{transform:translate(2px,-1px) skewX(-1deg);text-shadow:-2px 0 var(--p),2px 0 var(--p3)}89%{transform:none;text-shadow:0 0 80px rgba(124,58,237,0.25)}}
+    @keyframes glitch-top{82%,90%{opacity:0}83%{opacity:1;transform:translate(-4px,0)}84%{transform:translate(3px,0)}85%,88%{opacity:0}89%{opacity:0.6;transform:translate(-2px,0)}}
+    @keyframes glitch-bot{82%,90%{opacity:0}83%{opacity:0.8;transform:translate(3px,0)}85%{opacity:0;transform:translate(-3px,0)}88%{opacity:0.5;transform:translate(2px,0)}}
+
+    .hero-handle{font-size:clamp(11px,2.5vw,14px);font-weight:700;color:var(--p);letter-spacing:clamp(1px,0.6vw,4px);margin-top:12px;opacity:0.9;display:flex;align-items:center;justify-content:center;gap:12px}
+    .hero-handle::before,.hero-handle::after{content:'';display:inline-block;height:1px;width:clamp(24px,5vw,60px);background:linear-gradient(90deg,transparent,var(--p))}
+    .hero-handle::after{background:linear-gradient(90deg,var(--p),transparent)}
+
+    .hero-bio{color:#4A5570;font-size:clamp(13px,2.8vw,16px);max-width:500px;margin:20px auto 0;line-height:2;padding:0 8px}
+    .hero-bio strong{color:var(--p3)}
+
+    .stream-title{display:none;background:rgba(124,58,237,0.12);border:1px solid rgba(124,58,237,0.25);border-radius:20px;padding:6px 20px;font-size:12px;color:var(--p3);margin-top:12px;letter-spacing:0.5px;max-width:92%;margin-left:auto;margin-right:auto}
+
+    /* Buttons */
+    .hero-actions{display:flex;gap:12px;justify-content:center;margin-top:clamp(28px,5vw,42px);flex-wrap:wrap;padding:0 8px}
+
+    .btn-primary{background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;font-family:'Cairo',sans-serif;font-weight:900;font-size:clamp(13px,3vw,15px);padding:14px clamp(22px,5vw,34px);border-radius:13px;text-decoration:none;transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);display:inline-flex;align-items:center;gap:9px;border:none;cursor:pointer;box-shadow:0 4px 24px rgba(124,58,237,0.28);-webkit-tap-highlight-color:transparent;touch-action:manipulation;position:relative;overflow:hidden}
+    .btn-primary::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--p3),var(--p));opacity:0;transition:opacity 0.3s}
+    .btn-primary::after{content:'';position:absolute;top:0;left:-100%;width:55%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent);transform:skewX(-20deg);transition:left 0.55s ease}
+    .btn-primary:hover::before{opacity:1}
+    .btn-primary:hover::after{left:160%}
+    .btn-primary:hover{transform:translateY(-3px) scale(1.04);box-shadow:0 12px 40px rgba(124,58,237,0.55)}
+    .btn-primary > *{position:relative;z-index:1}
+
+    .btn-secondary{background:transparent;color:var(--text);font-family:'Cairo',sans-serif;font-weight:700;font-size:clamp(13px,3vw,15px);padding:14px clamp(22px,5vw,34px);border-radius:13px;text-decoration:none;border:1px solid var(--b2);transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);display:inline-flex;align-items:center;gap:9px;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;position:relative;overflow:hidden}
+    .btn-secondary::after{content:'';position:absolute;inset:0;background:rgba(124,58,237,0.06);opacity:0;transition:opacity 0.3s}
+    .btn-secondary:hover{border-color:var(--p);color:var(--p);transform:translateY(-3px) scale(1.04);box-shadow:0 8px 28px rgba(124,58,237,0.2)}
+    .btn-secondary:hover::after{opacity:1}
+
+    /* Stats Strip */
+    .stats-strip{display:flex;border:1px solid var(--b2);border-radius:18px;overflow:hidden;margin:clamp(36px,6vw,64px) auto 0;max-width:740px;width:100%;background:var(--card);position:relative}
+    .stats-strip::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(124,58,237,0.04),transparent 50%,rgba(167,139,250,0.02));pointer-events:none}
+    .ss{flex:1;padding:clamp(16px,3vw,30px) clamp(8px,2vw,18px);text-align:center;border-left:1px solid var(--b2);transition:background 0.25s;min-width:0;position:relative;cursor:default}
+    .ss:last-child{border-left:none}
+    .ss:hover{background:var(--card2)}
+    .ss:hover .ss-num{animation:num-pop 0.4s cubic-bezier(0.34,1.56,0.64,1)}
+    @keyframes num-pop{0%{transform:scale(1)}50%{transform:scale(1.2)}100%{transform:scale(1)}}
+    .ss-num{font-family:'Bebas Neue',sans-serif;font-size:clamp(24px,5vw,42px);color:var(--p);line-height:1}
+    .ss-label{font-size:clamp(9px,1.8vw,11px);color:var(--muted);margin-top:5px;letter-spacing:0.5px;font-weight:600}
+
+    /* Platforms */
+    .platforms-wrap{max-width:880px;margin:clamp(36px,6vw,64px) auto 0;padding:0 clamp(12px,4vw,20px) clamp(48px,8vw,88px)}
+    .section-label{font-size:11px;letter-spacing:3px;color:var(--muted);font-weight:700;margin-bottom:18px;text-align:center}
+
+    .plat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    @media(min-width:640px){.plat-grid{grid-template-columns:repeat(4,1fr)}}
+
+    .plat{background:var(--card);border:1px solid var(--b2);border-radius:18px;padding:clamp(18px,3vw,26px) clamp(12px,2vw,18px);text-decoration:none;color:var(--text);display:flex;flex-direction:column;align-items:center;gap:11px;text-align:center;-webkit-tap-highlight-color:transparent;overflow:hidden;position:relative;transition:all 0.38s cubic-bezier(0.34,1.56,0.64,1);opacity:0;animation:fadeUp 0.6s cubic-bezier(0.22,1,0.36,1) forwards}
+    .plat:nth-child(1){animation-delay:0.1s}.plat:nth-child(2){animation-delay:0.2s}.plat:nth-child(3){animation-delay:0.3s}.plat:nth-child(4){animation-delay:0.4s}
+    .plat::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(124,58,237,0.06),transparent);opacity:0;transition:opacity 0.3s}
+    .plat:hover{border-color:var(--p);transform:translateY(-7px) scale(1.03);box-shadow:0 18px 52px rgba(0,0,0,0.7),0 0 32px rgba(124,58,237,0.15)}
+    .plat:hover::before{opacity:1}
+    @media(hover:none){.plat:active{border-color:var(--p);background:var(--card2)}}
+    .plat-img-wrap{width:64px;height:64px;border-radius:16px;overflow:hidden;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1)}
+    .plat:hover .plat-img-wrap{transform:scale(1.1) rotate(-3deg)}
+    .plat-img-wrap img{width:100%;height:100%;object-fit:cover;border-radius:16px}
+    .plat-img-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;border-radius:16px}
+    .plat-live-badge{position:absolute;top:11px;left:11px;background:#53FC18;color:#000;font-size:9px;font-weight:900;padding:2px 8px;border-radius:7px;letter-spacing:0.5px;display:none}
+    .plat-live-badge.show{display:block;animation:live-pulse 1.4s ease-in-out infinite}
+    .plat-name{font-weight:700;font-size:clamp(12px,2.5vw,14px)}
+    .plat-handle{font-size:clamp(10px,2vw,12px);color:var(--muted)}
+
+    /* ═══════════ ABOUT ═══════════ */
+    .about-wrap{max-width:880px;margin:0 auto;padding:clamp(36px,6vw,64px) clamp(12px,4vw,20px) clamp(48px,8vw,88px)}
+    .page-hero{text-align:center;margin-bottom:clamp(36px,6vw,56px)}
+    .page-tag{display:inline-block;background:rgba(124,58,237,0.08);color:var(--p);font-size:11px;font-weight:700;letter-spacing:2px;padding:6px 20px;border-radius:20px;border:1px solid rgba(124,58,237,0.18);margin-bottom:14px;animation:tag-pop 0.5s cubic-bezier(0.34,1.56,0.64,1) both}
+    @keyframes tag-pop{from{opacity:0;transform:scale(0.7)}to{opacity:1;transform:scale(1)}}
+    .page-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,9vw,80px);letter-spacing:5px;color:#fff;text-shadow:0 0 60px rgba(124,58,237,0.2)}
+    .page-sub{color:var(--muted);font-size:clamp(13px,2.5vw,15px);margin-top:8px}
+
+    .about-grid{display:grid;grid-template-columns:1fr;gap:14px}
+    @media(min-width:600px){.about-grid{grid-template-columns:1fr 1fr}}
+
+    .info-card{background:var(--card);border:1px solid var(--b2);border-radius:20px;padding:clamp(22px,4vw,32px);opacity:0;animation:fadeUp 0.65s cubic-bezier(0.22,1,0.36,1) forwards;transition:border-color 0.25s,box-shadow 0.25s}
+    .info-card:hover{border-color:rgba(124,58,237,0.3);box-shadow:0 8px 32px rgba(124,58,237,0.08)}
+    .info-card:nth-child(1){animation-delay:0.15s}.info-card:nth-child(2){animation-delay:0.28s}.info-card:nth-child(3){animation-delay:0.41s}
+    .info-card.full{grid-column:1/-1}
+    .ic-label{font-size:11px;letter-spacing:2px;color:var(--p);font-weight:700;margin-bottom:14px}
+    .ic-text{font-size:clamp(13px,2.5vw,15px);color:#465070;line-height:2}
+    .ic-text strong{color:var(--text);font-weight:700}
+
+    .timeline{position:relative;padding-right:32px}
+    .timeline::before{content:'';position:absolute;right:0;top:8px;bottom:8px;width:2px;background:linear-gradient(to bottom,var(--p),rgba(124,58,237,0.03))}
+    .tl-item{position:relative;padding-bottom:28px}
+    .tl-item:last-child{padding-bottom:0}
+    .tl-item::before{content:'';position:absolute;right:-39px;top:7px;width:14px;height:14px;border-radius:50%;background:var(--p);border:3px solid var(--dark);box-shadow:0 0 16px rgba(124,58,237,0.6);animation:dot-pulse 2.8s ease-in-out infinite}
+    .tl-item:nth-child(2)::before{animation-delay:0.7s}.tl-item:nth-child(3)::before{animation-delay:1.4s}.tl-item:nth-child(4)::before{animation-delay:2.1s}
+    @keyframes dot-pulse{0%,100%{box-shadow:0 0 8px rgba(124,58,237,0.5);transform:scale(1)}50%{box-shadow:0 0 20px rgba(124,58,237,0.9);transform:scale(1.35)}}
+    .tl-year{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--p);letter-spacing:2px}
+    .tl-text{font-size:clamp(12px,2.5vw,14px);color:#3D4560;margin-top:4px;line-height:1.7}
+
+    /* ═══════════ SOCIAL ═══════════ */
+    .social-wrap{max-width:700px;margin:0 auto;padding:clamp(36px,6vw,64px) clamp(12px,4vw,20px) clamp(48px,8vw,88px)}
+    .social-list{display:flex;flex-direction:column;gap:11px;margin-top:clamp(28px,5vw,44px)}
+
+    .social-card{background:var(--card);border:1px solid var(--b2);border-radius:18px;padding:clamp(15px,3vw,22px) clamp(15px,3vw,26px);text-decoration:none;color:var(--text);display:flex;align-items:center;gap:clamp(12px,3vw,18px);position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent;opacity:0;transform:translateX(36px) scale(0.97);animation:slide-in 0.6s cubic-bezier(0.22,1,0.36,1) forwards;transition:all 0.38s cubic-bezier(0.34,1.56,0.64,1)}
+    .social-card:nth-child(1){animation-delay:0.08s}.social-card:nth-child(2){animation-delay:0.16s}.social-card:nth-child(3){animation-delay:0.24s}.social-card:nth-child(4){animation-delay:0.32s}.social-card:nth-child(5){animation-delay:0.40s}.social-card:nth-child(6){animation-delay:0.48s}.social-card:nth-child(7){animation-delay:0.56s}.social-card:nth-child(8){animation-delay:0.64s}.social-card:nth-child(9){animation-delay:0.72s}
+    @keyframes slide-in{to{opacity:1;transform:translateX(0) scale(1)}}
+    .social-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(124,58,237,0.05),transparent);opacity:0;transition:opacity 0.3s}
+    .social-card:hover{border-color:var(--p);transform:translateX(-7px) scale(1.015);box-shadow:0 10px 40px rgba(124,58,237,0.14)}
+    .social-card:hover::before{opacity:1}
+    @media(hover:none){.social-card:active{border-color:var(--p)}.social-card:active::before{opacity:1}}
+    .sc-img-wrap{width:54px;height:54px;border-radius:14px;overflow:hidden;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1)}
+    .social-card:hover .sc-img-wrap{transform:scale(1.1) rotate(-4deg)}
+    .sc-img-wrap img{width:100%;height:100%;object-fit:cover;border-radius:14px}
+    .sc-img-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;border-radius:14px}
+    .sc-info{flex:1;min-width:0}
+    .sc-name{font-weight:700;font-size:clamp(13px,2.5vw,16px);display:flex;align-items:center;gap:8px}
+    .sc-handle{font-size:clamp(10px,2vw,12px);color:var(--muted);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .live-pill{background:#53FC18;color:#000;font-size:9px;font-weight:900;padding:2px 9px;border-radius:7px;letter-spacing:0.5px;display:none;animation:live-pulse 1.4s ease-in-out infinite}
+    .live-pill.show{display:inline-block}
+    .sc-stat{font-family:'Bebas Neue',sans-serif;font-size:clamp(22px,4vw,32px);color:var(--p);letter-spacing:1px;white-space:nowrap}
+    .sc-stat-label{font-size:10px;color:var(--muted);letter-spacing:1px}
+    .sc-stat-wrap{text-align:left;flex-shrink:0}
+    .sc-arrow{color:var(--muted);font-size:20px;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);flex-shrink:0}
+    .social-card:hover .sc-arrow{color:var(--p);transform:translateX(-4px)}
+
+    /* ═══════════ FOOTER ═══════════ */
+    footer{background:var(--dark2);border-top:1px solid var(--b);padding:clamp(32px,5vw,52px) clamp(16px,4vw,40px) clamp(24px,4vw,36px);text-align:center;position:relative;overflow:hidden}
+    footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(124,58,237,0.35),rgba(167,139,250,0.25),rgba(124,58,237,0.35),transparent)}
+    .footer-inner{max-width:700px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:20px}
+    .footer-logo{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:6px;color:var(--p);opacity:0.7}
+    .footer-socials{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+    .footer-link{display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:10px;border:1px solid var(--b2);color:var(--muted);text-decoration:none;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);-webkit-tap-highlight-color:transparent}
+    .footer-link:hover{border-color:var(--p);color:var(--p);background:rgba(124,58,237,0.08);transform:translateY(-3px)}
+    .footer-copy{font-size:11px;color:var(--muted);opacity:0.5;letter-spacing:0.5px}
+    .footer-kick-btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;font-family:'Cairo',sans-serif;font-weight:900;font-size:13px;padding:10px 24px;border-radius:11px;text-decoration:none;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);box-shadow:0 4px 20px rgba(124,58,237,0.3)}
+    .footer-kick-btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(124,58,237,0.5)}
+
+    /* Copy URL button */
+    .copy-btn{display:inline-flex;align-items:center;gap:7px;background:var(--card);border:1px solid var(--b2);color:var(--muted);font-family:'Cairo',sans-serif;font-size:12px;font-weight:700;padding:9px 18px;border-radius:10px;cursor:pointer;transition:all 0.3s;-webkit-tap-highlight-color:transparent}
+    .copy-btn:hover{border-color:var(--p);color:var(--p)}
+    .copy-btn.copied{border-color:#53FC18;color:#53FC18;background:rgba(83,252,24,0.06)}
+
+    /* ═══════════ ANIMATIONS ═══════════ */
+    .fade-in{opacity:0;transform:translateY(28px);animation:fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) forwards}
+    .fade-in:nth-child(1){animation-delay:0.06s}.fade-in:nth-child(2){animation-delay:0.16s}.fade-in:nth-child(3){animation-delay:0.26s}.fade-in:nth-child(4){animation-delay:0.36s}.fade-in:nth-child(5){animation-delay:0.46s}
+    @keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+    @keyframes nav-glow{0%,100%{box-shadow:0 0 0 0 rgba(124,58,237,0)}50%{box-shadow:0 0 0 5px rgba(124,58,237,0.22)}}
+
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms !important;animation-iteration-count:1 !important;transition-duration:0.01ms !important}}
+    @supports(padding-bottom:env(safe-area-inset-bottom)){.page{padding-bottom:env(safe-area-inset-bottom)}nav{padding-left:max(clamp(14px,4vw,36px),env(safe-area-inset-left));padding-right:max(clamp(14px,4vw,36px),env(safe-area-inset-right))}}
+  </style>
+
+</head>
+<body>
+
+<!-- LOADER -->
+
+<div id="loader">
+  <div class="loader-name">H<span>OO</span>K</div>
+  <div class="loader-bar"><div class="loader-fill"></div></div>
+  <div class="loader-sub">جار التحميل...</div>
+</div>
+
+<!-- NAV -->
+
+<nav>
+  <div class="nav-logo" onclick="showPage('home')">
+    <img src="https://static.kick.com/images/channel/hook/profile-image" alt="hook" class="kick-avatar"/>
+    <span>HOOK</span>
+  </div>
+  <ul class="nav-links">
+    <li><a onclick="showPage('home')" id="nav-home" class="active">الرئيسية</a></li>
+    <li><a onclick="showPage('about')" id="nav-about">عني</a></li>
+    <li><a onclick="showPage('social')" id="nav-social">المنصات</a></li>
+    <li><a href="https://kick.com/hook" target="_blank" class="nav-cta">بث مباشر ↗</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="القائمة" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a onclick="showPage('home');closeMobile();" id="mnav-home" class="active">الرئيسية <span>→</span></a>
+  <a onclick="showPage('about');closeMobile();" id="mnav-about">عني <span>→</span></a>
+  <a onclick="showPage('social');closeMobile();" id="mnav-social">المنصات <span>→</span></a>
+  <a href="https://kick.com/hook" target="_blank" class="nav-cta-mobile">🔴 بث مباشر على Kick</a>
+</div>
+
+<!-- ══════ HOME ══════ -->
+
+<div class="page active" id="page-home">
+  <div class="hero-section">
+    <div class="grid-bg"></div>
+    <div class="hero-glow"></div>
+    <div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div><div class="orb orb4"></div>
+    <div class="scan-line"></div>
+    <div class="corner-brackets"><div class="cb-inner"></div></div>
+    <div class="particle p1"></div><div class="particle p2"></div><div class="particle p3"></div>
+    <div class="particle p4"></div><div class="particle p5"></div><div class="particle p6"></div>
+
+```
+<div class="hero-content">
+  <div class="avatar-ring fade-in">
+    <div class="avatar-glow"></div>
+    <div class="avatar-pulse"></div>
+    <img class="av-img kick-avatar" src="https://static.kick.com/images/channel/hook/profile-image" alt="hook"/>
+    <div class="status-badge">
+      <div class="status-dot" id="statusDot"></div>
+      <span id="statusText">Offline</span>
+    </div>
+  </div>
+
+  <div class="hero-name fade-in">H<span>OO</span>K</div>
+  <div class="hero-handle fade-in">خالد — ستريمر قراند &amp; صانع محتوى</div>
+  <div class="stream-title fade-in" id="streamTitle"></div>
+  <div id="streamGame" style="display:none;margin-top:6px;background:rgba(124,58,237,0.12);border:1px solid rgba(124,58,237,0.2);border-radius:12px;padding:5px 16px;font-size:12px;color:var(--p3);font-weight:700;"></div>
+  <div id="liveViewers" style="display:none;margin-top:5px;font-size:12px;color:var(--muted);font-weight:600;"></div>
+  <div class="hero-bio fade-in">خالد من السعودية — يلعب <strong>قراند</strong> في سيرفر Resspect فقط، وألعاب ثانية على حسب المزاج</div>
+
+  <div class="hero-actions fade-in">
+    <a href="https://kick.com/hook" target="_blank" class="btn-primary">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="white" style="flex-shrink:0"><path d="M16.5 12L8 7v10l8.5-5z"/><rect x="4" y="4" width="3" height="16" rx="1.5" fill="white"/></svg>
+      <span>تابع على Kick</span>
+    </a>
+    <button class="btn-secondary" onclick="showPage('about')">اعرف أكثر</button>
+  </div>
+
+  <div class="stats-strip fade-in">
+    <div class="ss"><div class="ss-num kick-followers">174K</div><div class="ss-label">متابع Kick</div></div>
+    <div class="ss"><div class="ss-num">71.6K</div><div class="ss-label">متابع X</div></div>
+    <div class="ss"><div class="ss-num" style="font-size:clamp(14px,3vw,26px);">GTA RP</div><div class="ss-label">المحتوى</div></div>
+    <div class="ss"><div class="ss-num">🇸🇦</div><div class="ss-label">السعودية</div></div>
+  </div>
+</div>
+```
+
+  </div>
+
+  <div class="platforms-wrap">
+    <div class="section-label">تابعني على المنصات</div>
+    <div class="plat-grid">
+      <a href="https://kick.com/hook" target="_blank" class="plat">
+        <div class="plat-live-badge" id="platLiveBadge">LIVE</div>
+        <div class="plat-img-wrap">
+          <div class="plat-img-fallback" style="background:rgba(83,252,24,0.08);">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="#53FC18"><path d="M16.5 12L8 7v10l8.5-5z"/><rect x="4" y="4" width="3" height="16" rx="1.5" fill="#53FC18"/></svg>
+          </div>
+        </div>
+        <div class="plat-name">Kick</div>
+        <div class="plat-handle">@hook</div>
+      </a>
+      <a href="https://x.com/1hoook_7" target="_blank" class="plat">
+        <div class="plat-img-wrap">
+          <div class="plat-img-fallback" style="background:#111;">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="#fff"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </div>
+        </div>
+        <div class="plat-name">X (Twitter)</div>
+        <div class="plat-handle">@1hoook_7</div>
+      </a>
+      <a href="https://www.youtube.com/@hoook7" target="_blank" class="plat">
+        <div class="plat-img-wrap">
+          <div class="plat-img-fallback" style="background:rgba(255,0,0,0.1);">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="#FF0000"><path d="M23.495 6.205a3.007 3.007 0 00-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 00.527 6.205a31.247 31.247 0 00-.522 5.805 31.247 31.247 0 00.522 5.783 3.007 3.007 0 002.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 002.088-2.088 31.247 31.247 0 00.5-5.783 31.247 31.247 0 00-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+          </div>
+        </div>
+        <div class="plat-name">YouTube</div>
+        <div class="plat-handle">@hoook7</div>
+      </a>
+      <a href="https://discord.gg/hoook" target="_blank" class="plat">
+        <div class="plat-img-wrap">
+          <div class="plat-img-fallback" style="background:rgba(88,101,242,0.15);">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="#5865F2"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+          </div>
+        </div>
+        <div class="plat-name">Discord</div>
+        <div class="plat-handle">السيرفر</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Footer Home -->
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo">HOOK</div>
+      <div class="footer-socials">
+        <a href="https://kick.com/hook" target="_blank" class="footer-link" title="Kick">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 12L8 7v10l8.5-5z"/><rect x="4" y="4" width="3" height="16" rx="1.5" fill="currentColor"/></svg>
+        </a>
+        <a href="https://x.com/1hoook_7" target="_blank" class="footer-link" title="X">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+        <a href="https://www.youtube.com/@hoook7" target="_blank" class="footer-link" title="YouTube">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.495 6.205a3.007 3.007 0 00-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 00.527 6.205a31.247 31.247 0 00-.522 5.805 31.247 31.247 0 00.522 5.783 3.007 3.007 0 002.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 002.088-2.088 31.247 31.247 0 00.5-5.783 31.247 31.247 0 00-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+        </a>
+        <a href="https://discord.gg/hoook" target="_blank" class="footer-link" title="Discord">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+        </a>
+        <a href="https://www.snapchat.com/add/hoook_1" target="_blank" class="footer-link" title="Snapchat">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12.004 2c-2.265 0-5.753 1.002-5.753 5.317v.854c-.471.1-.927-.06-1.395.17-.356.177-.578.529-.578.914 0 .686.574 1.007 1.083 1.093.243.043.503.053.75.053-.195.487-.52.908-.904 1.265-.74.688-1.71 1.072-2.707 1.072-1.168 0-1.5.766-1.5 1.063 0 .3.332.944 1.5 1.063.455.046.91.127 1.358.248.175.048.345.107.51.176.12.05.235.105.343.165.13.073.254.154.37.24.266.196.487.43.653.695.2.32.307.674.307 1.037h7.937c0-.363.108-.717.307-1.037.166-.265.387-.499.653-.695.116-.086.24-.167.37-.24.108-.06.222-.115.342-.165.166-.069.336-.128.51-.176.448-.12.903-.202 1.358-.248 1.168-.12 1.5-.763 1.5-1.063 0-.297-.332-.944-1.5-1.063-1.02-.104-1.997-.523-2.748-1.238a3.755 3.755 0 01-.863-1.099c.247 0 .507-.01.75-.053.51-.086 1.083-.407 1.083-1.093 0-.385-.222-.737-.578-.914-.468-.23-.924-.07-1.395-.17v-.854C17.757 3.002 14.269 2 12.004 2z"/></svg>
+        </a>
+        <a href="https://www.tiktok.com/@hoook6" target="_blank" class="footer-link" title="TikTok">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.28 6.28 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z"/></svg>
+        </a>
+      </div>
+      <button class="copy-btn" id="copyBtn" onclick="copyURL()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M16 1H4a2 2 0 00-2 2v14h2V3h12V1zm3 4H8a2 2 0 00-2 2v14a2 2 0 002 2h11a2 2 0 002-2V7a2 2 0 00-2-2zm0 16H8V7h11v14z"/></svg>
+        <span id="copyTxt">نسخ رابط الموقع</span>
+      </button>
+      <div class="footer-copy">© 2025 Hook — خالد · جميع الحقوق محفوظة</div>
+    </div>
+  </footer>
+</div>
+
+<!-- ══════ ABOUT ══════ -->
+
+<div class="page" id="page-about">
+  <div class="about-wrap">
+    <div class="page-hero fade-in">
+      <div class="page-tag">من أنا</div>
+      <div class="page-title">عن Hook</div>
+      <div class="page-sub">قصتي ومشواري في عالم البث المباشر</div>
+    </div>
+    <div class="about-grid">
+      <div class="info-card">
+        <div class="ic-label">الهوية</div>
+        <div class="ic-text">
+          <strong>الاسم:</strong> خالد<br/>
+          <strong>الكنية:</strong> Hook / hoook_7<br/>
+          <strong>الدولة:</strong> المملكة العربية السعودية 🇸🇦<br/>
+          <strong>التخصص:</strong> ستريمر GTA RP &amp; صانع محتوى
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="ic-label">البيو الرسمي</div>
+        <div class="ic-text">"خالد من السعودية — يلعب قراند في سيرفر Resspect فقط، ويلعب ألعاب ثانية على حسب المزاج."</div>
+      </div>
+      <div class="info-card full">
+        <div class="ic-label">المسيرة</div>
+        <div class="timeline">
+          <div class="tl-item"><div class="tl-year">البداية</div><div class="tl-text">بدأ رحلة البث المباشر وصناعة المحتوى في عالم الجيمينج</div></div>
+          <div class="tl-item"><div class="tl-year">Resspect RP</div><div class="tl-text">انضم لسيرفر Resspect وأصبح أحد أبرز وجوهه في عالم قراند</div></div>
+          <div class="tl-item"><div class="tl-year">Kick — 174K+</div><div class="tl-text">بنى مجتمعًا يتجاوز 174,000 متابع على منصة Kick</div></div>
+          <div class="tl-item"><div class="tl-year">X — 71.6K+</div><div class="tl-text">حضور قوي على منصة X بأكثر من 71,600 متابع</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo">HOOK</div>
+      <a href="https://kick.com/hook" target="_blank" class="footer-kick-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M16.5 12L8 7v10l8.5-5z"/><rect x="4" y="4" width="3" height="16" rx="1.5" fill="white"/></svg>
+        شاهد البث على Kick
+      </a>
+      <div class="footer-copy">© 2025 Hook — خالد · جميع الحقوق محفوظة</div>
+    </div>
+  </footer>
+</div>
+
+<!-- ══════ SOCIAL ══════ -->
+
+<div class="page" id="page-social">
+  <div class="social-wrap">
+    <div class="page-hero fade-in">
+      <div class="page-tag">تابعني</div>
+      <div class="page-title">المنصات</div>
+      <div class="page-sub">كل حساباتي في مكان واحد</div>
+    </div>
+    <div class="social-list">
+      <a href="https://kick.com/hook" target="_blank" class="social-card">
+        <div class="sc-img-wrap"><div class="sc-img-fallback" style="background:rgba(83,252,24,0.08);"><svg width="28" height="28" viewBox="0 0 24 24" fill="#53FC18"><path d="M16.5 12L8 7v10l8.5-5z"/><rect x="4" y="4" width="3" height="16" rx="1.5" fill="#53FC18"/></svg></div></div>
+        <div class="sc-info"><div class="sc-name">Kick <span class="live-pill" id="kickLivePill">LIVE</span></div><div class="sc-handle">kick.com/hook</div></div>
+        <div class="sc-stat-wrap"><div class="sc-stat kick-followers">174K+</div><div class="sc-stat-label">متابع</div></div>
+        <div class="sc-arrow">←</div>
+      </a>
+      <a href="https://x.com/1hoook_7" target="_blank" class="social-card">
+        <div class="sc-img-wrap"><div class="sc-img-fallback" style="background:#111;"><svg width="24" height="24" viewBox="0 0 24 24" fill="#fff"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></div></div>
+        <div class="sc-info"><div class="sc-name">X (Twitter)</div><div class="sc-handle">@1hoook_7</div></div>
+        <div class="sc-stat-wrap"><div class="sc-stat">71.6K</div><div class="sc-stat-label">متابع</div></div>
+        <div class="sc-arrow">←</div>
+      </a>
+      <a href="https://www.snapchat.com/add/hoook_1" target="_blank" class="social-card">
+        <div class="sc-img-wrap"><div class="sc-img-fallback" style="background:#FFFC00;"><svg width="26" height="26" viewBox="0 0 24 24" fill="#000"><path d="M12.004 2c-2.265 0-5.753 1.002-5.753 5.317v.854c-.471.1-.927-.06-1.395.17-.356.177-.578.529-.578.914 0 .686.574 1.007 1.083 1.093.243.043.503.053.75.053-.195.487-.52.908-.904 1.265-.74.688-1.71 1.072-2.707 1.072-1.168 0-1.5.766-1.5 1.063 0 .3.332.944 1.5 1.063.455.046.91.127 1.358.248.175.048.345.107.51.176.12.05.235.105.343.165.13.073.254.154.37.24.266.196.487.43.653.695.2.32.307.674.307 1.037h7.937c0-.363.108-.717.307-1.037.166-.265.387-.499.653-.695.116-.086.24-.167.37-.24.108-.06.222-.115.342-.165.166-.069.336-.128.51-.176.448-.12.903-.202 1.358-.248 1.168-.12 1.5-.763 1.5-1.063 0-.297-.332-.944-1.5-1.063-1.02-.104-1.997-.523-2.748-1.238a3.755 3.755 0 01-.863-1.099c.247 0 .507-.01.75-.053.51-.086 1.083-.407 1.083-1.093 0-.385-.222-.737-.578-.914-.468-.23-.924-.07-1.395-.17v-.854C17.757 3.002 14.269 2 12.004 2z"/></svg></div></div>
+        <div class="sc-info"><div class="sc-name">Snapchat</div><div class="sc-handle">@hoook_1</div></div>
+        <div class="sc-stat-wrap"><div class="sc-stat" style="font-size:16px;margin-top:4px;">سناب</div><div class="sc-stat-label">تابعني</div></div>
+        <div class="sc-arrow">←</div>
+      </a>
+      <a href="https://www.youtube.com/@hoook7" target="_blank" class="social-card">
+        <div class="sc-img-wrap"><div class="sc-img-fallback" style="background:rgba(255,0,0,0.1);"><svg width="26" height="26" viewBox="0 0 24 24" fill="#FF0000"><path d="M23.495 6.205a3.007 3.007 0 00-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 00.527 6.205a31.247 31.247 0 00-.522 5.805 31.247 31.247 0 00.522 5.783 3.007 3.007 0 002.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 002.088-2.088 31.247 31.247 0 00.5-5.783 31.247 31.247 0 00-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg></div></div>
+        <div class="sc-info"><div class="sc-name">YouTube</div><div class="sc-handle">@hoook7</div></div>
+        <div class="sc-stat-wrap"><div class="sc-stat" style="font-size:16px;margin-top:4px;">قناة</div><div class="sc-stat-label">يوتيوب</div></div>
+        <div class="sc-arrow">←</div>
+      </a>
+      <a href="https://www.youtube.com/@1hoook" target="_blank" class="social-card">
+        <div class="sc-img-wrap"><div class="sc-img-fallback" style="background:rgba(255,68,68,0.1);"><svg width="26" height="26" viewBox="0 0 24 24" fill="#FF4444"><path d="M23.495 6.205a3.007 3.007 0 00-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 00.527 6.205a31.247 31.247 0 00-.522 5.805 31.247 31.247 0 00.522 5.783 3.007 3.007 0 002.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 002.088-2.088 31.247 31.247 0 00.5-5.783 31.247 31.247 0 00-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg></div></div>
+        <div class="sc-info"><div class="sc-name">YouTube Gaming</div><div class="sc-handle">@1hoook</div></div>
+        <div class="sc-stat-wrap"><div class="sc-stat" style="font-size:16px;margin-top:4px;">قناة</div><div class="sc-stat-label">جيمينج</div></div>
+        <div class="sc-arrow">←</div>
+      </a>
+      <a href="https://www.tiktok.com/@hoook6" target="_blank" class="social-card">
+        <div class="sc-img-wrap"><div class="sc-img-fallback" style="background:#111;"><svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.28 6.28 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z"/></svg></div></div>
+        <div class="sc-info"><div class="sc-name">TikTok</div><div class="sc-handle">@hoook6</div></div>
+        <div class="sc-stat-wrap"><div class="sc-stat" style="font-size:16px;margin-top:4px;">تيك توك</div><div class="sc-stat-label">تابعني</div></div>
+        <div class="sc-arrow">←</div>
+      </a>
+      <a href="https://discord.gg/hoook" target="_blank" class="social-card">
+        <div class="sc-img-wrap"><div class="sc-img-fallback" style="background:rgba(88,101,242,0.15);"><svg width="28" height="28" viewBox="0 0 24 24" fill="#5865F2"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg></div></div>
+        <div class="sc-info"><div class="sc-name">Discord</div><div class="sc-handle">discord.gg/hoook</div></div>
+        <div class="sc-stat-wrap"><div class="sc-stat" style="font-size:16px;margin-top:4px;">سيرفر</div><div class="sc-stat-label">انضم الحين</div></div>
+        <div class="sc-arrow">←</div>
+      </a>
+      <a href="https://whatsapp.com/channel/0029Vb207gOCXC3TPeGv9m1X" target="_blank" class="social-card">
+        <div class="sc-img-wrap"><div class="sc-img-fallback" style="background:rgba(37,211,102,0.12);"><svg width="28" height="28" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg></div></div>
+        <div class="sc-info"><div class="sc-name">WhatsApp</div><div class="sc-handle">اوقات البثوث</div></div>
+        <div class="sc-stat-wrap"><div class="sc-stat">16K</div><div class="sc-stat-label">متابع</div></div>
+        <div class="sc-arrow">←</div>
+      </a>
+      <a href="https://jaco.live/@1hook?uid=3023014542" target="_blank" class="social-card">
+        <div class="sc-img-wrap"><div class="sc-img-fallback" style="background:rgba(124,58,237,0.12);"><span style="font-size:28px;">🎙️</span></div></div>
+        <div class="sc-info"><div class="sc-name">JACO</div><div class="sc-handle">@1hook</div></div>
+        <div class="sc-stat-wrap"><div class="sc-stat" style="font-size:16px;margin-top:4px;">جاكو</div><div class="sc-stat-label">تابعني</div></div>
+        <div class="sc-arrow">←</div>
+      </a>
+    </div>
+  </div>
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo">HOOK</div>
+      <a href="https://kick.com/hook" target="_blank" class="footer-kick-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M16.5 12L8 7v10l8.5-5z"/><rect x="4" y="4" width="3" height="16" rx="1.5" fill="white"/></svg>
+        شاهد البث على Kick
+      </a>
+      <div class="footer-copy">© 2025 Hook — خالد · جميع الحقوق محفوظة</div>
+    </div>
+  </footer>
+</div>
+
+<script>
+  /* ── Loader ── */
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.getElementById('loader').classList.add('hidden');
+    }, 1400);
+  });
+
+  /* ── Navigation ── */
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    ['nav-home','nav-about','nav-social'].forEach(n => { const e=document.getElementById(n); if(e) e.classList.remove('active'); });
+    ['mnav-home','mnav-about','mnav-social'].forEach(n => { const e=document.getElementById(n); if(e) e.classList.remove('active'); });
+    const pg = document.getElementById('page-'+id);
+    if(pg) pg.classList.add('active');
+    const nv = document.getElementById('nav-'+id); if(nv) nv.classList.add('active');
+    const mn = document.getElementById('mnav-'+id); if(mn) mn.classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+    setTimeout(() => {
+      if(pg){ pg.querySelectorAll('.fade-in,.info-card,.plat,.social-card').forEach((el,i) => { el.style.animation='none'; void el.offsetHeight; el.style.animationDelay=(i*0.08)+'s'; el.style.animation=''; }); }
+    }, 10);
+  }
+
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => {
+    const o = mobileMenu.classList.toggle('open');
+    hamburger.classList.toggle('open', o);
+    hamburger.setAttribute('aria-expanded', o);
+  });
+  document.addEventListener('click', e => { if(!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) closeMobile(); });
+  function closeMobile(){ mobileMenu.classList.remove('open'); hamburger.classList.remove('open'); hamburger.setAttribute('aria-expanded', false); }
+
+  /* ── Copy URL ── */
+  function copyURL(){
+    const url = window.location.href;
+    navigator.clipboard.writeText(url).then(() => {
+      const btn = document.getElementById('copyBtn');
+      const txt = document.getElementById('copyTxt');
+      btn.classList.add('copied');
+      txt.textContent = 'تم النسخ! ✓';
+      setTimeout(() => { btn.classList.remove('copied'); txt.textContent = 'نسخ رابط الموقع'; }, 2500);
+    }).catch(() => {});
+  }
+
+  /* ── Kick API ── */
+  const WORKER_URL = 'https://kick-proxy.babal34it.workers.dev';
+  function applyKickData(data) {
+    if(!data) return;
+    if(data.profile_image) {
+      document.querySelectorAll('.kick-avatar').forEach(el => { if(el.src !== data.profile_image) el.src = data.profile_image; });
+    }
+    const f = data.followers ?? null;
+    if(f !== null && !isNaN(f)){
+      const fmt = f>=1e6 ? (f/1e6).toFixed(1)+'M' : f>=1e3 ? (f/1e3).toFixed(1)+'K' : f;
+      document.querySelectorAll('.kick-followers').forEach(el => el.textContent = fmt);
+    }
+    const isLive = data.is_live === true, stream = data.stream || null;
+    const dot = document.getElementById('statusDot'), stxt = document.getElementById('statusText');
+    if(dot) dot.classList.toggle('live', isLive);
+    if(stxt) stxt.textContent = isLive ? 'LIVE' : 'Offline';
+    const kp = document.getElementById('kickLivePill'), pb = document.getElementById('platLiveBadge');
+    if(kp) kp.classList.toggle('show', isLive);
+    if(pb) pb.classList.toggle('show', isLive);
+    const te = document.getElementById('streamTitle');
+    if(te){ if(isLive && stream?.title){ te.textContent='🎮 '+stream.title; te.style.display='block'; } else te.style.display='none'; }
+    const ge = document.getElementById('streamGame');
+    if(ge){ if(isLive && stream?.game){ ge.textContent='🕹️ '+stream.game; ge.style.display='block'; } else ge.style.display='none'; }
+    const ve = document.getElementById('liveViewers');
+    if(ve){ if(isLive && stream?.viewers){ ve.textContent='👁️ '+Number(stream.viewers).toLocaleString('ar'); ve.style.display='block'; } else ve.style.display='none'; }
+  }
+  async function fetchKickData(){
+    try{ const r = await fetch(WORKER_URL+'?channel=hook'); if(!r.ok) throw new Error('HTTP '+r.status); applyKickData(await r.json()); } catch(e){ console.warn('Kick:', e.message); }
+  }
+  fetchKickData();
+  setInterval(fetchKickData, 90000);
+
+  /* ── Canvas Particles ── */
+  const canvas = document.createElement('canvas');
+  canvas.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:0;opacity:0.35';
+  document.body.appendChild(canvas);
+  const ctx = canvas.getContext('2d');
+  let W, H, dots = [];
+  function resize(){ W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+  // Fix: use W/H instead of hardcoded 1920/1080
+  for(let i=0; i<38; i++) dots.push({x:Math.random()*window.innerWidth, y:Math.random()*window.innerHeight, vx:(Math.random()-0.5)*0.4, vy:(Math.random()-0.5)*0.4, r:Math.random()*1.5+0.5, a:Math.random()*Math.PI*2});
+  function drawDots(){
+    ctx.clearRect(0,0,W,H);
+    dots.forEach(d => {
+      d.x+=d.vx; d.y+=d.vy; d.a+=0.005;
+      if(d.x<0)d.x=W; if(d.x>W)d.x=0;
+      if(d.y<0)d.y=H; if(d.y>H)d.y=0;
+      ctx.beginPath(); ctx.arc(d.x,d.y,d.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(124,58,237,${0.3+Math.sin(d.a)*0.25})`; ctx.fill();
+    });
+    dots.forEach((d,i) => {
+      dots.forEach((d2,j) => {
+        if(j<=i) return;
+        const dx=d.x-d2.x, dy=d.y-d2.y, dist=Math.sqrt(dx*dx+dy*dy);
+        if(dist<130){ ctx.beginPath(); ctx.moveTo(d.x,d.y); ctx.lineTo(d2.x,d2.y); ctx.strokeStyle=`rgba(124,58,237,${(1-dist/130)*0.12})`; ctx.lineWidth=0.7; ctx.stroke(); }
+      });
+    });
+    requestAnimationFrame(drawDots);
+  }
+  drawDots();
+</script>
+
+</body>
+</html>
